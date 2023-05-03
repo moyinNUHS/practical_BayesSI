@@ -152,12 +152,18 @@ fit_onestage_C<-function(alldata=Alldata){
 fit_onestage_C_NI<-function(alldata=Alldata){
   no_p<-no_pattern
   
+  loc_NI<-0
+  scale_NI<-5
+  prior <- student_t(df = 7, loc_NI, scale_NI)
+  prior_int <- student_t(df = 7, loc_NI, scale_NI)
+  
   nma_data<-data.frame(y=unlist(alldata[1,]),
                        treatment=factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
                        subgroup=factor(unlist(alldata[4,])))#patient_subgroup)))
   
-  my.glm<-myTryCatch(stan_glm(y~treatment + subgroup, data = nma_data,
-                             family = binomial(link = "logit"), cores = 2) )
+  my.glm<-myTryCatch(stan_glm(y~treatment + subgroup, data = nma_data, prior = prior,
+                              prior_intercept = prior_int, family = binomial(link = "logit"), 
+                              cores = 2) )
   #use of default priors in stan_glm are non-informative
   
   if(is.null(my.glm$error) ) #if do not have an error, model is fitted
