@@ -462,7 +462,23 @@ pattern3<- 1:4 # Patient without Kidney impairment + KPC culture
 pattern4<- 3:4 # Patient without Kidney impairment + NDM culture
 patternV<-list(pattern1, pattern2, pattern3, pattern4)
 
-# treatment effect parameters------------
+# treatment effect parameters in prior trial------------
+alpha_prior <- find_phi(0.35, alpha=0) #baseline risk = 35%
+phi_prior <- find_phi(seq(0.2, 0.5, 
+                    length.out = no_treatment), 
+                    alpha = alpha_prior) #treatment risk = 20-50%
+res_rate_prior <- res_probability(phi_prior,alpha_prior)
+
+res_rate_mat_prior <- matrix(res_rate_prior, byrow = T,
+                     nrow = length(patternV), 
+                     ncol = no_treatment)
+
+# response rate: row= pattern, column=treatment. All rows have same values for this scenario
+res_probability_prior=res_rate_mat # response probability
+colnames(res_probability_prior) <- sapply(1:no_treatment, function(i){paste0("treatment_", i)} )
+rownames(res_probability_prior) <- sapply(1:length(pattern), function(i){paste0("alpha_", i)} )
+
+# treatment effect parameters in current trial------------
 alpha_1 <- find_phi(0.35, alpha=0) #baseline risk = 35%
 phi_1 <- find_phi(seq(0.2, 0.5, 
                     length.out = no_treatment), 
@@ -504,7 +520,7 @@ Alldata_prior<-
   sapply(1:no_pattern, function(i){
   generate_subset_data(i, size_pattern.=size_pattern, 
                        pattern.=pattern, 
-                       res_probability_all.=res_probability_all)})
+                       res_probability_all.=res_probability_prior)})
 
 # generate one current dataset----
 Alldata<-
