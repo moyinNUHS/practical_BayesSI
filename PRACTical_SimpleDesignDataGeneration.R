@@ -474,7 +474,7 @@ res_rate_mat_prior <- matrix(res_rate_prior, byrow = T,
                      ncol = no_treatment)
 
 # response rate: row= pattern, column=treatment. All rows have same values for this scenario
-res_probability_prior=res_rate_mat # response probability
+res_probability_prior=res_rate_mat_prior # response probability
 colnames(res_probability_prior) <- sapply(1:no_treatment, function(i){paste0("treatment_", i)} )
 rownames(res_probability_prior) <- sapply(1:length(pattern), function(i){paste0("alpha_", i)} )
 
