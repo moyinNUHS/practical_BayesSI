@@ -473,11 +473,6 @@ res_rate_mat_prior <- matrix(res_rate_prior, byrow = T,
                      nrow = length(patternV), 
                      ncol = no_treatment)
 
-# response rate: row= pattern, column=treatment. All rows have same values for this scenario
-res_probability_prior=res_rate_mat_prior # response probability
-colnames(res_probability_prior) <- sapply(1:no_treatment, function(i){paste0("treatment_", i)} )
-rownames(res_probability_prior) <- sapply(1:length(pattern), function(i){paste0("alpha_", i)} )
-
 # treatment effect parameters in current trial------------
 alpha_1 <- find_phi(0.35, alpha=0) #baseline risk = 35%
 phi_1 <- find_phi(seq(0.2, 0.5, 
@@ -495,6 +490,11 @@ R=5 # number of trial replications
 
 phi_v=phi_1 # true parameters of treatment effect
 pattern=patternV # personalized randomization lists
+
+# response rate: row= pattern, column=treatment. All rows have same values for this scenario
+res_probability_prior=res_rate_mat_prior # response probability
+colnames(res_probability_prior) <- sapply(1:no_treatment, function(i){paste0("treatment_", i)} )
+rownames(res_probability_prior) <- sapply(1:length(pattern), function(i){paste0("alpha_", i)} )
 
 # response rate: row= pattern, column=treatment. All rows have same values for this scenario
 res_probability_all=res_rate_mat # response probability
