@@ -394,11 +394,11 @@ fit_robustSE_D<-function(alldata=Alldata){
   # if so, use the following line instead
   #fit_glm<-myTryCatch( glm(as.numeric(levels(y))[y]~treatment+id_comparison,family="binomial",data=dup_data) )
   
-  fit_glmm<-myTryCatch( glm(as.numeric(y)~treatment+id_comparison,family="binomial",data=dup_data) )
+  fit_glm<-myTryCatch( glm(as.numeric(y)~treatment+id_comparison,family="binomial",data=dup_data) )
   
   if(is.null(fit_glm$error) ) #if there is no error, model is fitted 
   { 
-    fit_glmm<-fit_glmm[[1]]
+    fit_glm<-fit_glm[[1]]
     # Calculate robust standard errors #
     cov.m1 <- cluster.vcov(fit_glm, dup_data$id)[2:no_t, 2:no_t]#vcovHC(fit_glm, type = "HC0")[2:no_t, 2:no_t]
     testcov<-myTryCatch( sqrt(diag(cov.m1)) )
