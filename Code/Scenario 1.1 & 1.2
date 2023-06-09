@@ -2,6 +2,7 @@
 #Have included scenarios 1.1 and 1.2, and included a loop to show how we could produce results for multiple scenarios in one script. 
 #However, having separate scripts per scenario may be better/easier/quicker?
 #Alternatively, could loop by sample size instead? I include another loop by sample size as an example
+#Also include example of how scenario 1.4 can be coded
 
 #Load Packages
 library(stringr)
@@ -94,6 +95,15 @@ T4_p<-baseline
 phi_1.1.p <- find_phi(p = c(T1_p, T2_p, T3_p, T4_p), 
                   alpha = alpha_1.p) #specify each treatment risk
 res_rate1.1.p<-res_probability(phi_1.1.p,alpha_1.p)
+
+#### scenario 1.4
+baseline<-0.35
+
+#Specify each treatment risk
+alpha_1.4 <- find_phi(baseline, alpha = 0)
+phi_1.4<-find_phi(p = seq(0.45, 0.3, length.out = no_treatment), 
+                  alpha = alpha_1) #specify each treatment risk
+res_rate1.4<-res_probability(phi_1.4,alpha_1.4)
 
 #Combine both scenarios into matrix
 phi_V<-cbind(phi_1, phi_1.1) 
