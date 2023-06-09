@@ -1,3 +1,7 @@
+# ---------------------------------------- #
+# to catch warning or error from model fit #
+# ---------------------------------------- #
+
 myTryCatch <- function(expr) {
   warn <- err <- NULL
   value <- withCallingHandlers(
