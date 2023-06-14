@@ -54,10 +54,11 @@ T1<-baseline
 T2<-baseline
 T3<-baseline
 T4<-baseline
+T_current<-c(T1, T2, T3, T4)
 
 #Specify each treatment risk
 alpha_1 <- find_phi(baseline, alpha = 0)
-phi_1 <- find_phi(p = c(T1, T2, T3, T4), 
+phi_1 <- find_phi(p = T_current, 
                   alpha = alpha_1) #specify each treatment risk
 res_rate1<-res_probability(phi_1,alpha_1)
 
@@ -67,21 +68,24 @@ T1_p<-baseline
 T2_p<-baseline
 T3_p<-baseline
 T4_p<-baseline
+T_prior<-c(T1_p, T2_p, T3_p, T4_p)
 
 #Specify each treatment prior risk (representing historical data)
 alpha_1.p <- find_phi(baseline_p, alpha = 0)
-phi_1.p <- find_phi(p = c(T1_p, T2_p, T3_p, T4_p), 
+phi_1.p <- find_phi(p = T_prior, 
                   alpha = alpha_1.p) #specify each treatment risk
 res_rate1.p<-res_probability(phi_1.p,alpha_1.p)
 
 #### scenario 1.2
+# current treatment effect parameters
 T1<-0.6
 T2<-baseline
 T3<-baseline
 T4<-baseline
+T_current<-c(T1, T2, T3, T4)
 
 #Specify each treatment risk
-phi_1.1<-find_phi(p = c(T1, T2, T3, T4), 
+phi_1.1<-find_phi(p = T_current, 
                   alpha = alpha_1) #specify each treatment risk
 res_rate1.1<-res_probability(phi_1.1,alpha_1)
 
@@ -90,9 +94,10 @@ T1_p<-0.6
 T2_p<-baseline
 T3_p<-baseline
 T4_p<-baseline
+T_prior<-c(T1_p, T2_p, T3_p, T4_p)
 
 #Specify each treatment prior risk (representing historical data)
-phi_1.1.p <- find_phi(p = c(T1_p, T2_p, T3_p, T4_p), 
+phi_1.1.p <- find_phi(p = T_prior, 
                   alpha = alpha_1.p) #specify each treatment risk
 res_rate1.1.p<-res_probability(phi_1.1.p,alpha_1.p)
 
