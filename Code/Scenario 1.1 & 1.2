@@ -103,10 +103,11 @@ res_rate1.1.p<-res_probability(phi_1.1.p,alpha_1.p)
 
 #### scenario 1.4
 baseline<-0.35
+T_current<-seq(0.45, 0.3, length.out = no_treatment)
 
 #Specify each treatment risk
 alpha_1.4 <- find_phi(baseline, alpha = 0)
-phi_1.4<-find_phi(p = seq(0.45, 0.3, length.out = no_treatment), 
+phi_1.4<-find_phi(p = T_current, 
                   alpha = alpha_1) #specify each treatment risk
 res_rate1.4<-res_probability(phi_1.4,alpha_1.4)
 
