@@ -96,8 +96,13 @@ simulation<-function(N, phi_v, pattern, res_probability_prior, res_probability_a
     # compute mortality reduction for each pattern(column) from each method (row)
     mortality_gain<-t(sapply(1:n_method, function(m){identify_best_rate[m,]-true.mean.min[1,] }) )
     better_treatment_I<-mortality_gain<0
+
+    # compute maximum possible mortality reduction for each pattern(column) from each method (row) if true best treatment known
+    mortality_gain_max<-true.mean.min[2,]-true.mean.min[1,]
     
-    
+    # compute maximum possible mortality reduction ratio of each method vs if true best known
+    mortality_gain_ratio<-t(sapply(1:n_method, function(m){mortality_gain[m,]/mortality_gain_max }) )
+     
     
     diff_min<-t(sapply(1:n_method, function(m){ identify_best_rate[m,]-true.mean.min[2,]  }) )
     
@@ -106,12 +111,13 @@ simulation<-function(N, phi_v, pattern, res_probability_prior, res_probability_a
     nearbest_treatment_5<-diff_min-0.05 <= 0
     nearbest_treatment_10<-diff_min-0.1 <= 0
     
-    rownames(mortality_gain)<-rownames(better_treatment_I)<-rownames(identified_best_t)
+    rownames(mortality_gain)<-rownames(mortality_gain_ratio)<-rownames(better_treatment_I)<-rownames(identified_best_t)
     rownames(diff_min)<-rownames(best_treatment_I)<-rownames(identified_best_t)
     
     rownames(nearbest_treatment_5)<-rownames(nearbest_treatment_10)<-rownames(identified_best_t)
     
     estimand2<-list(mortality_gain=mortality_gain,
+                    mortality_gain_ratio=mortality_gain_ratio,
                     better_treatment_I=better_treatment_I,
                     best_treatment_I=best_treatment_I,
                     nearbest_treatment_5=nearbest_treatment_5,
@@ -259,16 +265,21 @@ simulation<-function(N, phi_v, pattern, res_probability_prior, res_probability_a
   
   estimand2<-do.call(cbind,lapply(ex_performance_out, function(x){apply(x,1, function(y){sum(y*lambda)})}) )
   
-  estimand2_MCSE<-sqrt(estimand2[,-1]*(1-estimand2[,-1])/R )
+  estimand2_MCSE<-sqrt(estimand2[,3:6]*(1-estimand2[,3:6])/R )
   
   all_diff_min<-lapply(1:R, function(z){output_replication[[z]]$performance_m$diff_min })  
   
   mortality_gain<-do.call(rbind, lapply(1:R, function(z){
     apply(output_replication[[z]]$performance_m$mortality_gain, 1, function(x){sum(x*lambda)}) } )   )
   
+  mortality_gain_ratio<-do.call(rbind, lapply(1:R, function(z){
+    apply(output_replication[[z]]$performance_m$mortality_gain_ratio, 1, function(x){sum(x*lambda)}) } )   )
+  
+  estimand2_MCSE<-cbind(Mortaliy_ratio=apply(mortality_gain_ratio, 2,function(x){ 
+    sqrt(var(x[complete.cases(x)])/length(x[complete.cases(x)])) }), estimand2_MCSE)
+  
   estimand2_MCSE<-cbind(Mortaliy=apply(mortality_gain, 2,function(x){ 
     sqrt(var(x[complete.cases(x)])/length(x[complete.cases(x)])) }), estimand2_MCSE)
-  #rownames(method_c_property)<- rownames(method_d_property)<- sapply(2:10, function(i){paste0("phi_", i, "-phi_1")} )
   
   size_per_arm<-size_pattern/(no_comparison+1)
   
