@@ -20,16 +20,16 @@ fit_onestage_C_str<-function(alldata_prior=Alldata_prior, alldata=Alldata){
   
   my.glm<-myTryCatch(stan_glm(y~treatment + subgroup, data = nma_data, prior = prior,
                               prior_intercept = prior_int, family = binomial(link = "logit"), 
-                              cores = 2) )
+                              cores = 1) )
   
   if(is.null(my.glm$error) ) #if do not have an error, model is fitted
   { 
     my.glm<-my.glm[[1]]
     mof<-posterior_interval(my.glm, prob = 0.95)
-    std.err<-sqrt(diag(vcov(my.glm))[2:no_treatment])
-    out<-cbind(Estimate=my.glm$coefficients[2:no_treatment],
+    std.err<-my.glm$ses[2:no_treatment]
+    out<-cbind(Estimate=my.glm$coefficients[2:no_treatment],  #get_estimates(my.glm.1, centrality = "mean")[2:no_treatment, 2], #for mean value
                model_var=std.err^2,
-               z=my.glm$coefficients[2:no_treatment]/std.err,
+               z=my.glm$coefficients[2:no_treatment]/std.err, #get_estimates(my.glm.1, centrality = "mean")[2:no_treatment, 2]/std.err,
                LL=mof[2:no_treatment, 1],
                UL=mof[2:no_treatment, 2])
     out[which(abs(out[,1])>12),]<-NA #parameter not converged is set to NA 
