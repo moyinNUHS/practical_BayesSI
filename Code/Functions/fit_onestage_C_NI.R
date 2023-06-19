@@ -16,16 +16,15 @@ fit_onestage_C_NI<-function(alldata=Alldata){
   
   my.glm<-myTryCatch(stan_glm(y~treatment + subgroup, data = nma_data, prior = prior,
                               prior_intercept = prior_int, family = binomial(link = "logit"), 
-                              cores = 2) )
+                              cores = 1) )
   #use of default priors in stan_glm are non-informative
-  q.val<-qnorm(0.975)
   
   if(is.null(my.glm$error) ) #if do not have an error, model is fitted
   { 
     my.glm<-my.glm[[1]]
     mof<-posterior_interval(my.glm, prob = 0.95)
-    std.err<-sqrt(diag(vcov(my.glm))[2:no_treatment])
-    out<-cbind(Estimate=my.glm$coefficients[2:no_treatment], #get_estimates(my.glm, centrality = "mean")[2:no_treatment, 2],
+    std.err<-my.glm$ses[2:no_treatment]
+    out<-cbind(Estimate=my.glm$coefficients[2:no_treatment], #get_estimates(my.glm, centrality = "mean")[2:no_treatment, 2], #for mean instead of median
                model_var=std.err^2,
                z=my.glm$coefficients[2:no_treatment]/std.err, #get_estimates(my.glm, centrality = "mean")[2:no_treatment, 2]/std.err,
                LL=mof[2:no_treatment, 1],
