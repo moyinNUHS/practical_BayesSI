@@ -16,7 +16,7 @@ fit_onestage_C_NI<-function(alldata=Alldata){
   
   my.glm<-myTryCatch(stan_glm(y~treatment + subgroup, data = nma_data, prior = prior,
                               prior_intercept = prior_int, family = binomial(link = "logit"), 
-                              cores = 1) )
+                              cores = 1, refresh=0) )
   #use of default priors in stan_glm are non-informative
   
   if(is.null(my.glm$error) ) #if do not have an error, model is fitted
