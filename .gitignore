@@ -3,6 +3,4 @@
 *.zip
 *.docx
 *.drawio
-dir_to_ignore/Published materials
-dir_to_ignore/Figures
 .DS_Store
