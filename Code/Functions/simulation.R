@@ -2,8 +2,9 @@
 # the following is to run simulation with replications #
 # ---------------------------------------------------- #
 
-simulation<-function(N, phi_v, pattern, res_probability_prior, res_probability_all,
-                     prob_pattern,  R){
+simulation<-function(N, phi_v, pattern, 
+                     res_probability_prior, res_probability_all,
+                     prob_pattern, R){
   
   no_pattern<<-length(pattern) 
   # number of randomization lists
@@ -17,7 +18,7 @@ simulation<-function(N, phi_v, pattern, res_probability_prior, res_probability_a
   #res_probability_all<-matrix(rep(response_prob_V, no_pattern), ncol = no_treatment, byrow = T)
   colnames(res_probability_all)<-sapply(1:no_treatment, function(i){paste0("treatment_", i)} )
   rownames(res_probability_all)<-sapply(1:no_pattern, function(i){paste0("alpha_", i)} )
-  # response rate: row= pattern, column=treatment. All rows have same values for this scenario
+  # response rate: row = pattern, column=treatment. All rows have same values for this scenario
   
   
   # each person has prob_pattern to be allocated to one of the treatment patterns
@@ -144,8 +145,9 @@ simulation<-function(N, phi_v, pattern, res_probability_prior, res_probability_a
          feq_t_subgroup=feq_t_subgroup, feq_t=feq_t)
     
   }
+  
   output_replication<-lapply(1:R, function(k){
-    print(k)
+    print(paste0('running iteration..', k))
     gen.data(k)})
   
   methodA_fail_no<-rbind(Method_C=sapply(1:no_pattern, function(k){ sum(sapply(1:R, function(z){output_replication[[z]]$identify_fail[1,k]}))} ),

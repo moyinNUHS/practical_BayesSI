@@ -4,22 +4,6 @@
 #Alternatively, could loop by sample size instead? I include another loop by sample size as an example
 #Also include example of how scenario 1.4 can be coded
 
-#Load Functions               #FYI unsure how to source functions from a different folder within github?
-source("find.rankings.R")
-source("find_phi.R")
-source("fit_onestage_C.R")
-source("fit_onestage_C_NI.R")
-source("fit_onestage_C_wk.R")
-source("fit_onestage_C_str.R")
-source("fit_robustSE_D.R")
-source("generate_subset_data.R")
-source("myTryCatch.R")
-source("res_probability.R")
-source("simulation.R")
-
-#Set seed for reproducability
-set.seed(3127) 
-
 #No. of treatments within simulation
 no_treatment=4 
 
@@ -36,7 +20,7 @@ P1<-0.25
 P2<-0.25
 P3<-0.25
 P4<-0.25
-prob_pattern= c(P1, P2, P3, P4) 
+prob_pattern = c(P1, P2, P3, P4) 
 
 #### scenario 1.1
 # current treatment effect parameters
