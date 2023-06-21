@@ -31,7 +31,7 @@ run_simulation(no_treatment = 4,                      # No. of treatments within
                N_patients_max = 100, # Max number of patients
                N_patients_min = 50, # Max number of patients
                N_patients_brk = 10, # Breaks within max and min number of patients
-               N_iter = 5,         # Number of iterations
+               N_iter = 5,          # Number of iterations
                alpha = 0,
                scenario_name = '1'
 )
