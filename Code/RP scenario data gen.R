@@ -1,5 +1,3 @@
-
-
 ###############################MODIFIED PORTION OF CODE####################
 
 find_phi<-function(p, alpha){log(p/(1-p)) - alpha } 

@@ -4,15 +4,6 @@
 #Alternatively, could loop by sample size instead? I include another loop by sample size as an example
 #Also include example of how scenario 1.4 can be coded
 
-#Load Packages
-library(stringr)
-library(multiwayvcov)
-require(sandwich)
-library(rstanarm)
-library(modelsummary)
-library(multilevelmod)
-library(tidymodels)
-
 #Load Functions               #FYI unsure how to source functions from a different folder within github?
 source("find.rankings.R")
 source("find_phi.R")

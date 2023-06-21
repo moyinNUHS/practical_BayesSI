@@ -1,8 +1,3 @@
-#Open libraries
-library(stringr)
-library(multiwayvcov)
-require(sandwich)
-library(rstanarm)
 
 # Essential functions-------------
 # ------------------------------- #
