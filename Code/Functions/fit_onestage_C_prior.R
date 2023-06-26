@@ -1,8 +1,8 @@
-# ---------------------------------------------------------------- #
-# method C extension strong prior: fit one step model to all data  # 
-# ---------------------------------------------------------------- #
+# --------------------------------------------------------------------- #
+# method C extension informative prior: fit one step model to all data  # 
+# --------------------------------------------------------------------- #
 
-fit_onestage_C_str<-function(alldata_prior=Alldata_prior, alldata=Alldata){
+fit_onestage_C_str<-function(alldata_prior=Alldata_prior, alldata=Alldata, Scale){
   no_p<-no_pattern
   
   nma_data_prior<-data.frame(y=unlist(alldata_prior[1,]),
@@ -10,9 +10,8 @@ fit_onestage_C_str<-function(alldata_prior=Alldata_prior, alldata=Alldata){
                              subgroup=factor(unlist(alldata_prior[4,])))#patient_subgroup)))
   my.glm_prior<-glm(y~treatment+ subgroup,family="binomial",data=nma_data_prior) 
   my.glm_prior_coeff<-my.glm_prior$coefficients
-  scale_str<-1        #Change the weight on the prior, smaller scale=> more weight on prior
-  prior <- normal(location = my.glm_prior_coeff[2:(no_treatment+no_p-1)], scale = rep(scale_str, (no_treatment+no_p-2)))
-  prior_int <- normal(location = my.glm_prior_coeff[1], scale = scale_str)
+  prior <- normal(location = my.glm_prior_coeff[2:(no_treatment+no_p-1)], scale = rep(Scale, (no_treatment+no_p-2)))
+  prior_int <- normal(location = my.glm_prior_coeff[1], scale = Scale)
   
   nma_data<-data.frame(y=unlist(alldata[1,]),
                        treatment=factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
