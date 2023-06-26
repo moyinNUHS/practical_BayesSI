@@ -8,5 +8,6 @@ p_load(stringr,
        rstanarm,
        modelsummary,
        multilevelmod,
-       tidymodels
+       tidymodels,
+       lme4
 )
