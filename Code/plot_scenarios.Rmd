@@ -1,0 +1,37 @@
+---
+title: "Plots for simulation scenarios"
+author: "Mo Yin"
+date: "2023-06-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+# clean environment 
+rm(list = ls())
+
+# set working directory to the `practical/` folder 
+wd = '~/Documents/GitHub/practical/'
+setwd(wd)
+
+# load libraries and functions
+scripts = paste0(wd, 'Code/Functions/', list.files('Code/Functions/'))
+lapply(scripts, source)
+
+# load data in the output folder 
+files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "*.rds")
+outputs = list()
+for (file in files){
+  outputs[[sub('.*/', '', file)]] = readRDS(file)
+}
+```
+
+## Final analysis report {.tabset .tabset-fade .tabset-pills}
+
+### Plots 
+
+```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+
+```
+
