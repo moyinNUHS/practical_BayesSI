@@ -39,6 +39,11 @@ simulation<-function(N, phi_v, pattern,
   true.mean.min<-do.call(cbind, true.mean.min)
   # compute the mean (and minimum value) of the treatments in each pattern 
   # will be used for the performance measures about the treatment decisions 
+
+  #For Bayesian Framework, we must choose weight we wish to assign to prior distirbution.
+  #We explore both a weakly & strongly informative prior distribution
+  Scale_wk<-5     #Larger scale assigns less importance to prior distribution
+  Scale_str<-1    #Smaller scale assigns more importance to prior distribution                    
   
   gen.data<-function(j){    
     
@@ -60,9 +65,14 @@ simulation<-function(N, phi_v, pattern,
     
     est_method_C<-fit_onestage_C(Alldata) # use original current data
     est_method_C_NI<-fit_onestage_C_NI(Alldata) # use original current data
-    est_method_C_wk<-fit_onestage_C_wk(Alldata_prior, Alldata) # use original current data +original prior data
-    est_method_C_str<-fit_onestage_C_str(Alldata_prior, Alldata) # use original current data +original prior data
-    est_method_D<-fit_robustSE_D(Alldata) # use duplicated current data
+    est_method_C_wk<-fit_onestage_C_prior(Alldata_prior, Alldata, Scale_wk) # use original current data +original prior data
+    est_method_C_str<-fit_onestage_C_prior(Alldata_prior, Alldata, Scale_str) # use original current data +original prior data
+    
+    #Use a hierarchical structure
+    est_method_C2<-fit_onestage_C_hier(Alldata) # use original current data
+    est_method_C2_NI<-fit_onestage_C_hier_NI(Alldata) # use original current data
+    est_method_C2_wk<-fit_onestage_C_hier_prior(Alldata_prior, Alldata, Scale_wk) # use original current data +original prior data
+    est_method_C2_str<-fit_onestage_C_hier_prior(Alldata_prior, Alldata, Scale_str) # use original current data +original prior data
     
     
     # combine estimated best treatments from all methods, row= methods, column= pattern
@@ -70,7 +80,10 @@ simulation<-function(N, phi_v, pattern,
                              method_C_NI=est_method_C_NI$ranking[1,],
                              method_C_wk=est_method_C_wk$ranking[1,],
                              method_C_str=est_method_C_str$ranking[1,],
-                             method_D=est_method_D$ranking[1,] 
+                             method_C2=est_method_C2$ranking[1,],
+                             method_C2_NI=est_method_C2_NI$ranking[1,],
+                             method_C2_wk=est_method_C2_wk$ranking[1,],
+                             method_C2_str=est_method_C2_str$ranking[1,] 
                              )
     
     n_method<-dim(identified_best_t)[1]
@@ -131,7 +144,10 @@ simulation<-function(N, phi_v, pattern,
                          method_C_NI=est_method_C_NI$ranking[2,],
                          method_C_wk=est_method_C_wk$ranking[2,],
                          method_C_str=est_method_C_str$ranking[2,],
-                         method_D=est_method_D$ranking[2,] )
+                         method_C2=est_method_C2$ranking[2,],
+                         method_C2_NI=est_method_C2_NI$ranking[2,],
+                         method_C2_wk=est_method_C2_wk$ranking[2,],
+                         method_C2_str=est_method_C2_str$ranking[2,] )
     
     
     list(identified_best_t=identified_best_t,
@@ -139,7 +155,10 @@ simulation<-function(N, phi_v, pattern,
          est_method_C_NI=est_method_C_NI$contrast.est,
          est_method_C_wk=est_method_C_wk$contrast.est,
          est_method_C_str=est_method_C_str$contrast.est,
-         est_method_D=est_method_D$contrast.est,
+         est_method_C2=est_method_C2$contrast.est,
+         est_method_C2_NI=est_method_C2_NI$contrast.est,
+         est_method_C2_wk=est_method_C2_wk$contrast.est,
+         est_method_C2_str=est_method_C2_str$contrast.est,
          performance_m=estimand2,
          identify_fail=identify_fail, 
          feq_t_subgroup=feq_t_subgroup, feq_t=feq_t)
@@ -154,25 +173,36 @@ simulation<-function(N, phi_v, pattern,
                          Method_C_NI=sapply(1:no_pattern, function(k){ sum(sapply(1:R, function(z){output_replication[[z]]$identify_fail[2,k]}))} ),
                          Method_C_wk=sapply(1:no_pattern, function(k){ sum(sapply(1:R, function(z){output_replication[[z]]$identify_fail[3,k]}))} ),
                          Method_C_str=sapply(1:no_pattern, function(k){ sum(sapply(1:R, function(z){output_replication[[z]]$identify_fail[4,k]}))} ),
-                         Method_D=sapply(1:no_pattern, function(k){ sum(sapply(1:R, function(z){output_replication[[z]]$identify_fail[5,k]}))} ) )
+                         Method_C2=sapply(1:no_pattern, function(k){ sum(sapply(1:R, function(z){output_replication[[z]]$identify_fail[5,k]}))} ),
+                         Method_C2_NI=sapply(1:no_pattern, function(k){ sum(sapply(1:R, function(z){output_replication[[z]]$identify_fail[6,k]}))} ),
+                         Method_C2_wk=sapply(1:no_pattern, function(k){ sum(sapply(1:R, function(z){output_replication[[z]]$identify_fail[7,k]}))} ),
+                         Method_C2_str=sapply(1:no_pattern, function(k){ sum(sapply(1:R, function(z){output_replication[[z]]$identify_fail[8,k]}))} ) )
   
   estimator_method_C<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C[,1]}))
   estimator_method_C_NI<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C_NI[,1]}))
   estimator_method_C_wk<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C_wk[,1]}))
   estimator_method_C_str<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C_str[,1]}))
-  estimator_method_D<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_D[,1]}))
+  estimator_method_C2<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2[,1]}))
+  estimator_method_C2_NI<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2_NI[,1]}))
+  estimator_method_C2_wk<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2_wk[,1]}))
+  estimator_method_C2_str<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2_str[,1]}))
   estimator_all<-list(estimator_method_C=estimator_method_C, estimator_method_C_NI=estimator_method_C_NI, 
                       estimator_method_C_wk=estimator_method_C_wk, estimator_method_C_str=estimator_method_C_str,
-                      estimator_method_D=estimator_method_D)
+                      estimator_method_C2=estimator_method_C2, estimator_method_C2_NI=estimator_method_C2_NI, 
+                      estimator_method_C2_wk=estimator_method_C2_wk, estimator_method_C2_str=estimator_method_C2_str)
   
   model_var_method_C<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C[,2]}))
   model_var_method_C_NI<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C_NI[,2]}))
   model_var_method_C_wk<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C_wk[,2]}))
   model_var_method_C_str<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C_str[,2]}))
-  model_var_method_D<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_D[,2]}))
+  model_var_method_C2<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2[,2]}))
+  model_var_method_C2_NI<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2_NI[,2]}))
+  model_var_method_C2_wk<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2_wk[,2]}))
+  model_var_method_C2_str<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2_str[,2]}))
   model_var_all<-list(model_var_method_C=model_var_method_C, model_var_method_C_NI=model_var_method_C_NI, 
                       model_var_method_C_wk=model_var_method_C_wk, model_var_method_C_str=model_var_method_C_str, 
-                      model_var_method_D=model_var_method_D)
+                      model_var_method_C2=model_var_method_C2, model_var_method_C2_NI=model_var_method_C2_NI, 
+                      model_var_method_C2_wk=model_var_method_C2_wk, model_var_method_C2_str=model_var_method_C2_str)
   
   # compute the property of estimator
   com_property<-function(out_one, q){
@@ -212,18 +242,26 @@ simulation<-function(N, phi_v, pattern,
     method_C_NI<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C_NI[q,]}))
     method_C_wk<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C_wk[q,]}))
     method_C_str<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C_str[q,]}))
-    method_D<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_D[q,]}))
+    method_C2<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2[q,]}))
+    method_C2_NI<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2_NI[q,]}))
+    method_C2_wk<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2_wk[q,]}))
+    method_C2_str<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C2_str[q,]}))
     method_Co=com_property(method_C, q)
     method_Co_NI=com_property(method_C_NI, q)
     method_Co_wk=com_property(method_C_wk, q)
     method_Co_str=com_property(method_C_str, q)
-    method_Do=com_property(method_D, q)
+    method_Co_2=com_property(method_C2, q)
+    method_Co_2_NI=com_property(method_C2_NI, q)
+    method_Co_2_wk=com_property(method_C2_wk, q)
+    method_Co_2_str=com_property(method_C2_str, q)
     list( method_C_warning=method_Co[[1]], method_C_NI_warning=method_Co_NI[[1]],
           method_C_wk_warning=method_Co_wk[[1]], method_C_str_warning=method_Co_str[[1]], 
-          method_D_warning=method_Do[[1]],
+          method_C2_warning=method_Co_2[[1]], method_C2_NI_warning=method_Co_2_NI[[1]],
+          method_C2_wk_warning=method_Co_2_wk[[1]], method_C2_str_warning=method_Co_2_str[[1]],
           property=cbind(method_Cp=method_Co[[2]], method_Cp_NI=method_Co_NI[[2]], 
                          method_Cp_wk=method_Co_wk[[2]], method_Cp_str=method_Co_str[[2]],
-                         method_Dp=method_Do[[2]]  ) )
+                         method_Cp_2=method_Co_2[[2]], method_Cp_2_NI=method_Co_2_NI[[2]], 
+                         method_Cp_2_wk=method_Co_2_wk[[2]], method_Cp_2_str=method_Co_2_str[[2]] ) )
     
     
   }
@@ -234,13 +272,19 @@ simulation<-function(N, phi_v, pattern,
   method_C_NI_property<-sapply(1:(no_treatment-1), function(i)estimator_property[[i]]$property[,2])
   method_C_wk_property<-sapply(1:(no_treatment-1), function(i)estimator_property[[i]]$property[,3])
   method_C_str_property<-sapply(1:(no_treatment-1), function(i)estimator_property[[i]]$property[,4])
-  method_D_property<-sapply(1:(no_treatment-1), function(i)estimator_property[[i]]$property[,5])
+  method_C2_property<-sapply(1:(no_treatment-1), function(i)estimator_property[[i]]$property[,5])
+  method_C2_NI_property<-sapply(1:(no_treatment-1), function(i)estimator_property[[i]]$property[,6])
+  method_C2_wk_property<-sapply(1:(no_treatment-1), function(i)estimator_property[[i]]$property[,7])
+  method_C2_str_property<-sapply(1:(no_treatment-1), function(i)estimator_property[[i]]$property[,8])
   
   method_c_property<-t(method_C_property)#[,c(1,2,5,6)]
   method_c_NI_property<-t(method_C_NI_property)#[,c(1,2,5,6)]
   method_c_wk_property<-t(method_C_wk_property)#[,c(1,2,5,6)]
   method_c_str_property<-t(method_C_str_property)#[,c(1,2,5,6)]
-  method_d_property<-t(method_D_property)#[,c(1,2,5,6)]
+  method_c2_property<-t(method_C2_property)#[,c(1,2,5,6)]
+  method_c2_NI_property<-t(method_C2_NI_property)#[,c(1,2,5,6)]
+  method_c2_wk_property<-t(method_C2_wk_property)#[,c(1,2,5,6)]
+  method_c2_str_property<-t(method_C2_str_property)#[,c(1,2,5,6)]
   
   # identify the suggested treatment
   suggested_treatment<-function(q){
@@ -312,7 +356,10 @@ simulation<-function(N, phi_v, pattern,
             method_C_NI_property=method_c_NI_property,
             method_C_wk_property=method_c_wk_property,
             method_C_str_property=method_c_str_property,
-            method_D_property=method_d_property,
+            method_C2_property=method_c2_property,
+            method_C2_NI_property=method_c2_NI_property,
+            method_C2_wk_property=method_c2_wk_property,
+            method_C2_str_property=method_c2_str_property,
             ex_performance_out=ex_performance_out,
             suggested_treatment_each=suggested_treatment_each,
             estimator_all=estimator_all,
