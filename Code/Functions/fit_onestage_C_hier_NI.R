@@ -1,37 +1,32 @@
-# ---------------------------------------------------------------- #
-# method C extension strong prior: fit one step model to all data  # 
-# ---------------------------------------------------------------- #
-
-fit_onestage_C_str<-function(alldata_prior=Alldata_prior, alldata=Alldata){
+# ------------------------------------------------------------------------------------------------------ #
+# method C extension non-informative prior: fit one step model to all data using hierarchical structure  # 
+# ------------------------------------------------------------------------------------------------------ #
+fit_onestage_C_hier_NI<-function(alldata=Alldata){
   no_p<-no_pattern
   
-  nma_data_prior<-data.frame(y=unlist(alldata_prior[1,]),
-                             treatment=factor(unlist(alldata_prior[2,]), levels = sort(unique(unlist(alldata_prior[2,])))),
-                             subgroup=factor(unlist(alldata_prior[4,])))#patient_subgroup)))
-  my.glm_prior<-glm(y~treatment+ subgroup,family="binomial",data=nma_data_prior) 
-  my.glm_prior_coeff<-my.glm_prior$coefficients
-  scale_str<-1        #Change the weight on the prior, smaller scale=> more weight on prior
-  prior <- normal(location = my.glm_prior_coeff[2:(no_treatment+no_p-1)], scale = rep(scale_str, (no_treatment+no_p-2)))
-  prior_int <- normal(location = my.glm_prior_coeff[1], scale = scale_str)
+  loc_NI<-0
+  scale_NI<-5
+  prior <- student_t(df = 7, loc_NI, scale_NI)
+  prior_int <- student_t(df = 7, loc_NI, scale_NI)
   
   nma_data<-data.frame(y=unlist(alldata[1,]),
                        treatment=factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
                        subgroup=factor(unlist(alldata[4,])))#patient_subgroup)))
   
-  my.glm<-myTryCatch(stan_glm(y~treatment + subgroup, data = nma_data, prior = prior,
+  my.glm<-myTryCatch(stan_glmer(y~treatment + (1 | subgroup), data = nma_data, prior = prior,
                               prior_intercept = prior_int, family = binomial(link = "logit"), 
                               cores = 1, refresh=0) )
   
   if(is.null(my.glm$error) ) #if do not have an error, model is fitted
   { 
-    my.glm<-my.glm[[1]]
-    mof<-posterior_interval(my.glm, prob = 0.95)
-    std.err<-my.glm$ses[2:no_treatment]
-    out<-cbind(Estimate=my.glm$coefficients[2:no_treatment],  #get_estimates(my.glm.1, centrality = "mean")[2:no_treatment, 2], #for mean value
+    my.glmm<-my.glm[[1]]
+    mof<-posterior_interval(my.glmm, prob = 0.95)
+    std.err<-my.glmm$ses[2:no_treatment]
+    out<-cbind(Estimate=my.glmm$coefficients[2:no_treatment],
                model_var=std.err^2,
-               z=my.glm$coefficients[2:no_treatment]/std.err, #get_estimates(my.glm.1, centrality = "mean")[2:no_treatment, 2]/std.err,
-               LL=mof[2:no_treatment, 1],
-               UL=mof[2:no_treatment, 2])
+               z=my.glmm$coefficients[2:no_treatment]/std.err,
+               LL.1=mof[2:no_treatment, 1],
+               UL.1=mof[2:no_treatment, 2])
     out[which(abs(out[,1])>12),]<-NA #parameter not converged is set to NA 
     
   }else
