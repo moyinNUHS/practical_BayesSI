@@ -2,7 +2,7 @@
 # generate data for each subgroup #
 # ------------------------------- #
 
-generate_subset_data<-function(k, size_pattern., pattern., res_probability_all., differsite = 0){
+generate_subset_data<-function(k, size_pattern., pattern., res_probability_all., differsite){
   # size_pattern.=size_pattern;   pattern.=pattern;  res_probability_all.=res_probability_all
   pattern_s<-pattern.[[k]]
   sp<-size_pattern.[k]
@@ -25,13 +25,17 @@ site_label<-apply(assigned_site, 1,
   responses<-lapply(1:length(pattern_s), 
                     function(j)rbinom(sum(treatment_label==pattern_s[j]), 1, res_p[j]))
 
-if (differsite > 0){
-  res_p1 = res_p[length(res_p):1]
+for (i in 1:length(site_s)){
+  for (d in 1:length(differsite)){
+if (differsite[d] == site_s[i]){
+  res_p1 = res_p[length(res_p):1] ## this reverses the order for that site only 
 for (j in 1:length(pattern_s)){
-  responses[[j]][site_label[treatment_label==pattern_s[j]] <= differsite ] = 
-    rbinom(sum(treatment_label==pattern_s[j]&site_label <= differsite), 1, res_p1[j])
+  responses[[j]][site_label[treatment_label==pattern_s[j]] <= differsite[d]] = 
+    rbinom(sum(treatment_label==pattern_s[j]&site_label <= differsite[d]), 1, res_p1[j])
 }
 }
+}
+}  
 
                     
   assigned_treatment<-unlist(lapply(1:length(pattern_s),function(j)rep(pattern_s[j],length(responses[[j]])) ))
