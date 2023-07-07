@@ -7,7 +7,9 @@ fit_onestage_C<-function(alldata=Alldata){
   
   nma_data<-data.frame(y=unlist(alldata[1,]),
                        treatment=factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
-                       subgroup=factor(unlist(alldata[4,])))#patient_subgroup)))
+                       subgroup=factor(unlist(alldata[4,]))#, 
+                       #site=factor(unlist(alldata[5,]))
+                                      )
   
   my.glm<-myTryCatch(glm(y~treatment+ subgroup,family="binomial",data=nma_data) )
   ###my.glm<-myTryCatch(glmer(y~treatment+ subgroup + (1 | site),family="binomial",data=nma_data) )
