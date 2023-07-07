@@ -10,7 +10,9 @@ run_simulation <- function(no_treatment,   # No. of treatments within simulation
                            N_patients_brk, # Breaks within max and min number of patients
                            N_iter,         # Number of iterations
                            alpha = 0,
-                           scenario_name
+                           scenario_name,
+                           differsite,   ###sites we want to reverse order of treatment effects 
+                           differpattern ### patterns we want to reverse order of treatment effects 
 ){
   
   #Specify each treatment risk
@@ -36,6 +38,13 @@ run_simulation <- function(no_treatment,   # No. of treatments within simulation
     res_rate_mat_prior = matrix(res_rate_prior, byrow = T,
                                 nrow= length(pattern_list), 
                                 ncol = length(res_rate))
+
+     for (p in 1:length(pattern_list)){
+      if(p == differpattern){
+        res_rate_mat[p,] <- res_rate_mat[p, length(res_rate):1]   ###my concern is this does not perfectly reorder--just flips around the effects left to right--- alternately, we could do something more involved like if(res_rate_mat[p] = min, res_rate_mat[p] <- max)--but tricky and finicky to implement 
+        res_rate_mat_prior[p,] <- res_rate_mat_prior[p, length(res_rate):1]
+      }
+    }
     
     scenario_out = simulation(N = N, # for N patients 
                               phi_v = phi_vector, 
@@ -43,7 +52,7 @@ run_simulation <- function(no_treatment,   # No. of treatments within simulation
                               res_probability_prior = res_rate_mat_prior,
                               res_probability_all = res_rate_mat,
                               prob_pattern = prob_pattern, 
-                              R = N_iter) # run N_iter iterations
+                              R = N_iter, differsite = differsite) # run N_iter iterations
     
     store [[paste0('for size size = ', N)]] = scenario_out
     
