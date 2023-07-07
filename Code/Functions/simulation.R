@@ -4,7 +4,7 @@
 
 simulation<-function(N, phi_v, pattern, 
                      res_probability_prior, res_probability_all,
-                     prob_pattern, R){
+                     prob_pattern, R, differsite){
   
   no_pattern<<-length(pattern) 
   # number of randomization lists
@@ -50,12 +50,12 @@ simulation<-function(N, phi_v, pattern,
     # generate one prior dataset
     Alldata_prior<-sapply(1:no_pattern, function(i){
       generate_subset_data(i, size_pattern.=size_pattern, 
-                           pattern.=pattern, res_probability_all.=res_probability_prior)})
+                           pattern.=pattern, res_probability_all.=res_probability_prior, differsite = differsite)})
     
     # generate one current dataset
     Alldata<-sapply(1:no_pattern, function(i){
       generate_subset_data(i, size_pattern.=size_pattern, 
-                           pattern.=pattern, res_probability_all.=res_probability_all)})
+                           pattern.=pattern, res_probability_all.=res_probability_all, differsite = differsite)})
     
     # show how many have been randomized to a treatment arm within a pattern
     feq_t_subgroup<-sapply(1:no_pattern, function(i)table(Alldata[2,][[i]]))
