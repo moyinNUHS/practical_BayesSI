@@ -27,15 +27,15 @@ site_label<-apply(assigned_site, 1,
 
 for (i in 1:length(site_s)){
   for (d in 1:length(differsite)){
-if (differsite[d] == site_s[i]){
-  res_p1 = res_p[length(res_p):1] ## this reverses the order for that site only 
+if (differsite[[d]][1] == site_s[i]){
+  res_p1 = res_p * differsite[[d]][2] ## this multiplies by coefficient for that site only  
 for (j in 1:length(pattern_s)){
-  responses[[j]][site_label[treatment_label==pattern_s[j]] <= differsite[d]] = 
-    rbinom(sum(treatment_label==pattern_s[j]&site_label <= differsite[d]), 1, res_p1[j])
+  responses[[j]][site_label[treatment_label==pattern_s[j]] <= differsite[[d]][1]] = 
+    rbinom(sum(treatment_label==pattern_s[j]&site_label <= differsite[[d]][1]), 1, res_p1[j])
 }
 }
 }
-}  
+} 
 
                     
   assigned_treatment<-unlist(lapply(1:length(pattern_s),function(j)rep(pattern_s[j],length(responses[[j]])) ))
