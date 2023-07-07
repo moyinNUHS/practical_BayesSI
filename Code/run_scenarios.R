@@ -33,7 +33,9 @@ run_simulation(no_treatment = 4,                      # No. of treatments within
                N_patients_brk = 10, # Breaks within max and min number of patients
                N_iter = 5,          # Number of iterations
                alpha = 0,
-               scenario_name = '1'
+               scenario_name = '1',
+               differsite = c(2, 4), ## the sites for which we want to reverse order 
+               differpattern = 2 ##the pattern for which we want to reverse treatment effect order 
 )
 
 ###################################################### 
