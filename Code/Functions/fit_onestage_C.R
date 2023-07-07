@@ -10,20 +10,34 @@ fit_onestage_C<-function(alldata=Alldata){
                        subgroup=factor(unlist(alldata[4,])))#patient_subgroup)))
   
   my.glm<-myTryCatch(glm(y~treatment+ subgroup,family="binomial",data=nma_data) )
+  ###my.glm<-myTryCatch(glmer(y~treatment+ subgroup + (1 | site),family="binomial",data=nma_data) )
   
   q.val<-qnorm(0.975) 
   
   if(is.null(my.glm$error) ) #if do not have an error, model is fitted
   { 
-    my.glm<-my.glm[[1]]
-    mof<-summary(my.glm)
-    std.err<-sqrt(diag(vcov(mof))[2:no_treatment]) 
-    out<-cbind(Estimate=coefficients(mof)[2:no_treatment],
+    my.glmm<-my.glm[[1]]
+    mof<-summary(my.glmm)
+   # Treat.best<-which.min(c(0, coefficients(mof)[2:no_treatment]))
+   # if (Treat.best==1){
+      std.err<-sqrt(diag(vcov(mof))[2:no_treatment]) 
+      out<-cbind(Estimate=coefficients(mof)[2:no_treatment],
                model_var=std.err^2,
                z=coefficients(mof)[2:no_treatment]/std.err,
                LL=coefficients(mof)[2:no_treatment] - q.val  * std.err,
                UL=coefficients(mof)[2:no_treatment] + q.val  * std.err)
-    out[which(abs(out[,1])>12),]<-NA #parameter not converged is set to NA 
+      out[which(abs(out[,1])>12),]<-NA #parameter not converged is set to NA 
+  #  } else {
+  #    my.glmm<-glm(y~relevel(treatment, ref = Treat.best) + subgroup,family="binomial",data=nma_data)
+  ###    my.glmm<-glmer(y~relevel(treatment, ref = Treat.best) + subgroup + (1 | site),family="binomial",data=nma_data)
+  #    mof<-summary(my.glmm)
+  #    std.err<-sqrt(diag(vcov(mof))[2:no_treatment]) 
+  #    out<-cbind(Estimate=coefficients(mof)[2:no_treatment],
+  #               model_var=std.err^2,
+  #               z=coefficients(mof)[2:no_treatment]/std.err,
+  #               LL=coefficients(mof)[2:no_treatment] - q.val  * std.err,
+  #               UL=coefficients(mof)[2:no_treatment] + q.val  * std.err)
+  #  }
     
   }else
   { # if there is error, do not fit model
@@ -42,6 +56,7 @@ fit_onestage_C<-function(alldata=Alldata){
     { 
       
       fit.coeff<-c(0, out[,1])      
+      #fit.coeff <- append(out[,1], 0, after=(Treat.best-1))
       est.contrasts<-rep(NA, no_treatment)
       est.contrasts[t_label]<-fit.coeff[t_label]
       
