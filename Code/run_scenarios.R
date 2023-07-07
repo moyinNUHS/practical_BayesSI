@@ -34,8 +34,8 @@ run_simulation(no_treatment = 4,                      # No. of treatments within
                N_iter = 5,          # Number of iterations
                alpha = 0,
                scenario_name = '1',
-               differsite = c(2, 4), ## the sites for which we want to reverse order 
-               differpattern = 2 ##the pattern for which we want to reverse treatment effect order 
+               differsite = list(c(2, 1.1), c(4, .99)), ## the sites we want to modify treatment effect for and the coefficient of modification 
+               differpattern = list(c(2, .95)) ##the pattern for which we want to modify effect values and the coefficient of modification
 )
 
 ###################################################### 
