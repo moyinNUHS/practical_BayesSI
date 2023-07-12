@@ -11,7 +11,7 @@ run_simulation <- function(no_treatment,   # No. of treatments within simulation
                            N_iter,         # Number of iterations
                            alpha = 0,
                            pattsame = TRUE,    # if effects are the same across patterns,
-                           sitesame = TRUE,    # if effects are the same across sites,
+                           differsite = 0,    #  how many sites have different effects,
                            scenario_name
 ){
   
@@ -56,7 +56,7 @@ run_simulation <- function(no_treatment,   # No. of treatments within simulation
                               res_probability_prior = res_rate_mat_prior,
                               res_probability_all = res_rate_mat,
                               prob_pattern = prob_pattern, 
-                              sitesame = sitesame, 
+                              differsite = differsite, 
                               R = N_iter) # run N_iter iterations
     
     store [[paste0('for size size = ', N)]] = scenario_out
