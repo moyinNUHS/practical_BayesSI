@@ -6,7 +6,7 @@ simulation<-function(N, phi_v, pattern,
                      res_probability_prior, 
                      res_probability_all,
                      prob_pattern,
-                     sitesame =TRUE, 
+                     differsite = 0, 
                      R){
   
   no_pattern<<-length(pattern) 
@@ -61,7 +61,7 @@ simulation<-function(N, phi_v, pattern,
       generate_subset_data(i, size_pattern.=size_pattern, 
                            pattern.=pattern, 
                            res_probability_all.=res_probability_all,
-                           sitesame = sitesame)})
+                           differsite = differsite)})
     
     # show how many have been randomized to a treatment arm within a pattern
     feq_t_subgroup<-sapply(1:no_pattern, function(i)table(Alldata[2,][[i]]))
