@@ -56,6 +56,7 @@ run_simulation <- function(no_treatment,   # No. of treatments within simulation
                               res_probability_prior = res_rate_mat_prior,
                               res_probability_all = res_rate_mat,
                               prob_pattern = prob_pattern, 
+                              sitesame = sitesame, 
                               R = N_iter) # run N_iter iterations
     
     store [[paste0('for size size = ', N)]] = scenario_out
