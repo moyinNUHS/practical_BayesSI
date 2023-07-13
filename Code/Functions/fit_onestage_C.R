@@ -7,11 +7,11 @@ fit_onestage_C<-function(alldata=Alldata, t1_error = 0.05, alt_hypothesis = 'two
   
   nma_data<-data.frame(y=unlist(alldata[1,]),
                        treatment=factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
-                       subgroup=factor(unlist(alldata[4,])))#patient_subgroup)))
+                       subgroup=factor(unlist(alldata[4,]))#, 
+                       #site=factor(unlist(alldata[5,]))
+  )
   
-  my.glm<-myTryCatch(glm(y~ treatment + subgroup,family="binomial",data=nma_data) )
-  
-  
+  my.glm<-myTryCatch(glm(y~treatment+ subgroup,family="binomial",data=nma_data) )
   
   data.frame(unadj = round(summary(my.glm)$coeff[2:4,4], 5), 
              dunnett = round(summary(dunnett_test)$test$pvalues, 5), 
@@ -21,10 +21,13 @@ fit_onestage_C<-function(alldata=Alldata, t1_error = 0.05, alt_hypothesis = 'two
   
   if(is.null(my.glm$error) ) #if do not have an error, model is fitted
   { 
+    
     # extract model output 
     my.glm<-my.glm[[1]]
     mof<-summary(my.glm)
     
+    # Treat.best<-which.min(c(0, coefficients(mof)[2:no_treatment]))
+    # if (Treat.best==1){
     # Dunnett test 
     dunnett_test <- glht(model = my.glm, 
                          linfct = mcp(treatment = "Dunnett"),
@@ -34,6 +37,7 @@ fit_onestage_C<-function(alldata=Alldata, t1_error = 0.05, alt_hypothesis = 'two
     # get standard error
     std.err <- stepdown$test$sigma # inflated std error to account for multiplicity
     # mof$coefficients[,2]
+    # std.err<-sqrt(diag(vcov(mof))[2:no_treatment]) 
     
     out <- cbind(Estimate = stepdown$test$coefficients,
                  model_var = std.err^2,
@@ -42,6 +46,24 @@ fit_onestage_C<-function(alldata=Alldata, t1_error = 0.05, alt_hypothesis = 'two
                  UL = stepdown$test$coefficients + q.val  * std.err)
     
     out[which(abs(out[,1])>12),]<-NA #parameter not converged is set to NA 
+    
+    # out<-cbind(Estimate=coefficients(mof)[2:no_treatment],
+    #          model_var=std.err^2,
+    #          z=coefficients(mof)[2:no_treatment]/std.err,
+    #          LL=coefficients(mof)[2:no_treatment] - q.val  * std.err,
+    #          UL=coefficients(mof)[2:no_treatment] + q.val  * std.err)
+    
+    #  } else {
+    #    my.glmm<-glm(y~relevel(treatment, ref = Treat.best) + subgroup,family="binomial",data=nma_data)
+    ###    my.glmm<-glmer(y~relevel(treatment, ref = Treat.best) + subgroup + (1 | site),family="binomial",data=nma_data)
+    #    mof<-summary(my.glmm)
+    #    std.err<-sqrt(diag(vcov(mof))[2:no_treatment]) 
+    #    out<-cbind(Estimate=coefficients(mof)[2:no_treatment],
+    #               model_var=std.err^2,
+    #               z=coefficients(mof)[2:no_treatment]/std.err,
+    #               LL=coefficients(mof)[2:no_treatment] - q.val  * std.err,
+    #               UL=coefficients(mof)[2:no_treatment] + q.val  * std.err)
+    #  }
     
   } else { 
     
@@ -61,6 +83,7 @@ fit_onestage_C<-function(alldata=Alldata, t1_error = 0.05, alt_hypothesis = 'two
     { 
       
       fit.coeff<-c(0, out[,1])      
+      #fit.coeff <- append(out[,1], 0, after=(Treat.best-1))
       est.contrasts<-rep(NA, no_treatment)
       est.contrasts[t_label]<-fit.coeff[t_label]
       

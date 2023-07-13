@@ -10,6 +10,8 @@ run_simulation <- function(no_treatment,   # No. of treatments within simulation
                            N_patients_brk, # Breaks within max and min number of patients
                            N_iter,         # Number of iterations
                            alpha = 0,
+                           pattsame = TRUE,    # if effects are the same across patterns,
+                           differsite = 0,    #  how many sites have different effects,
                            scenario_name
 ){
   
@@ -29,10 +31,20 @@ run_simulation <- function(no_treatment,   # No. of treatments within simulation
     
     message(paste0('Starting simulation for sample size = ', N))
     
-    # make a matrix of pre-defined response rate per treatment per randomisation list 
-    res_rate_mat = matrix(res_rate, byrow = T,
-                          nrow = length(pattern_list), # number of patterns
-                          ncol = length(res_rate))     # number of treatments
+    if (pattsame) {
+      # make a matrix of pre-defined response rate per treatment per randomisation list 
+      res_rate_mat = matrix(res_rate, byrow = T,
+                            nrow = length(pattern_list), # number of patterns
+                            ncol = length(res_rate)) # number of treatments
+    } else {
+      # for scenario where treatment effects differ across patterns.
+      res_rate_mat = rbind(
+        c(0.2, 0.25, 0.3, 0.35),
+        c(0.2, 0.30, 0.40, 0.50),
+        c(0.4, 0.6, 0.75, 0.95),
+        c(0.3, 0.4, 0.8, 0.9),
+      )
+    }
     
     # make a matrix of prior response rate per treatment per randomisation list
     res_rate_mat_prior = matrix(res_rate_prior, byrow = T,
@@ -46,6 +58,7 @@ run_simulation <- function(no_treatment,   # No. of treatments within simulation
                               res_probability_prior = res_rate_mat_prior,
                               res_probability_all = res_rate_mat,
                               prob_pattern = prob_pattern, 
+                              differsite = differsite, 
                               R = N_iter) # run N_iter iterations
     
     store [[paste0('for size size = ', N)]] = scenario_out
