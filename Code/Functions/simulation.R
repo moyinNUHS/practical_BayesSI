@@ -13,60 +13,66 @@ simulation<-function(N, phi_v, pattern,
   # for each randomization list, the number of pairwise comparisons fixing a reference treatment. 
   
   no_treatment<<-length(unique(unlist(pattern)))
-  # number of treatments
+  # number of unique treatments
   
   #res_probability_all<-matrix(rep(response_prob_V, no_pattern), ncol = no_treatment, byrow = T)
   colnames(res_probability_all)<-sapply(1:no_treatment, function(i){paste0("treatment_", i)} )
   rownames(res_probability_all)<-sapply(1:no_pattern, function(i){paste0("alpha_", i)} )
-  # response rate: row = pattern, column=treatment. All rows have same values for this scenario
+  # response rate: row = pattern, column=treatment
   
-  
+  # generate which pattern each patient in N patients belong to
   # each person has prob_pattern to be allocated to one of the treatment patterns
   assigned_pattern<-t(rmultinom(N, size=1, prob_pattern))
   colnames(assigned_pattern)<-sapply(1:no_pattern, function(i){paste0("subgroup", i)} )
   
   # number of patients in each subgroup that is defined by the pattern
-  size_pattern<<-apply(assigned_pattern, 2, sum)
-  lambda<-prob_pattern # true prevalence rate of patterns
+  size_pattern <<- apply(assigned_pattern, 2, sum)
+  lambda <- prob_pattern # true prevalence rate of patterns
   
-  true.response.r<-lapply(1:no_pattern,function(i)res_probability_all[i, pattern[[i]]])
+  true.response.r <- lapply(1:no_pattern,function(i)res_probability_all[i, pattern[[i]]])
   # response rates of the treatments in each pattern
   
-  true.mean.min<-lapply(1:no_pattern, function(i){
-    v<-true.response.r[[i]]
-    c("mean"=mean(v), "min"=min(v)) } )
+  true.mean.min <- lapply(1:no_pattern, function(i){
+    v <- true.response.r[[i]]
+    c("mean" = mean(v), "min" = min(v)) 
+  })
   
-  true.mean.min<-do.call(cbind, true.mean.min)
+  true.mean.min <- do.call(cbind, true.mean.min)
   # compute the mean (and minimum value) of the treatments in each pattern 
   # will be used for the performance measures about the treatment decisions 
-
-  #For Bayesian Framework, we must choose weight we wish to assign to prior distirbution.
-  #We explore both a weakly & strongly informative prior distribution
-  Scale_wk<-5     #Larger scale assigns less importance to prior distribution
-  Scale_str<-1    #Smaller scale assigns more importance to prior distribution                    
   
-  gen.data<-function(j){    
+  #For Bayesian Framework, we must choose weight we wish to assign to prior distribution.
+  #We explore both a weakly & strongly informative prior distribution
+  Scale_wk <- 5     #Larger scale assigns less importance to prior distribution
+  Scale_str <- 1    #Smaller scale assigns more importance to prior distribution                    
+  
+  gen.data <- function(j){    
     
-    # generate one prior dataset
-    Alldata_prior<-sapply(1:no_pattern, function(i){
-      generate_subset_data(i, size_pattern.=size_pattern, 
-                           pattern.=pattern, res_probability_all.=res_probability_prior)})
+    # generate one prior dataset - to use as priors for Bayesian analysis
+    Alldata_prior <- sapply(1:no_pattern, function(i){
+      generate_subset_data(i, 
+                           size_pattern. = size_pattern, 
+                           pattern. = pattern, 
+                           res_probability_all. = res_probability_prior)
+    })
     
-    # generate one current dataset
-    Alldata<-sapply(1:no_pattern, function(i){
-      generate_subset_data(i, size_pattern.=size_pattern, 
-                           pattern.=pattern, res_probability_all.=res_probability_all)})
+    # generate one current dataset 
+    Alldata <- sapply(1:no_pattern, function(i){
+      generate_subset_data(i, size_pattern. = size_pattern, 
+                           pattern. = pattern, 
+                           res_probability_all. = res_probability_all)
+    })
     
     # show how many have been randomized to a treatment arm within a pattern
-    feq_t_subgroup<-sapply(1:no_pattern, function(i)table(Alldata[2,][[i]]))
+    feq_t_subgroup <- sapply(1:no_pattern, function(i) table(Alldata[2,][[i]]))
     
-    # show how many have been randomized to each treatment arm
-    feq_t<-table(unlist(Alldata[2,]))
+    # show how many have been randomized to each treatment arm 
+    feq_t <- table(unlist(Alldata[2,]))
     
-    est_method_C<-fit_onestage_C(Alldata) # use original current data
-    est_method_C_NI<-fit_onestage_C_NI(Alldata) # use original current data
-    est_method_C_wk<-fit_onestage_C_prior(Alldata_prior, Alldata, Scale_wk) # use original current data +original prior data
-    est_method_C_str<-fit_onestage_C_prior(Alldata_prior, Alldata, Scale_str) # use original current data +original prior data
+    est_method_C <- fit_onestage_C(Alldata) # use original current data
+    est_method_C_NI <- fit_onestage_C_NI(Alldata) # use original current data
+    est_method_C_wk <- fit_onestage_C_prior(Alldata_prior, Alldata, Scale_wk) # use original current data + original prior data
+    est_method_C_str <- fit_onestage_C_prior(Alldata_prior, Alldata, Scale_str) # use original current data + original prior data
     
     #Use a hierarchical structure
     est_method_C2<-fit_onestage_C_hier(Alldata) # use original current data
@@ -84,7 +90,7 @@ simulation<-function(N, phi_v, pattern,
                              method_C2_NI=est_method_C2_NI$ranking[1,],
                              method_C2_wk=est_method_C2_wk$ranking[1,],
                              method_C2_str=est_method_C2_str$ranking[1,] 
-                             )
+    )
     
     n_method<-dim(identified_best_t)[1]
     
@@ -110,13 +116,13 @@ simulation<-function(N, phi_v, pattern,
     # compute mortality reduction for each pattern(column) from each method (row)
     mortality_gain<-t(sapply(1:n_method, function(m){identify_best_rate[m,]-true.mean.min[1,] }) )
     better_treatment_I<-mortality_gain<0
-
+    
     # compute maximum possible mortality reduction for each pattern(column) from each method (row) if true best treatment known
     mortality_gain_max<-true.mean.min[2,]-true.mean.min[1,]
     
     # compute maximum possible mortality reduction ratio of each method vs if true best known
     mortality_gain_ratio<-t(sapply(1:n_method, function(m){mortality_gain[m,]/mortality_gain_max }) )
-     
+    
     
     diff_min<-t(sapply(1:n_method, function(m){ identify_best_rate[m,]-true.mean.min[2,]  }) )
     
@@ -236,7 +242,7 @@ simulation<-function(N, phi_v, pattern,
                  fail.no=length(which(is.na(out_one[,1])))  ) )
     }
   }
-
+  
   estimator_prop<-function(q){ #q=1; out_one=method_C
     method_C<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C[q,]}))
     method_C_NI<-do.call(rbind, lapply(1:R, function(z){output_replication[[z]]$est_method_C_NI[q,]}))

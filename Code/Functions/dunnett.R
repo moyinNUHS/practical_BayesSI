@@ -30,7 +30,7 @@ summary(dunnett_test)
 # Step-down Dunnett test 
 stepdown = summary(dunnett_test, test = adjusted(type = "free"))
 
-# Output 
+# Output of p values 
 data.frame(unadj = round(summary(model)$coeff[2:4,4], 5), 
            dunnett = round(summary(dunnett_test)$test$pvalues, 5), 
            stepdowndunnett = round(summary(stepdown)$test$pvalues, 5))

@@ -29,14 +29,17 @@ run_simulation <- function(no_treatment,   # No. of treatments within simulation
     
     message(paste0('Starting simulation for sample size = ', N))
     
+    # make a matrix of pre-defined response rate per treatment per randomisation list 
     res_rate_mat = matrix(res_rate, byrow = T,
                           nrow = length(pattern_list), # number of patterns
-                          ncol = length(res_rate)) # number of treatments
+                          ncol = length(res_rate))     # number of treatments
     
+    # make a matrix of prior response rate per treatment per randomisation list
     res_rate_mat_prior = matrix(res_rate_prior, byrow = T,
-                                nrow= length(pattern_list), 
+                                nrow = length(pattern_list), 
                                 ncol = length(res_rate))
     
+    # run code to simulate data and do analysis 
     scenario_out = simulation(N = N, # for N patients 
                               phi_v = phi_vector, 
                               pattern = pattern_list, 
