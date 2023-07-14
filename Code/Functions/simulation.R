@@ -85,8 +85,7 @@ simulation <- function(N,
   est_method_C <- fit_onestage_C(sim_data[['trial_data']]) # use current trial data
   est_method_C_NI <- fit_onestage_C_NI(sim_data[['trial_data']]) # use current trial data, Bayesian
   est_method_C_wk <- fit_onestage_C_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_wk) # use current trial data + prior data
-  est_method_C_str <-
-    fit_onestage_C_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_str) # use current trial data + prior data
+  est_method_C_str <- fit_onestage_C_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_str) # use current trial data + prior data
   
   # Use a hierarchical structure
   est_method_C2 <-

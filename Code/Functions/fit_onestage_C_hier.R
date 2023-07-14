@@ -1,23 +1,39 @@
 # ---------------------------------------------------------------------- #
 # method C: fit one step model to all data using hierarchical structure  # 
 # ---------------------------------------------------------------------- #
-fit_onestage_C_hier<-function(alldata=Alldata){
+fit_onestage_C_hier<-function(alldata){
+  
+  # number of patterns
   no_p<-no_pattern
   
+  # put trial data in a dataframe - outcome, treatment, pattern/subgroup
   nma_data<-data.frame(y=unlist(alldata[1,]),
                        treatment=factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
                        subgroup=factor(unlist(alldata[4,]))#,
                      #  site=factor(unlist(alldata[5,]))
                        )
     
-  my.glm<-myTryCatch(glmer(y~treatment + (1 | subgroup),family="binomial",data=nma_data) )
+  # logistic regression
+  my.glm <- myTryCatch(glmer(y ~ treatment + (1 | subgroup),family="binomial",data=nma_data) )
   ###my.glm<-myTryCatch(glmer(y~treatment + (1 | site:subgroup),family="binomial",data=nma_data) )
     
-  q.val<-qnorm(0.975) 
   
   if(is.null(my.glm$error) ) #if do not have an error, model is fitted
   { 
-    my.glmm<-my.glm[[1]]
+    my.glmm <- my.glm[[1]]
+    
+    # Type 1 error correction 
+    if (type1correction == T) {
+      
+      out = glm_output_dunnett(my.glmm)
+      
+    } else {
+      
+      out = glm_output_nocorrection(my.glm)
+      
+    }
+    
+    
     mof<-summary(my.glmm)
     #Treat.best<-which.min(c(0, coefficients(mof)[2:no_treatment]))
     #if (Treat.best==1){

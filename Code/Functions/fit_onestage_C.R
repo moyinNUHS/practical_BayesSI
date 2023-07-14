@@ -27,38 +27,13 @@ fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correctio
     
     # Type 1 error correction 
     if (type1correction == T) {
-      # Dunnett test 
-      dunnett_test <- glht(model = my.glm, 
-                           linfct = mcp(treatment = "Dunnett"),
-                           alternative = alt_hypothesis)
-      stepdown <- summary(dunnett_test, test = adjusted(type = "free")) # Step-down Dunnett test
-      stepdown.p <- stepdown$test$pvalues # extract the p-values 
-      q.val <- qnorm(1 - stepdown.p/2) # z value
-      q.val[which( q.val == Inf)] = 0.999 # for very small p values 
       
-      # get standard error
-      std.err <- stepdown$test$sigma # inflated std error to account for multiplicity
-      
-      out <- cbind(Estimate = stepdown$test$coefficients,
-                   model_var = std.err^2,
-                   z = q.val,
-                   LL = stepdown$test$coefficients - q.val  * std.err,
-                   UL = stepdown$test$coefficients + q.val  * std.err)
-      
-      out[which(abs(out[,1])>12),] <- NA # parameter not converged is set to NA 
+      out = glm_output_dunnett(my.glm)
       
     } else {
       
-      mof <- summary(my.glm)
-      std.err.naive <- mof$coefficients[2:no_treatment, "Std. Error"]
-      t1_error = 0.05 # unadjusted type 1 error
-      if (alt_hypothesis != 'two.sided') {t1_error = 0.1}
-      q.val.naive <- qnorm(1 - t1_error/2)
-      out <- cbind(Estimate = coefficients(mof)[2:no_treatment],
-                   model_var = std.err.naive^2,
-                   z = abs(coefficients(mof)[2:no_treatment] / std.err.naive),
-                   LL = coefficients(mof)[2:no_treatment] - q.val.naive  * std.err.naive,
-                   UL = coefficients(mof)[2:no_treatment] + q.val.naive  * std.err.naive)
+      out = glm_output_nocorrection(my.glm)
+      
     }
     
     # comparison between no adjustmentfor multiplicity vs with adjustment with Dunnett Stepdown

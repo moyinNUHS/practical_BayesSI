@@ -55,43 +55,12 @@ fit_onestage_C_NI <- function(alldata,
     #if (Treat.best==1){
     
     if (type1correction == T) {
-      # Bonferroni correction
-      adjusted.p <- p / no_treatment
       
-      # get posterior intervals with adjusted p 
-      mof <- posterior_interval(my.glmm, prob = 1 - adjusted.p)
-      
-      # get standard errors using posterior samples 
-      posterior <- as.matrix(my.glmm)
-      q.val <- qnorm(1 - adjusted.p / 2) # z score 
-      std.err <- apply(posterior, 2, function(x) quantile(x, (1 - adjusted.p) / 2) / q.val)
-      
-      # output 
-      out <- cbind(Estimate = my.glmm$coefficients[2:no_treatment],
-                   model_var = std.err[2:no_treatment]^2,
-                   z = q.val,
-                   LL = mof[2:no_treatment, 1],
-                   UL = mof[2:no_treatment, 2])
-      
-      out[which(abs(out[,1])>12),] <- NA #parameter not converged is set to NA 
+      out = glm_output_stan_bonferr(model =  my.glmm, p, no_treatment)
       
     } else {
       
-      # get posterior intervals with unadjusted p 
-      mof.naive <- posterior_interval(my.glmm, prob = 1 - p)
-      
-      # get standard error
-      std.err.naive <- my.glmm$ses[2:no_treatment]
-      
-      out <- cbind(
-        Estimate = my.glmm$coefficients[2:no_treatment],
-        #get_estimates(my.glmm, centrality = "mean")[2:no_treatment, 2], #for mean instead of median
-        model_var = std.err.naive ^ 2,
-        z = abs(my.glmm$coefficients[2:no_treatment] / std.err.naive),
-        #get_estimates(my.glmm, centrality = "mean")[2:no_treatment, 2]/std.err,
-        LL = mof.naive[2:no_treatment, 1],
-        UL = mof.naive[2:no_treatment, 2]
-      )
+      out = glm_output_stan_nocorrection(model =  my.glmm, p, no_treatment)
     }
     
   } else { # if there is error, do not fit model
