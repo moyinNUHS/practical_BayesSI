@@ -65,46 +65,32 @@ simulation<-function(N, phi_v, pattern,
   Scale_str <- 1    #Smaller scale assigns more importance to prior distribution 
   
   # Fixed effects models
-  est_method_C <- fit_onestage_C(sim_data[['trial_data']]) # use original current data
-  est_method_C_NI <- fit_onestage_C_NI(sim_data[['trial_data']]) # use original current data
-  est_method_C_wk <- fit_onestage_C_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_wk) # use original current data + original prior data
-  est_method_C_str <- fit_onestage_C_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_str) # use original current data + original prior data
+  est_method_C <- fit_onestage_C(sim_data[['trial_data']]) # use current trial data 
+  est_method_C_NI <- fit_onestage_C_NI(sim_data[['trial_data']]) # use current trial data 
+  est_method_C_wk <- fit_onestage_C_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_wk) # use current trial data + prior data
+  est_method_C_str <- fit_onestage_C_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_str) # use current trial data + prior data
   
   # Use a hierarchical structure
-  est_method_C2<-fit_onestage_C_hier(Alldata) # use original current data
-  est_method_C2_NI<-fit_onestage_C_hier_NI(Alldata) # use original current data
-  est_method_C2_wk<-fit_onestage_C_hier_prior(Alldata_prior, Alldata, Scale_wk) # use original current data +original prior data
-  est_method_C2_str<-fit_onestage_C_hier_prior(Alldata_prior, Alldata, Scale_str) # use original current data +original prior data
+  est_method_C2<-fit_onestage_C_hier(sim_data[['trial_data']]) # use original current data
+  est_method_C2_NI<-fit_onestage_C_hier_NI(sim_data[['trial_data']]) # use original current data
+  est_method_C2_wk<-fit_onestage_C_hier_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_wk) # use original current data + original prior data
+  est_method_C2_str<-fit_onestage_C_hier_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_str) # use original current data + original prior data
   
+  ##############################################################  
+  ## Generate simulated trial data and priors for Bayesian analysis
+  ############################################################## 
   
-  # combine estimated best treatments from all methods, row= methods, column= pattern
-  identified_best_t<-rbind(method_C=est_method_C$ranking[1,],
-                           method_C_NI=est_method_C_NI$ranking[1,],
-                           method_C_wk=est_method_C_wk$ranking[1,],
-                           method_C_str=est_method_C_str$ranking[1,],
-                           method_C2=est_method_C2$ranking[1,],
-                           method_C2_NI=est_method_C2_NI$ranking[1,],
-                           method_C2_wk=est_method_C2_wk$ranking[1,],
-                           method_C2_str=est_method_C2_str$ranking[1,] 
-  )
+  # combine estimated best treatments from all methods, row = methods, column = pattern
+  identified_best_t<-rbind(method_C = est_method_C$ranking[1,],
+                           method_C_NI = est_method_C_NI$ranking[1,],
+                           method_C_wk = est_method_C_wk$ranking[1,],
+                           method_C_str = est_method_C_str$ranking[1,],
+                           method_C2 = est_method_C2$ranking[1,],
+                           method_C2_NI = est_method_C2_NI$ranking[1,],
+                           method_C2_wk = est_method_C2_wk$ranking[1,],
+                           method_C2_str = est_method_C2_str$ranking[1,] )
   
-  n_method<-dim(identified_best_t)[1]
-  
-  identify_bestR<-function(k){
-    #v<-sapply(1:6, function(m){ which( pattern [[k]]==identified_best_t[m,k]) } ) 
-    #v<-sapply(1:6, function(m){ 
-    #  o1<-which( pattern [[k]]==identified_best_t[m,k])
-    #  if(length(o1)==0){NA}else{o1}
-    #} )
-    
-    #t.rate<-true.response.r[[k]]
-    #t.rate<-t.rate[v]
-    #names(t.rate)<-rownames(identified_best_t)
-    
-    v<-identified_best_t[,k]
-    t.rate<-res_probability_all[k,v]
-    return(t.rate)
-  }
+  n_method <- dim(identified_best_t)[1]
   
   # true response rate of the estimated best treatment for each pattern(column) from each method (row)
   identify_best_rate<-sapply(1:no_pattern,identify_bestR)
@@ -122,17 +108,17 @@ simulation<-function(N, phi_v, pattern,
   
   diff_min<-t(sapply(1:n_method, function(m){ identify_best_rate[m,]-true.mean.min[2,]  }) )
   
-  best_treatment_I<-diff_min==0
+  best_treatment_I <-diff_min == 0
   
-  nearbest_treatment_5<-diff_min-0.05 <= 0
-  nearbest_treatment_10<-diff_min-0.1 <= 0
+  nearbest_treatment_5 <- diff_min-0.05 <= 0
+  nearbest_treatment_10 <- diff_min-0.1 <= 0
   
-  rownames(mortality_gain)<-rownames(mortality_gain_ratio)<-rownames(better_treatment_I)<-rownames(identified_best_t)
-  rownames(diff_min)<-rownames(best_treatment_I)<-rownames(identified_best_t)
+  rownames(mortality_gain) <- rownames(mortality_gain_ratio) <- rownames(better_treatment_I) <- rownames(identified_best_t)
+  rownames(diff_min) <- rownames(best_treatment_I) <- rownames(identified_best_t)
   
-  rownames(nearbest_treatment_5)<-rownames(nearbest_treatment_10)<-rownames(identified_best_t)
+  rownames(nearbest_treatment_5) <- rownames(nearbest_treatment_10) <- rownames(identified_best_t)
   
-  estimand2<-list(mortality_gain=mortality_gain,
+  estimand2 <- list(mortality_gain=mortality_gain,
                   mortality_gain_ratio=mortality_gain_ratio,
                   better_treatment_I=better_treatment_I,
                   best_treatment_I=best_treatment_I,
@@ -207,7 +193,7 @@ model_var_all<-list(model_var_method_C=model_var_method_C, model_var_method_C_NI
                     model_var_method_C2_wk=model_var_method_C2_wk, model_var_method_C2_str=model_var_method_C2_str)
 
 # compute the property of estimator
-com_property<-function(out_one, q){
+com_property <- function(out_one, q){
   if(all( is.na(out_one[,1]) ) ){rep(NA,n_method)}else{
     val<- out_one[,1]
     val<- as.numeric(val[complete.cases(val)])
