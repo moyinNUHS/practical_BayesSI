@@ -1,25 +1,27 @@
 # ----------------------------------------- #
-# method C original: fit one step model to all data  # 
+# method C original: fit one step model to current trial data  # 
 # ----------------------------------------- #
 
-fit_onestage_C<-function(alldata=Alldata, t1_error = 0.05, alt_hypothesis = 'two.sided'){
+fit_onestage_C <- function(alldata, t1_error = 0.05, alt_hypothesis = 'two.sided'){
+  
   no_p<-no_pattern
   
-  nma_data<-data.frame(y=unlist(alldata[1,]),
-                       treatment=factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
-                       subgroup=factor(unlist(alldata[4,]))#, 
-                       #site=factor(unlist(alldata[5,]))
+  # put trial data in a dataframe - outcome, treatment, pattern/subgroup
+  nma_data <- data.frame(y = unlist(alldata[1,]),
+                         treatment = factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
+                         subgroup = factor(unlist(alldata[4,]))#, 
+                         #site=factor(unlist(alldata[5,]))
   )
   
-  my.glm<-myTryCatch(glm(y~treatment+ subgroup,family="binomial",data=nma_data) )
+  my.glm <- myTryCatch(glm(y~treatment + subgroup,family = "binomial",data = nma_data) )
   
-  data.frame(unadj = round(summary(my.glm)$coeff[2:4,4], 5), 
-             dunnett = round(summary(dunnett_test)$test$pvalues, 5), 
-             stepdowndunnett = round(summary(stepdown)$test$pvalues, 5))
+  # data.frame(unadj = round(summary(my.glm)$coeff[2:4,4], 5), 
+  #            dunnett = round(summary(dunnett_test)$test$pvalues, 5), 
+  #            stepdowndunnett = round(summary(stepdown)$test$pvalues, 5))
   
   q.val <- qnorm(1 - t1_error/2) 
   
-  if(is.null(my.glm$error) ) #if do not have an error, model is fitted
+  if( is.null(my.glm$error) ) #if do not have an error, model is fitted
   { 
     
     # extract model output 
@@ -73,30 +75,11 @@ fit_onestage_C<-function(alldata=Alldata, t1_error = 0.05, alt_hypothesis = 'two
     
   } 
   
+  rank.v <- sapply(1:no_p, prep.coeff)
   
-  # for each subgroup, prepare the coefficients to identify rankings
-  prep.coeff<-function(i){
-    sub_data<-alldata[,i]
-    t_label<-sort(unique(sub_data$treatment_label)) 
-    
-    if(is.null(my.glm$error) ) # if there is no error in model fit (there could be warning)
-    { 
-      
-      fit.coeff<-c(0, out[,1])      
-      #fit.coeff <- append(out[,1], 0, after=(Treat.best-1))
-      est.contrasts<-rep(NA, no_treatment)
-      est.contrasts[t_label]<-fit.coeff[t_label]
-      
-    }else{ est.contrasts<-rep(NA, no_treatment) }
-    
-    return(find.rankings(t_labelv=t_label, treat.coeff=est.contrasts) )
-    
-  }
+  colnames(rank.v) <- sapply(1:no_pattern, function(i)paste("pattern", i))
+  row.names(rank.v) <- c("suggested treatment", "model.not.fit")
   
-  rank.v<-sapply(1:no_p, prep.coeff)
-  
-  colnames(rank.v)<-sapply(1:no_pattern, function(i)paste("pattern", i))
-  row.names(rank.v)<-c("suggested treatment", "model.not.fit")
-  
-  return(list(contrast.est=out, ranking=rank.v) )
+  return(list(contrast.est = out, 
+              ranking = rank.v) )
 }
