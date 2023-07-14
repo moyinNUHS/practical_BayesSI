@@ -194,8 +194,6 @@ simulation <- function(N,
     feq_t = feq_t
   )
   
-}
-
 output_replication <- lapply(1:R, function(k) {
   print(paste0('running iteration..', k))
   gen.data(k)
