@@ -1,4 +1,4 @@
-# ------------------------------------------------------------------------- #
+## ------------------------------------------------------------------------- #
 # method C extension non-informative prior: fit one step model to all data  # 
 # ------------------------------------------------------------------------- #
 
@@ -37,6 +37,11 @@ fit_onestage_C_NI<-function(alldata=Alldata){
                z=my.glmm$coefficients[2:no_treatment]/std.err, #get_estimates(my.glmm, centrality = "mean")[2:no_treatment, 2]/std.err,
                LL=mof[2:no_treatment, 1],
                UL=mof[2:no_treatment, 2])
+    
+  } else { # if there is error, do not fit model
+    
+    out<-matrix(rep(NA,(no_treatment-1)*5),nrow = no_treatment-1, ncol = 5 )
+    out[1,5]<-my.glm$error[1]$message
     out[which(abs(out[,1])>12),]<-NA #parameter not converged is set to NA 
     # } else {
     #   my.glmm<-stan_glm(y~relevel(treatment, ref = Treat.best) + subgroup, data = nma_data, prior = prior,
@@ -53,9 +58,7 @@ fit_onestage_C_NI<-function(alldata=Alldata){
     #              LL.1=mof[2:no_treatment, 1],
     #              UL.1=mof[2:no_treatment, 2])
     #   out[which(abs(out[,1])>12),]<-NA #parameter not converged is set to NA 
-  } else { # if there is error, do not fit model
-    out<-matrix(rep(NA,(no_treatment-1)*5),nrow = no_treatment-1, ncol = 5 )
-    out[1,5]<-my.glm$error[1]$message
+    
   } 
   
   
