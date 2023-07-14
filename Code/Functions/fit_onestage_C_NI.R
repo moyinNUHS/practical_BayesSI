@@ -53,11 +53,10 @@ fit_onestage_C_NI<-function(alldata=Alldata){
    #              UL.1=mof[2:no_treatment, 2])
    #   out[which(abs(out[,1])>12),]<-NA #parameter not converged is set to NA 
     }
-  }else
+  else
   { # if there is error, do not fit model
     out<-matrix(rep(NA,(no_treatment-1)*5),nrow = no_treatment-1, ncol = 5 )
     out[1,5]<-my.glm$error[1]$message
-    
   } 
   
   
