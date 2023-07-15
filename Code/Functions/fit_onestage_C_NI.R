@@ -87,11 +87,7 @@ fit_onestage_C_NI <- function(alldata,
   }
   
   # for each subgroup, prepare the coefficients to identify rankings
-  rank.v <- sapply(1:no_p, prep.coeff, alldata)
-  colnames(rank.v) <-
-    sapply(1:no_pattern, function(i)
-      paste("pattern", i))
-  row.names(rank.v) <- c("suggested treatment", "model.not.fit")
+  rank.v = rank.v.mat(no_p, alldata, my.glm, out)
   
   return(list(contrast.est = out, ranking = rank.v))
 }

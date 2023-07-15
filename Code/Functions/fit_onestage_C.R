@@ -22,7 +22,7 @@ fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correctio
     
     # extract model output 
     my.glm <- my.glm[[1]]
-    
+
     # Treat.best<-which.min(c(0, coefficients(mof)[2:no_treatment]))
     # if (Treat.best==1){
     
@@ -30,7 +30,7 @@ fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correctio
     if (type1correction == T) {
       
       out = glm_output_dunnett(my.glm)
-      
+
     } else {
       
       out = glm_output_nocorrection(my.glm)
@@ -65,10 +65,7 @@ fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correctio
   # gives a matrix where 
   # 1st row = best treatments 
   # 2nd row indicates 1 if any models did not fit 
-  rank.v <- sapply(1:no_p, prep.coeff, alldata)
-  
-  colnames(rank.v) <- sapply(1:no_pattern, function(i) paste("pattern", i))
-  row.names(rank.v) <- c("suggested treatment", "model.not.fit")
+  rank.v = rank.v.mat(no_p, alldata, my.glm, out)
   
   return(list(contrast.est = out, 
               ranking = rank.v))

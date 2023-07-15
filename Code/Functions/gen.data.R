@@ -23,13 +23,13 @@ gen.data <- function(no_pattern,
                          differsite = differsite)})
   
   # show how many have been randomized to a treatment arm within a pattern
-  feq_t_subgroup <- sapply(1:no_pattern, function(i) table(Alldata[2,][[i]]))
+  freq_t_subgroup <- sapply(1:no_pattern, function(i) table(Alldata[2,][[i]]))
   
   # show how many have been randomized to each treatment arm in the overall trial
-  feq_t <- table(unlist(Alldata[2,]))
+  freq_t <- table(unlist(Alldata[2,]))
   
   return(list(prior_data = Alldata_prior, 
               trial_data = Alldata, 
-              feq_t_subgroup = feq_t_subgroup, 
-              feq_t = feq_t))
+              freq_t_subgroup = freq_t_subgroup, 
+              freq_t = freq_t))
 }

@@ -1,13 +1,13 @@
 # for each subgroup, prepare the coefficients to identify rankings
 
-prep.coeff <- function(i, alldata) {
+prep.coeff <- function(i, alldata, model, out) {
   # extract trial data from each pattern
   sub_data <- alldata[, i]
   
   # treatments in the pattern
   t_label <- sort(unique(sub_data$treatment_label))
   
-  if (is.null(my.glm$error))
+  if (is.null(model$error))
     # if there is no error in model fit (there could be warning)
   {
     # extract coefficients for each treatment
