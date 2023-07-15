@@ -14,6 +14,7 @@ fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correctio
                          #site=factor(unlist(alldata[5,]))
   )
   
+  # model 
   my.glm <- myTryCatch(glm(y ~ treatment + subgroup, family = "binomial", data = nma_data) )
   
   if( is.null(my.glm$error) ) #if do not have an error, model is fitted
@@ -35,7 +36,7 @@ fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correctio
       out = glm_output_nocorrection(my.glm)
       
     }
-    
+
     # comparison between no adjustmentfor multiplicity vs with adjustment with Dunnett Stepdown
     ## estimates remain the same between out and out.naive 
     ## model variance and confidence intervals inflated 
@@ -64,9 +65,9 @@ fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correctio
   # gives a matrix where 
   # 1st row = best treatments 
   # 2nd row indicates 1 if any models did not fit 
-  rank.v <- sapply(1:no_p, prep.coeff)
+  rank.v <- sapply(1:no_p, prep.coeff, alldata)
   
-  colnames(rank.v) <- sapply(1:no_pattern, function(i)paste("pattern", i))
+  colnames(rank.v) <- sapply(1:no_pattern, function(i) paste("pattern", i))
   row.names(rank.v) <- c("suggested treatment", "model.not.fit")
   
   return(list(contrast.est = out, 

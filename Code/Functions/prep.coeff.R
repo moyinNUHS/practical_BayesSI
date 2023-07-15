@@ -1,6 +1,6 @@
 # for each subgroup, prepare the coefficients to identify rankings
 
-prep.coeff <- function(i) {
+prep.coeff <- function(i, alldata) {
   # extract trial data from each pattern
   sub_data <- alldata[, i]
   

@@ -1,9 +1,9 @@
 ### generate glm output table using Dunnett stepdown procedure 
 
-glm_output_dunnett <- function(model) {
+glm_output_dunnett <- function(model, alt_hypothesis = 'two.sided') {
   
   # Dunnett test 
-  dunnett_test <- glht(model = my.glm, 
+  dunnett_test <- glht(model = model, 
                        linfct = mcp(treatment = "Dunnett"),
                        alternative = alt_hypothesis)
   

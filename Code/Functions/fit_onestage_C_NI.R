@@ -40,7 +40,7 @@ fit_onestage_C_NI <- function(alldata,
         refresh = 0
       )
     )
-  
+
   ### my.glm<-myTryCatch(stan_glmer(y~treatment + subgroup + (1 | site), data = nma_data, prior = prior,
   #                           prior_intercept = prior_int, family = binomial(link = "logit"),
   #                          cores = 1, refresh=0) )
@@ -87,7 +87,7 @@ fit_onestage_C_NI <- function(alldata,
   }
   
   # for each subgroup, prepare the coefficients to identify rankings
-  rank.v <- sapply(1:no_p, prep.coeff)
+  rank.v <- sapply(1:no_p, prep.coeff, alldata)
   colnames(rank.v) <-
     sapply(1:no_pattern, function(i)
       paste("pattern", i))

@@ -3,9 +3,9 @@
 # --------------------------------------------------------------------- #
 
 fit_onestage_C_prior <- function(alldata_prior, alldata, Scale, 
-                               alternative = 'two-sided', 
-                               p = 0.05,
-                               type1correction = T) {
+                                 alternative = 'two-sided', 
+                                 p = 0.05,
+                                 type1correction = T) {
   # number of patterns
   no_p <- no_pattern
   
@@ -103,7 +103,7 @@ fit_onestage_C_prior <- function(alldata_prior, alldata, Scale,
   }
   
   # for each subgroup, prepare the coefficients to identify rankings
-  rank.v <- sapply(1:no_p, prep.coeff)
+  rank.v <- sapply(1:no_p, prep.coeff, alldata)
   colnames(rank.v) <-
     sapply(1:no_pattern, function(i)
       paste("pattern", i))
