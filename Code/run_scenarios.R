@@ -23,6 +23,9 @@ set.seed(3127)
 # no_treatment = 4
 # pattern_list = list(pattern1 = c(2,3), pattern2 = 1:3, pattern3 = c(2,3,4), pattern4 = c(1,2,3,4)),
 
+# boundary (singular) fit: see help('isSingular') error message indicates that 
+# the model did fit but random effects are very small
+
 ###################################################### 
 ## Run scenario 1.1
 ######################################################
