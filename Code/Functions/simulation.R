@@ -18,12 +18,6 @@ simulation <- function(N,
   no_pattern <<- length(pattern)
   # number of patterns
   
-  no_comparison <<-
-    sapply(1:no_pattern, function(i) {
-      length(pattern[[i]]) - 1
-    })
-  # for each pattern, the number of pairwise comparisons fixing a reference treatment
-  
   no_treatment <<- length(unique(unlist(pattern)))
   # number of unique treatments in the overall trial
   
@@ -64,8 +58,9 @@ simulation <- function(N,
   # matrix of mean and min values of the treatment effects in each pattern
   # will be used for the performance measures about the treatment decisions
   
-  
+  # run simulation and analysis over R iterations
   output_replication <- lapply(1:R, function(k) {
+    
     print(paste0('running iteration..', k))
     
     sim_data = gen.data(
@@ -85,6 +80,7 @@ simulation <- function(N,
     # We explore both a weakly & strongly informative prior distribution
     Scale_wk <- 5     #Larger scale assigns less importance to prior distribution
     Scale_str <- 1    #Smaller scale assigns more importance to prior distribution
+    
     
     # Fixed effects models
     est_method_C <- fit_onestage_C(sim_data[['trial_data']]) # use current trial data
@@ -121,7 +117,7 @@ simulation <- function(N,
     n_method <- dim(identified_best_t)[1] # how many methods compared 
     
     # true treatment effect for each pattern(column) from each method (row)
-    identify_best_rate <- sapply(1:no_pattern, identify_bestR)
+    identify_best_rate <- sapply(1:no_pattern, identify_bestR, identified_best_t, res_probability_all)
     
     # compute mortality reduction for each pattern(column) from each method (row)
     mortality_gain <- t(sapply(1:n_method, function(m) {
@@ -137,7 +133,6 @@ simulation <- function(N,
       t(sapply(1:n_method, function(m) {
         mortality_gain[m, ] / mortality_gain_max
       }))
-    
     
     diff_min <-
       t(sapply(1:n_method, function(m) {

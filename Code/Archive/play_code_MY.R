@@ -1,8 +1,8 @@
 prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25) # Prevalence of each pattern
 T_vector = c(0.9, 0.6, 0.3, 0.1)  # Treatment effects - first one being reference 
 res_rate_prior = c(0.9, 0.6, 0.3, 0.1) # Priors
-N = 700 # Max number of patients
-N_iter = 2          # Number of iterations
+N = 300 # Max number of patients
+N_iter = 1          # Number of iterations
 no_treatment = 4
 # No. of treatments within simulation
 pattern_list = list( # Treatment patterns

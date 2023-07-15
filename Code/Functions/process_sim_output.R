@@ -1,10 +1,15 @@
 ### process and summarise simulation output
 
-process_sim_output <- function(output_replication) {
+process_sim_output <- function(output_replication, R, no_treatment, no_pattern, pattern, phi_v, lambda) {
   
   ### output_replication 
   # has length = number of iterations
   # within each iteration = contains list of simulation outputs
+  
+  no_comparison <- sapply(1:no_pattern, function(i) {
+      length(pattern[[i]]) - 1
+    })
+  # for each pattern, the number of pairwise comparisons fixing a reference treatment
   
   ### summarise failed models - sum of failed models for each iteration
   ### col = patterns, row = methods
@@ -18,21 +23,21 @@ process_sim_output <- function(output_replication) {
     df_list = map(output_replication, m)
     
     # estimators 
-    rows = lapply(est_df_list, function(x) {
-      x[,'Estimate']
+    rows = lapply(df_list, function(x) {
+      x['Estimate']
     })
     estimator_all[[m]] = do.call(rbind, rows)
     
     # variance 
-    rows = lapply(est_df_list, function(x) {
-      x[,'model_var']
+    rows = lapply(df_list, function(x) {
+      x['model_var']
     })
     model_var_all[[m]] = do.call(rbind, rows)
   }
   
   ### get properties of estimators 
   estimator_property = lapply(1:(no_treatment - 1), function(x) {
-    estimator_prop(x, output_replication, method.names)
+    estimator_prop(x, output_replication, method.names, phi_v, R)
   })
   
   names(estimator_property) <-
@@ -45,7 +50,7 @@ process_sim_output <- function(output_replication) {
   method.property.list = map(estimator_property, "property")
   method.property = list()
   for (m in method.names){
-    m.property = lapply(method.property.list, function(x) {x[,m]})
+    m.property = lapply(method.property.list, function(x) {x[ ,m]})
     method.property[[m]] = do.call(rbind, m.property)
   }
   
@@ -55,7 +60,6 @@ process_sim_output <- function(output_replication) {
   names(suggested_treatment_each) <-
     sapply(1:no_pattern, function(i)
       paste0("pattern", i))
-  
   
   # performance of each method
   indicator.names.all = names(output_replication[[1]]$performance_m)
@@ -94,15 +98,14 @@ process_sim_output <- function(output_replication) {
   estimand2_MCSE <-
     cbind(Mortaliy_ratio = apply(mortality_gain_ratio, 2, function(x) {
       sqrt(var(x[complete.cases(x)]) / length(x[complete.cases(x)]))
-    }),
-    estimand2_MCSE)
+    }), estimand2_MCSE)
   
   estimand2_MCSE <- cbind(Mortaliy = apply(mortality_gain, 2, function(x) {
     sqrt(var(x[complete.cases(x)]) / length(x[complete.cases(x)]))
   }), estimand2_MCSE)
   
   
-  # proportion of participants randomised to treatment 
+  # number of participants randomised to treatment 
   size_per_arm <- size_pattern / (no_comparison + 1)
   
   each_t <- function(k) {
@@ -115,7 +118,7 @@ process_sim_output <- function(output_replication) {
       tv <- which(m[, 1] == k)
       if (length(tv) == 0) {
         0
-      } else{
+      } else {
         m[tv, 2]
       }
       
@@ -125,19 +128,12 @@ process_sim_output <- function(output_replication) {
   
   ex_arm_size <- sapply(1:no_treatment, each_t)
   
-  t_feq <- t(sapply(1:R, function(r)
-    output_replication[[r]]$feq_t))
-  feq_treatment <- apply(t_feq, 2, summary)[c(1, 3, 4, 6),]
+  t_freq <- t(sapply(1:R, function(r) output_replication[[r]]$freq_t))
+  
+  freq_treatment <- apply(t_freq, 2, summary)[c(1, 3, 4, 6),]
   
   list(
-    method_C_property = method_c_property,
-    method_C_NI_property = method_c_NI_property,
-    method_C_wk_property = method_c_wk_property,
-    method_C_str_property = method_c_str_property,
-    method_C2_property = method_c2_property,
-    method_C2_NI_property = method_c2_NI_property,
-    method_C2_wk_property = method_c2_wk_property,
-    method_C2_str_property = method_c2_str_property,
+    method.property = method.property,
     ex_performance_out = ex_performance_out,
     suggested_treatment_each = suggested_treatment_each,
     estimator_all = estimator_all,
@@ -147,7 +143,7 @@ process_sim_output <- function(output_replication) {
     estimand2 = estimand2,
     estimand2_MCSE = estimand2_MCSE,
     ex_arm_size = ex_arm_size,
-    overall_size = feq_treatment,
+    overall_size = freq_treatment,
     Pattern = pattern
   )
   

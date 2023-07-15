@@ -3,7 +3,7 @@
 com_property <- function(out_one, # matrix of simulation outputs (estimator, model variance, Z score, UL and LL) [rows] against iterations [cols]
                          q, # the treatment compared with the reference
                          n_method, # number of methods
-                         phi_v) { # pre-defined OR of each treatment effect 
+                         phi_v, R) { # pre-defined OR of each treatment effect 
   
   if (all(is.na(out_one[, 1]))) {
     

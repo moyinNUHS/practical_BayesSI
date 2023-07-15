@@ -1,6 +1,6 @@
 # identify the best treatment
 
-identify_bestR <- function(k) {
+identify_bestR <- function(k, identified_best_t, res_probability_all) {
   #v<-sapply(1:6, function(m){ which( pattern [[k]]==identified_best_t[m,k]) } )
   #v<-sapply(1:6, function(m){
   #  o1<-which( pattern [[k]]==identified_best_t[m,k])
