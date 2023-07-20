@@ -21,7 +21,7 @@ fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correctio
   { 
     
     # extract model output 
-    my.glm <- my.glm[[1]]
+    my.glmm <- my.glm[[1]]
 
     # Treat.best<-which.min(c(0, coefficients(mof)[2:no_treatment]))
     # if (Treat.best==1){
@@ -29,11 +29,11 @@ fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correctio
     # Type 1 error correction 
     if (type1correction == T) {
       
-      out = glm_output_dunnett(my.glm)
+      out = glm_output_dunnett(my.glmm)
 
     } else {
       
-      out = glm_output_nocorrection(my.glm)
+      out = glm_output_nocorrection(my.glmm)
       
     }
 
@@ -58,7 +58,7 @@ fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correctio
     
     # if there is error, do not fit model
     out <- matrix(rep(NA,(no_treatment-1)*5), nrow = no_treatment-1, ncol = 5 )
-    out[1,5]<-my.glm$error[1]$message
+    out[1,5] <- my.glm$error[1]$message
     
   } 
   
