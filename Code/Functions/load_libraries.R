@@ -6,8 +6,10 @@ p_load(stringr,
        multiwayvcov,
        sandwich,
        rstanarm,
+       purrr,
        modelsummary,
        multilevelmod,
        tidymodels,
-       lme4
+       lme4,
+       multcomp #http://www.ievbras.ru/ecostat/Kiril/R/Biblio_N/R_Eng/Bretz2011.pdf
 )

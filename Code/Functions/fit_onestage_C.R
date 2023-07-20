@@ -1,77 +1,72 @@
 # ----------------------------------------- #
-# method C original: fit one step model to all data  # 
+# method C original: fit one step model to current trial data  # 
 # ----------------------------------------- #
 
-fit_onestage_C<-function(alldata=Alldata){
-  no_p<-no_pattern
+fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correction = T){
   
-  nma_data<-data.frame(y=unlist(alldata[1,]),
-                       treatment=factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
-                       subgroup=factor(unlist(alldata[4,]))#, 
-                       #site=factor(unlist(alldata[5,]))
-                                      )
+  # number of patterns
+  no_p <- no_pattern
   
-  my.glm<-myTryCatch(glm(y~treatment+ subgroup,family="binomial",data=nma_data) )
-  ###my.glm<-myTryCatch(glmer(y~treatment+ subgroup + (1 | site),family="binomial",data=nma_data) )
+  # put trial data in a dataframe - outcome, treatment, pattern/subgroup
+  nma_data <- data.frame(y = unlist(alldata[1,]),
+                         treatment = factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
+                         subgroup = factor(unlist(alldata[4,]))#, 
+                         #site=factor(unlist(alldata[5,]))
+  )
   
-  q.val<-qnorm(0.975) 
+  # model 
+  my.glm <- myTryCatch(glm(y ~ treatment + subgroup, family = "binomial", data = nma_data) )
   
-  if(is.null(my.glm$error) ) #if do not have an error, model is fitted
+  if( is.null(my.glm$error) ) #if do not have an error, model is fitted
   { 
-    my.glmm<-my.glm[[1]]
-    mof<-summary(my.glmm)
-   # Treat.best<-which.min(c(0, coefficients(mof)[2:no_treatment]))
-   # if (Treat.best==1){
-      std.err<-sqrt(diag(vcov(mof))[2:no_treatment]) 
-      out<-cbind(Estimate=coefficients(mof)[2:no_treatment],
-               model_var=std.err^2,
-               z=coefficients(mof)[2:no_treatment]/std.err,
-               LL=coefficients(mof)[2:no_treatment] - q.val  * std.err,
-               UL=coefficients(mof)[2:no_treatment] + q.val  * std.err)
-      out[which(abs(out[,1])>12),]<-NA #parameter not converged is set to NA 
-  #  } else {
-  #    my.glmm<-glm(y~relevel(treatment, ref = Treat.best) + subgroup,family="binomial",data=nma_data)
-  ###    my.glmm<-glmer(y~relevel(treatment, ref = Treat.best) + subgroup + (1 | site),family="binomial",data=nma_data)
-  #    mof<-summary(my.glmm)
-  #    std.err<-sqrt(diag(vcov(mof))[2:no_treatment]) 
-  #    out<-cbind(Estimate=coefficients(mof)[2:no_treatment],
-  #               model_var=std.err^2,
-  #               z=coefficients(mof)[2:no_treatment]/std.err,
-  #               LL=coefficients(mof)[2:no_treatment] - q.val  * std.err,
-  #               UL=coefficients(mof)[2:no_treatment] + q.val  * std.err)
-  #  }
     
-  }else
-  { # if there is error, do not fit model
-    out<-matrix(rep(NA,(no_treatment-1)*5),nrow = no_treatment-1, ncol = 5 )
+    # extract model output 
+    my.glm <- my.glm[[1]]
+
+    # Treat.best<-which.min(c(0, coefficients(mof)[2:no_treatment]))
+    # if (Treat.best==1){
+    
+    # Type 1 error correction 
+    if (type1correction == T) {
+      
+      out = glm_output_dunnett(my.glm)
+
+    } else {
+      
+      out = glm_output_nocorrection(my.glm)
+      
+    }
+
+    # comparison between no adjustmentfor multiplicity vs with adjustment with Dunnett Stepdown
+    ## estimates remain the same between out and out.naive 
+    ## model variance and confidence intervals inflated 
+    
+    # using best treatment as the reference level 
+    #  } else {
+    #    my.glmm<-glm(y~relevel(treatment, ref = Treat.best) + subgroup,family="binomial",data=nma_data)
+    ###    my.glmm<-glmer(y~relevel(treatment, ref = Treat.best) + subgroup + (1 | site),family="binomial",data=nma_data)
+    #    mof<-summary(my.glmm)
+    #    std.err<-sqrt(diag(vcov(mof))[2:no_treatment]) 
+    #    out<-cbind(Estimate=coefficients(mof)[2:no_treatment],
+    #               model_var=std.err^2,
+    #               z=coefficients(mof)[2:no_treatment]/std.err,
+    #               LL=coefficients(mof)[2:no_treatment] - q.val  * std.err,
+    #               UL=coefficients(mof)[2:no_treatment] + q.val  * std.err)
+    #  }
+    
+  } else { 
+    
+    # if there is error, do not fit model
+    out <- matrix(rep(NA,(no_treatment-1)*5), nrow = no_treatment-1, ncol = 5 )
     out[1,5]<-my.glm$error[1]$message
     
   } 
   
+  # gives a matrix where 
+  # 1st row = best treatments 
+  # 2nd row indicates 1 if any models did not fit 
+  rank.v = rank.v.mat(no_p, alldata, my.glm, out)
   
-  # for each subgroup, prepare the coefficients to identify rankings
-  prep.coeff<-function(i){
-    sub_data<-alldata[,i]
-    t_label<-sort(unique(sub_data$treatment_label)) 
-    
-    if(is.null(my.glm$error) ) # if there is no error in model fit (there could be warning)
-    { 
-      
-      fit.coeff<-c(0, out[,1])      
-      #fit.coeff <- append(out[,1], 0, after=(Treat.best-1))
-      est.contrasts<-rep(NA, no_treatment)
-      est.contrasts[t_label]<-fit.coeff[t_label]
-      
-    }else{ est.contrasts<-rep(NA, no_treatment) }
-    
-    return(find.rankings(t_labelv=t_label, treat.coeff=est.contrasts) )
-    
-  }
-  
-  rank.v<-sapply(1:no_p, prep.coeff)
-  
-  colnames(rank.v)<-sapply(1:no_pattern, function(i)paste("pattern", i))
-  row.names(rank.v)<-c("suggested treatment", "model.not.fit")
-  
-  return(list(contrast.est=out, ranking=rank.v) )
+  return(list(contrast.est = out, 
+              ranking = rank.v))
 }

@@ -4,17 +4,33 @@ library(multcomp)
 # simulate data 
 d = data.frame(id = 1:400,
                treatment = as.factor(rep(c('A', 'B', 'C', 'D'), each = 100)),
-               outcome = as.numeric(c(rep(c('0', '1'), c(50, 50)),
-                                     rep(c('0', '1'), c(10, 90)),
-                                     rep(c('0', '1'), c(30, 70)),
-                                     rep(c('0', '1'), c(40, 60))))
+               outcome = as.numeric(c(rep(c('0', '1'), c(50, 50)), # TA = 0.5
+                                     rep(c('0', '1'), c(10, 90)), # TA = 0.1
+                                     rep(c('0', '1'), c(30, 70)), # TA = 0.3
+                                     rep(c('0', '1'), c(40, 60)))) # TA = 0.4
 )
 
 head(d)
 
 # model with GLM
 model = glm(outcome ~ treatment, data = d)
-summary(model)
+coef(model)
+
+# retrieve absolute effects when reference levels are changed
+# d$treatment = relevel(d$treatment, ref = 'B')
+# str(d)
+# model = glm(outcome ~ treatment, data = d, family = "binomial")
+# summary(model)
+# 
+# abs_eff = list()
+# for (t in c('A', 'B', 'C', 'D')) {
+# # The predicted value for this condition: the intercept, plus the dummy coefficient for this condition
+# Yhat <- coef(model)["(Intercept)"] + coef(model)[paste0("treatment", t)]
+# if (is.na(Yhat)){Yhat <- coef(model)["(Intercept)"]}
+# # Converting the predicted value from log odds into percentage
+# abs_eff[[t]] = 1 - exp( Yhat ) / ( 1 + exp( Yhat ) )
+# }
+# abs_eff
 
 # Dunnett test 
 dunnett_test = glht(model, 
@@ -30,7 +46,7 @@ summary(dunnett_test)
 # Step-down Dunnett test 
 stepdown = summary(dunnett_test, test = adjusted(type = "free"))
 
-# Output 
+# Output of p values 
 data.frame(unadj = round(summary(model)$coeff[2:4,4], 5), 
            dunnett = round(summary(dunnett_test)$test$pvalues, 5), 
            stepdowndunnett = round(summary(stepdown)$test$pvalues, 5))
