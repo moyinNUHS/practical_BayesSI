@@ -103,7 +103,7 @@ ggplot(subset(result_plot, scenario=="scenario1.1"&metrics!="Mortality reduction
   )
 
 
-ggsave(paste0(wd,"plot/","result_plot1.png"),width = 8,height = 7)
+ggsave(paste0(wd,"Code/Archive/plot/","result_plot1.png"),width = 8,height = 7)
 
 ## plot mortality reduction
 ggplot(subset(result_plot, scenario=="scenario1.1"&metrics=="Mortality reduction (%)"), aes(x=samplesize, y=value, color=method, group=method))+
@@ -136,4 +136,4 @@ ggplot(subset(result_plot, scenario=="scenario1.1"&metrics=="Mortality reduction
     panel.grid.major.x = element_blank(),
     panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5))
 
-ggsave(paste0(wd,"plot/","mortality_plot1.png"),width = 8,height = 5)
+ggsave(paste0(wd,"Code/Archive/plot/","mortality_plot1.png"),width = 8,height = 5)
