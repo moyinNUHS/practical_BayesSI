@@ -1,6 +1,6 @@
 library(ggplot2)
 #### set working directory
-wd <- '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
+wd <- './practical/'
 setwd(wd)
 ### detect scenarios in the run_output
 
