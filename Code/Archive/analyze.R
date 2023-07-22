@@ -42,7 +42,7 @@ value <- sapply(1:nrow(result), function(i){
     })
     return(as.numeric(output[[scenario]][[samplesize]][["analyse_out"]][["estimand2"]][which(method_all==method),1]))
   }
-  })
+})
 
 result <- data.frame(result, value)
 
@@ -66,53 +66,74 @@ colors <- c("C" = "#1f78b4", "C_NI" = "#33a02c", "C_wk" = "#e31a1c", "C_str" = "
 
 ggplot(subset(result_plot, scenario=="scenario1.1"&metrics!="Mortality reduction (%)"&metrics!="Empirical variance"), aes(x=samplesize, y=value, color=method,group=interaction(treatment,method), shape=method))+
   facet_wrap(metrics~., scales = "free_y",strip.position = "top", ncol = 1)+
-  geom_point(size=1.6, position = position_dodge(width = 40))+ 
+  geom_point(size=1.4, position = position_dodge(width = 45))+ 
   guides(color=guide_legend(nrow=1, byrow=TRUE))+
   scale_shape_manual(values = shapes)+
   scale_color_manual(values = colors)+
-  labs(shape = NULL, color=NULL)+
+  labs(
+    shape = NULL, 
+    color=NULL,
+    title = "Properties of estimated treatment contrasts for scenarios xxx",
+    subtitle = "Each point from left to right for each method represents a performance measure of an estimated \ncontrast between treatments 2, 3, and 4 relative to treatment 1.",
+    x = "Sample Size",
+    y = NULL,  # No y-axis label to avoid redundancy
+  )+
   scale_x_continuous(breaks = c(100,150,200))+
   geom_segment(aes(x = 125, xend = 125, y = -Inf, yend = Inf), color = "red", linetype = "dashed") +
   geom_segment(aes(x = 175, xend = 175, y = -Inf, yend = Inf), color = "red", linetype = "dashed") +
   xlab("Sample size") +
-  theme_bw()+
-  theme(legend.position = "bottom",
-        strip.text.x = element_text(size = 10),
-        strip.background = element_blank(), 
-        legend.spacing.y = unit(0.02, 'cm'),
-        legend.margin=margin(0,0,0,0),
-        axis.text = element_text(size = 10),
-        axis.title = element_text(size = 10),
-        legend.text = element_text(size = 10),
-        legend.title = element_text(),
-        legend.key.size = unit(0.5, 'cm'),
-        panel.spacing = unit(0.05, 'cm'),
-        panel.background = element_blank(),
-        panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(),
-        panel.border = element_rect(colour = "black", fill=NA, linewidth =0.5))
+  theme_minimal()+
+  theme(
+    plot.title.position = "plot",
+    legend.position = "bottom",
+    strip.text.x = element_text(size = 10),
+    strip.background = element_blank(), 
+    legend.spacing.y = unit(0.02, 'cm'),
+    legend.margin=margin(0,0,0,0),
+    axis.text = element_text(size = 10),
+    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 10),
+    legend.title = element_text(),
+    legend.key.size = unit(0.5, 'cm'),
+    panel.spacing = unit(0.05, 'cm'),
+    panel.background = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5),
+    panel.grid.major.x = element_blank()
+  )
 
 
-ggsave(paste0(wd,"Code/Archive/plot/","result_plot1.png"),width = 8,height = 7)
+ggsave(paste0(wd,"plot/","result_plot1.png"),width = 8,height = 7)
 
 ## plot mortality reduction
-ggplot(subset(result_plot, scenario=="scenario1.1"&metrics=="Mortality reduction (%)"), aes(x=samplesize, y=value, color=method,group=method))+
-  geom_line(linewidth=0.5)+ 
+ggplot(subset(result_plot, scenario=="scenario1.1"&metrics=="Mortality reduction (%)"), aes(x=samplesize, y=value, color=method, group=method))+
+  geom_point(shape=3)+
+  geom_line(linetype = 2,linewidth=0.5)+ 
   guides(color=guide_legend(nrow=2, byrow=TRUE))+
-  scale_shape_manual(values = shapes)+
   scale_color_manual(values = colors)+
   labs(shape = NULL, color=NULL)+
   scale_x_continuous(breaks = c(100,150,200))+
-  xlab("Sample size") +
-  ylab("Mortality reduction (%)")+
-  theme_bw()+
-  theme(legend.position = "bottom",
-        legend.spacing.y = unit(0.02, 'cm'),
-        legend.margin=margin(0,0,0,0),
-        axis.text = element_text(size = 10),
-        axis.title = element_text(size = 10),
-        legend.text = element_text(size = 10),
-        legend.title = element_text(),
-        legend.key.size = unit(0.5, 'cm'))
+  labs(
+    linetype = NULL,
+    color = NULL,
+    title = "Mortality Reduction by Sample Size",
+    x = "Sample Size",
+    y = "Mortality reduction (%)"
+  )+
+  theme_minimal()+
+  theme(
+    plot.title.position = "plot",
+    plot.title = element_text(size = 17, face = "bold", color = "#4d4d4d", margin = margin(b = 10)),
+    plot.subtitle = element_text(size = 14, color = "#4d4d4d", margin = margin(b = 20)),
+    legend.position = "bottom",
+    legend.spacing.y = unit(0.02, 'cm'),
+    legend.margin=margin(0,0,0,0),
+    axis.text = element_text(size = 12, color = "#4d4d4d"),
+    axis.title = element_text(size = 14, color = "#4d4d4d"),
+    legend.text = element_text(size = 12, color = "#4d4d4d"),
+    legend.title = element_text(),
+    legend.key.size = unit(0.5, 'cm'),
+    panel.grid.major.x = element_blank(),
+    panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5))
 
-ggsave(paste0(wd,"Code/Archive/plot/","mortality_plot1.png"),width = 13,height = 7)
+ggsave(paste0(wd,"plot/","mortality_plot1.png"),width = 8,height = 5)
