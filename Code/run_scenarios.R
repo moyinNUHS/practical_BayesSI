@@ -181,3 +181,46 @@ run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # P
 ###################################################### 
 ## Run scenario 4.1
 ######################################################
+run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
+               T_vector = c(0.20, 0.25, 0.30, 0.35),  # Treatment effects - first one being reference 
+               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               N_patients_max = 200, # Max number of patients
+               N_patients_min = 100, # Max number of patients
+               N_patients_brk = 50, # Breaks within max and min number of patients
+               N_iter = 2,          # Number of iterations
+               pattsame = FALSE,    # If effects are the same across patterns
+               differsite = 0,      # How many sites have different effects
+               scenario_name = '4.1'
+)
+
+###################################################### 
+## Run scenario 4.2
+######################################################
+run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
+               T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
+               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               N_patients_max = 200, # Max number of patients
+               N_patients_min = 100, # Max number of patients
+               N_patients_brk = 50, # Breaks within max and min number of patients
+               N_iter = 2,          # Number of iterations
+               pattsame = FALSE,    # If effects are the same across patterns
+               differsite = 2,      # How many sites have different effects
+               scenario_name = '4.2'
+)
+
+###################################################### 
+## Run scenario 4.3
+######################################################
+run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
+               T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
+               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               N_patients_max = 200, # Max number of patients
+               N_patients_min = 100, # Max number of patients
+               N_patients_brk = 50, # Breaks within max and min number of patients
+               N_iter = 2,          # Number of iterations
+               pattsame = FALSE,    # if effects are the same across patterns
+               differsite = 4,      # how many sites have different effects
+               scenario_name = '4.3'
+)
+
+###################################################### 
