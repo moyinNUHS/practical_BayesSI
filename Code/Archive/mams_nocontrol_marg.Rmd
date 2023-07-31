@@ -1,0 +1,216 @@
+---
+title: "Understanding stepwise dropping-arm approach from Magaret 2016"
+author: "Mo Yin"
+date: "2023-07-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list = ls())
+```
+
+_Reference: Magaret, Design of a multi-arm randomized clinical trial with no control arm. 2016 (Appendix A)_ 
+
+At each interim and final analysis, decisions regarding dropping arms, stopping early for efficacy, or stopping early for futility will be made. A step-wise approach was proposed. 
+
+The efficacy cutoff used was 0.055 and the futility cutoff was 0.5. Efficacy should be declared if the p-value drops below the efficacy cutoff. Futility should be declared if the p-value exceeds the futility cutoff.
+
+1.	Test whether there is any single treatment with mortality rate smaller than every other treatment and, if so, drop all remaining treatments and conclude that the best performing one is most efficacious.  Stop the study: 
+  a.	If treatment A (lowest mortality rate) is T4 then this is equivalent to testing that min(1,2,3) = 0 using the specified efficacy cutoff.  
+  b.	If treatment A = TK and K  [1,2,3}, and treatment B (second best) is T4, then this hypothesis is equivalent to testing K = 0 using the efficacy cutoff, where K is the coefficient for the indicator I(Ti=TK) from the model.
+  c.	If both treatments A and B are  [T1,T2,T3}, call them TK and TJ, then this hypothesis is equivalent to testing K = J using the efficacy cutoff, where K and J are defined as above.
+  
+2.	If test 1 fails, test whether the worst performing treatment has a significantly higher mortality rate larger than the best performing treatment and, if so, discontinue the worst performing arm.  This step will be repeated if an arm is dropped, as subsequently there will be a new remaining worst performing treatment and it will also be compared against the best.  There will be at least 2 active arms after this step, otherwise we would have stopped after test 1. 
+  a.	If treatment A (best) is T4 and treatment (worst) D is TK, K  [1,2,3}, then this is equivalent to testing K = 0 using the efficacy cutoff, where K is the coefficient for the indicator I(Ti= TK).
+  b.	If both treatments A and D are  [T1,T2,T3}, call them TK and TJ, then this is equivalent to testing K = J using the efficacy cutoff.
+
+3.	Regardless of the findings in test 2, continue by testing whether the p-value for the difference in mortality rates between the current best and worst performing arms is more than the futility cutoff and, if so, discontinue all remaining treatments for futility and stop the study.  If any arms are dropped in step 2, re-rank the treatments such that MA (< MB) < MD; the number of remaining treatments will be either 2 or 3 but let’s continue to call the worst-performing treatment with the highest mortality MD.  Perform the same steps as in test 2, but this time compare the p-value to the futility cutoff.
+
+4.	If there is insufficient evidence to stop for futility, continue to the next interim analysis.
+
+
+### Data simulation 
+
+data.model is a data.frame with one row per site per treatment arm
+it includes the following columns:
+
+ - dead = indicator for mortality outcome (1=died, 0=survived)
+ - site = site number
+ - wts = numbers of persons in that category of outcome, at that site, in that arm
+
+```{r simulate data}
+
+## starting values
+namestx <- c("T1","T2","T3","T4")       # tx = factor variable indicating the four arms:  T1, T2, T3, T4
+active.tx <- namestx                
+numactive.tx <- 4                       # number of treatments 
+num.sites <- 4                          # say we enrolled from 4 sites
+num.patients.site <- 1000               # and enrol 1000 patients per site
+num.patients.site.arm <- num.patients.site / numactive.tx      
+p.assign <- .25 * rep(1, numactive.tx)  # same probability of being randomised to any of the treatments 
+## say treatment efficacy for respective treatments are as follows (proportion survived), i.e. T1 is clearly the best 
+## say no site effects at all i.e. patients from all sites had the same probability of survival
+tx_eff = c(0.9, 0.6, 0.3, 0.1) 
+
+peff <- .055                      # efficacy cutoff is 0.055 
+pfut <- .5                        # futility cutoff is 0.5
+dropeff <- rep(0, 4); names(dropeff) <- namestx
+dropfut <- dropeff
+
+### assume no site effect at all 
+d = data.frame(
+  site = rep(1:num.sites, each = 2 * numactive.tx), ## say we enrolled from 4 sites
+  tx = rep(rep(namestx, each = 2), num.sites), 
+  dead = rep(rep(c(0, 1), 2), numactive.tx * num.sites),
+  wts = rep(c(tx_eff[1], 1 - tx_eff[1], 
+              tx_eff[2], 1 - tx_eff[2], 
+              tx_eff[3], 1 - tx_eff[3], 
+              tx_eff[4], 1 - tx_eff[4]) * num.patients.site.arm, num.sites)
+)
+
+head(d)
+```
+
+### Run model  
+
+Perform generalized linear mixed model: log⁡(γ_ij )  =μ+μ_j+β_1 I(T_i=T1)+β_2 I(T_i=T2)+β_3 I(T_i=T3)
+
+```{r, warning=F, message=FALSE}
+
+moddfactor <- lme4::glmer(dead ~ tx + (1|site),family=poisson,weights=wts,data=d) ## run model
+coefs <- summary(moddfactor)$coef # get coefficients 
+
+## fix rownames to have 2 digits, take off model-inserted 'tx' prefix, 
+rownames(coefs) <- substr(rownames(coefs),3,4) 
+missingone <- active.tx[!is.element(active.tx,rownames(coefs))]
+rownames(coefs)[rownames(coefs) == 'nt'] <- missingone 
+coefs
+``` 
+
+### Rank treatments according to coefficient values
+
+Take variance covariance matrix to use for hypothesis testing
+
+```{r}
+vc <- vcov(moddfactor)  ;  dimnames(vc) <- list(active.tx,active.tx)
+vc 
+```
+
+Add intercept to other coefficients in order to provide mortality rate estimate (on log scale) for each treatment
+
+```{r}
+ests <- coefs[,1]  
+ests[2:numactive.tx] <- ests[2:numactive.tx] + coefs[1,1]
+refreg <- names(ests[1]) ## find the reference treatment in the regression, which is T1 in this current examples
+ests; refreg
+```
+
+Rank the estimates of death by treatment
+```{r}
+rankstxs <- sort(ests)   
+## determine the names of the treatments 
+besttx <- names(rankstxs[1])  ;  secbest <- names(rankstxs[2])
+remainingb <- names(rankstxs[2:numactive.tx])
+
+besttx; secbest; remainingb
+```
+
+### Step 1
+
+See if we can drop all but best by comparing best to second best, and if significant, drop all remaining
+If reference treatment in the regression is among best two, directly compare the z values (step 1b).
+If reference treatment in the regression is NOT among the best two, need correlation matrix (`vc`), we need to take into account the correlation between these coefficients (step 1c). Since the dummy variables are not orthogonal (they are correlated), the coefficients are also correlated. Therefore, directly comparing the coefficients can be misleading, as it does not account for the uncertainty and interdependence between them. The correlation matrix will give you insights into the relationships between the coefficients, indicating which treatments have similar effects and which ones have different effects on the outcome variable.
+
+```{r}
+
+if (is.element(refreg, c(besttx, secbest))) { # if the reference treatment is within the best and second best treatments
+  
+  ######    STEP 1a #######
+  ## if reference is best, then test if second best beta is > 0
+  refb <- ifelse(besttx==refreg, secbest, besttx)
+    
+  ######    STEP 1b #######
+  ## if reference is 2nd, then test if best beta is < 0
+  ## so use a two-sided test on whichever one is not reference
+  pbest <- 2*pnorm(-abs(coefs[refb,'z value']),0,1,lower.tail=T) # cumulative distribution function of a standard normal distribution
+  # i.e. get back a probability given the z value
+  
+}  else { # if the reference treatment is NOT within the best and second best treatments
+  
+  ######    STEP 1c #######
+  ## if reference is not among best two, need correlation matrix to compare 
+  vardiff.best <- vc[besttx, besttx] + vc[secbest,secbest] - 2*vc[besttx, secbest]
+  Zbest <- diff(rankstxs[c(besttx,secbest)]) / sqrt(vardiff.best)
+  pbest <- 2*pnorm(-abs(Zbest),0,1,lower.tail=T)  
+  
+}
+
+pbest
+
+```
+
+if `pbest` is less than efficacy cutoff of 0.055 , drop all arms with worse mortality than the best
+
+```{r}
+dropeff[remainingb] <- rep(1*(pbest < peff), length(remainingb))
+dropeff
+```
+
+### Step 2 and 3 (in the same loop)
+
+If didn't drop all but one on this round, try to drop worst one(s)
+See if we can drop worst - we can try this several times, until only two active treatments left
+
+Check for futility
+worst will be from the most recent loop compares current best to worst
+
+```{r}
+
+if (max(dropeff[remainingb]) == 0)  { # if there are treatments not dropped
+  
+  numtries <- 1  ## try twice if have 4 txs, see if can drop 2, etc.
+  
+  while (numactive.tx >= 2 & numtries <= (numactive.tx-2)) { 
+    rankstxs <- sort(ests[active.tx])  
+    besttx <- names(rankstxs[1])  
+    worsttx <- names(rankstxs[numactive.tx])  
+    if (is.element(refreg,c(worsttx,besttx))) {
+      
+      ######    STEP 2a #######
+      ## if reference is worst, then test if best beta is < 0
+      ## if reference is best, then test if worst beta is > 0
+      refw <- ifelse(worsttx==refreg,besttx,worsttx)
+      pworst <- 2*pnorm(-abs(coefs[refw,'z value']),0,1,lower.tail=T)
+      
+    }  else { 
+      
+      ######    STEP 2b #######
+      ## if reference neither worst nor best, then use contrast
+      vardiff.worst <- vc[worsttx,worsttx] + vc[besttx,besttx] - 2*vc[worsttx,besttx]
+      Zworst <- diff(rankstxs[c(besttx,worsttx)]) / sqrt(vardiff.worst)
+      pworst <- 2*pnorm(-abs(Zworst),0,1,lower.tail=T)  
+      
+    } 
+    
+    ##  first drop worst arm if clear difference
+    olddropeff <- dropeff[worsttx]
+    newdropeff <- 1*(pworst < peff)
+    dropeff[worsttx] <- max(olddropeff,newdropeff)
+    
+    ## if no difference, dont go through another pass 
+    if (newdropeff == 0) { 
+      numtries <- tottx }
+    active.tx <- namestx[dropeff < 1]
+    numactive.tx <- length(active.tx)
+    numtries <- numtries + 1
+  } ## end loop over whether dropped worst 
+
+  newdropfut <- 1*(pworst > pfut)
+  dropfut[active.tx] <- newdropfut 
+  
+}  ## end loop over whether can drop all but best
+
+
+```
+
