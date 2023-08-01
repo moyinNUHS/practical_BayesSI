@@ -1,5 +1,3 @@
-library(tictoc)
-
 ###################################################### 
 ## Set up 
 ######################################################
@@ -37,7 +35,7 @@ timings <- list()
 ###################################################### 
 ## Run scenario 1.1
 ######################################################
-tic('timer1.1')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - first one being reference 
@@ -49,13 +47,14 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '1.1'
 )
 
-toc()
-timings$scenario1.1 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 ## Run scenario 1.2
 ######################################################
-tic('timer1.2')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.45, 0.35, 0.45, 0.45),  # Treatment effects - first one being reference 
@@ -67,13 +66,14 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '1.2'
 )
 
-toc()
-timings$scenario1.2 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 ## Run scenario 1.3
 ######################################################
-tic('timer1.3')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
@@ -85,13 +85,14 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '1.3'
 )
 
-toc()
-timings$scenario1.3 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 ## Run scenario 1.4
 ######################################################
-tic('timer1.4')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.30, 0.40, 0.50, 0.60),  # Treatment effects - first one being reference 
@@ -103,8 +104,9 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '1.4'
 )
 
-toc()
-timings$scenario1.4 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 # S2 series: Low or high average treatment effects
@@ -112,7 +114,7 @@ timings$scenario1.4 <- toc()
 ###################################################### 
 ## Run scenario 2.1
 ######################################################
-tic('timer2.1')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.175, 0.175, 0.175, 0.175),  # Treatment effects - first one being reference 
@@ -124,13 +126,14 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '2.1'
 )
 
-toc()
-timings$scenario2.1 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 ## Run scenario 2.2
 ######################################################
-tic('timer2.2')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.10, 0.15, 0.20, 0.25),  # Treatment effects - first one being reference 
@@ -142,13 +145,14 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '2.2'
 )
 
-toc()
-timings$scenario2.2 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 ## Run scenario 2.3
 ######################################################
-tic('timer2.3')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.825, 0.825, 0.825, 0.825),  # Treatment effects - first one being reference 
@@ -160,13 +164,14 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '2.3'
 )
 
-toc()
-timings$scenario2.3 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 ## Run scenario 2.4
 ######################################################
-tic('timer2.4')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.75, 0.80, 0.85, 0.90),  # Treatment effects - first one being reference 
@@ -178,8 +183,9 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '2.4'
 )
 
-toc()
-timings$scenario2.4 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 # S3 series: Different pattern prevalence
@@ -187,7 +193,7 @@ timings$scenario2.4 <- toc()
 ###################################################### 
 ## Run scenario 3.1
 ######################################################
-tic('timer3.1')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # Prevalence of each pattern
                T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - first one being reference 
@@ -199,13 +205,14 @@ run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # P
                scenario_name = '3.1'
 )
 
-toc()
-timings$scenario3.1 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 ## Run scenario 3.2
 ######################################################
-tic('timer3.2')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # Prevalence of each pattern
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
@@ -217,8 +224,9 @@ run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # P
                scenario_name = '3.2'
 )
 
-toc()
-timings$scenario3.2 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 # S4 series: Different effects across patterns or sites
@@ -226,7 +234,7 @@ timings$scenario3.2 <- toc()
 ###################################################### 
 ## Run scenario 4.1
 ######################################################
-tic('timer4.1')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.20, 0.25, 0.30, 0.35),  # Treatment effects - first one being reference 
@@ -240,13 +248,14 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '4.1'
 )
 
-toc()
-timings$scenario4.1 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 ## Run scenario 4.2
 ######################################################
-tic('timer4.2')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
@@ -260,13 +269,14 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '4.2'
 )
 
-toc()
-timings$scenario4.2 <- toc()
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ###################################################### 
 ## Run scenario 4.3
 ######################################################
-tic('timer4.3')
+start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
@@ -280,26 +290,31 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = '4.3'
 )
 
-toc()
-timings$scenario4.3 <- toc()
-
-######################################################
-
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
 
 ######################################################
 # Print timings for all scenarios
 ######################################################
+
+names(timings) <- c("S1.1", 'S1.2', 'S1.3', 'S1,4', 
+                    'S2.1', 'S2.2', 'S2.3', 'S2.3',
+                    'S3.1', 'S3.2',
+                    'S4.1', 'S4.2', 'S4.3')
+
 cat("Timings for all scenarios:\n")
-cat("Scenario 1.1 takes", timings$scenario1.1, "seconds\n")
-cat("Scenario 1.2 takes", timings$scenario1.2, "seconds\n")
-cat("Scenario 1.3 takes", timings$scenario1.3, "seconds\n")
-cat("Scenario 1.4 takes", timings$scenario1.4, "seconds\n")
-cat("Scenario 2.1 takes", timings$scenario2.1, "seconds\n")
-cat("Scenario 2.2 takes", timings$scenario2.2, "seconds\n")
-cat("Scenario 2.3 takes", timings$scenario2.3, "seconds\n")
-cat("Scenario 2.4 takes", timings$scenario2.4, "seconds\n")
-cat("Scenario 3.1 takes", timings$scenario3.1, "seconds\n")
-cat("Scenario 3.2 takes", timings$scenario3.2, "seconds\n")
-cat("Scenario 4.1 takes", timings$scenario4.1, "seconds\n")
-cat("Scenario 4.2 takes", timings$scenario4.2, "seconds\n")
-cat("Scenario 4.3 takes", timings$scenario4.3, "seconds\n")
+cat("Scenario 1.1 takes", timings$S1.1, "seconds\n")
+cat("Scenario 1.2 takes", timings$S1.2, "seconds\n")
+cat("Scenario 1.3 takes", timings$S1.3, "seconds\n")
+cat("Scenario 1.4 takes", timings$S1.4, "seconds\n")
+cat("Scenario 2.1 takes", timings$S2.1, "seconds\n")
+cat("Scenario 2.2 takes", timings$S2.2, "seconds\n")
+cat("Scenario 2.3 takes", timings$S2.3, "seconds\n")
+cat("Scenario 2.4 takes", timings$S2.4, "seconds\n")
+cat("Scenario 3.1 takes", timings$S3.1, "seconds\n")
+cat("Scenario 3.2 takes", timings$S3.2, "seconds\n")
+cat("Scenario 4.1 takes", timings$S4.1, "seconds\n")
+cat("Scenario 4.2 takes", timings$S4.2, "seconds\n")
+cat("Scenario 4.3 takes", timings$S4.3, "seconds\n")
+
