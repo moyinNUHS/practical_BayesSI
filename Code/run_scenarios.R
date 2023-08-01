@@ -8,11 +8,11 @@ library(tictoc)
 rm(list = ls())
 
 # set working directory to the `practical/` folder 
-wd = 'C:/Users/chuaj/OneDrive/Desktop/practical'
+wd = '~/Documents/GitHub/practical/'
 setwd(wd)
 
 # load libraries and functions
-scripts = paste0(wd, '/Code/Functions/', list.files('Code/Functions/'))
+scripts = paste0(wd, 'Code/Functions/', list.files('Code/Functions/'))
 lapply(scripts, source)
 
 # set seed for reproducibility
