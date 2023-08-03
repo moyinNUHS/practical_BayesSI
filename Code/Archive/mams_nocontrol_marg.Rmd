@@ -170,7 +170,7 @@ worst will be from the most recent loop compares current best to worst
 if (max(dropeff[remainingb]) == 0)  { # if there are treatments not dropped
   
   numtries <- 1            ## try twice if have 4 txs, see if can drop 2, etc.
-  numactive.tx <- tottx    ## track number of active treatments (number of treatments not dropped)
+  numactive.tx <- tottx    ## track number of active treatments (number of treatments still in the trial)
   
   while (numactive.tx >= 2 & numtries <= (tottx-2)) { 
     rankstxs <- sort(ests[active.tx])  
