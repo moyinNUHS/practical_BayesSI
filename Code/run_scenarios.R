@@ -16,7 +16,7 @@ lapply(scripts, source)
 # set seed for reproducibility
 set.seed(3127) 
 
-# Create an empty list to store timings
+# create an empty list to store timings
 timings <- list()
 
 #########
@@ -304,17 +304,17 @@ names(timings) <- c("S1.1", 'S1.2', 'S1.3', 'S1,4',
                     'S4.1', 'S4.2', 'S4.3')
 
 cat("Timings for all scenarios:\n")
-cat("Scenario 1.1 takes", timings$S1.1, "seconds\n")
-cat("Scenario 1.2 takes", timings$S1.2, "seconds\n")
-cat("Scenario 1.3 takes", timings$S1.3, "seconds\n")
-cat("Scenario 1.4 takes", timings$S1.4, "seconds\n")
-cat("Scenario 2.1 takes", timings$S2.1, "seconds\n")
-cat("Scenario 2.2 takes", timings$S2.2, "seconds\n")
-cat("Scenario 2.3 takes", timings$S2.3, "seconds\n")
-cat("Scenario 2.4 takes", timings$S2.4, "seconds\n")
-cat("Scenario 3.1 takes", timings$S3.1, "seconds\n")
-cat("Scenario 3.2 takes", timings$S3.2, "seconds\n")
-cat("Scenario 4.1 takes", timings$S4.1, "seconds\n")
-cat("Scenario 4.2 takes", timings$S4.2, "seconds\n")
-cat("Scenario 4.3 takes", timings$S4.3, "seconds\n")
+cat("Scenario 1.1 takes", timings$S1.1, "minutes\n")
+cat("Scenario 1.2 takes", timings$S1.2, "minutes\n")
+cat("Scenario 1.3 takes", timings$S1.3, "minutes\n")
+cat("Scenario 1.4 takes", timings$S1.4, "minutes\n")
+cat("Scenario 2.1 takes", timings$S2.1, "minutes\n")
+cat("Scenario 2.2 takes", timings$S2.2, "minutes\n")
+cat("Scenario 2.3 takes", timings$S2.3, "minutes\n")
+cat("Scenario 2.4 takes", timings$S2.4, "minutes\n")
+cat("Scenario 3.1 takes", timings$S3.1, "minutes\n")
+cat("Scenario 3.2 takes", timings$S3.2, "minutes\n")
+cat("Scenario 4.1 takes", timings$S4.1, "minutes\n")
+cat("Scenario 4.2 takes", timings$S4.2, "minutes\n")
+cat("Scenario 4.3 takes", timings$S4.3, "minutes\n")
 
