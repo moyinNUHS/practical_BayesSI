@@ -44,11 +44,11 @@ it includes the following columns:
 ## starting values
 namestx <- c("T1","T2","T3","T4")       # tx = factor variable indicating the four arms:  T1, T2, T3, T4
 active.tx <- namestx                
-numactive.tx <- 4                       # number of treatments 
+tottx <- 4                              # total number of treatments 
 num.sites <- 4                          # say we enrolled from 4 sites
 num.patients.site <- 1000               # and enrol 1000 patients per site
-num.patients.site.arm <- num.patients.site / numactive.tx      
-p.assign <- .25 * rep(1, numactive.tx)  # same probability of being randomised to any of the treatments 
+num.patients.site.arm <- num.patients.site / tottx      
+p.assign <- .25 * rep(1, tottx)  # same probability of being randomised to any of the treatments 
 ## say treatment efficacy for respective treatments are as follows (proportion survived), i.e. T1 is clearly the best 
 ## say no site effects at all i.e. patients from all sites had the same probability of survival
 tx_eff = c(0.9, 0.6, 0.3, 0.1) 
@@ -60,9 +60,9 @@ dropfut <- dropeff
 
 ### assume no site effect at all 
 d = data.frame(
-  site = rep(1:num.sites, each = 2 * numactive.tx), ## say we enrolled from 4 sites
+  site = rep(1:num.sites, each = 2 * tottx), ## say we enrolled from 4 sites
   tx = rep(rep(namestx, each = 2), num.sites), 
-  dead = rep(rep(c(0, 1), 2), numactive.tx * num.sites),
+  dead = rep(rep(c(0, 1), 2), tottx * num.sites),
   wts = rep(c(tx_eff[1], 1 - tx_eff[1], 
               tx_eff[2], 1 - tx_eff[2], 
               tx_eff[3], 1 - tx_eff[3], 
@@ -101,7 +101,7 @@ Add intercept to other coefficients in order to provide mortality rate estimate 
 
 ```{r}
 ests <- coefs[,1]  
-ests[2:numactive.tx] <- ests[2:numactive.tx] + coefs[1,1]
+ests[2:tottx] <- ests[2:tottx] + coefs[1,1]
 refreg <- names(ests[1]) ## find the reference treatment in the regression, which is T1 in this current examples
 ests; refreg
 ```
@@ -111,7 +111,7 @@ Rank the estimates of death by treatment
 rankstxs <- sort(ests)   
 ## determine the names of the treatments 
 besttx <- names(rankstxs[1])  ;  secbest <- names(rankstxs[2])
-remainingb <- names(rankstxs[2:numactive.tx])
+remainingb <- names(rankstxs[2:tottx])
 
 besttx; secbest; remainingb
 ```
@@ -169,9 +169,10 @@ worst will be from the most recent loop compares current best to worst
 
 if (max(dropeff[remainingb]) == 0)  { # if there are treatments not dropped
   
-  numtries <- 1  ## try twice if have 4 txs, see if can drop 2, etc.
+  numtries <- 1            ## try twice if have 4 txs, see if can drop 2, etc.
+  numactive.tx <- tottx    ## track number of active treatments (number of treatments still in the trial)
   
-  while (numactive.tx >= 2 & numtries <= (numactive.tx-2)) { 
+  while (numactive.tx >= 2 & numtries <= (tottx-2)) { 
     rankstxs <- sort(ests[active.tx])  
     besttx <- names(rankstxs[1])  
     worsttx <- names(rankstxs[numactive.tx])  
