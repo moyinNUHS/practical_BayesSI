@@ -27,20 +27,33 @@ fit_onestage_C_NI <- function(alldata,
     #site=factor(unlist(alldata[5,]))
   )
   
-  # model 
-  my.glm <-
-    myTryCatch(
-      stan_glm(
-        y ~ treatment + subgroup,
-        data = nma_data,
-        prior = prior,
-        prior_intercept = prior_int,
-        family = binomial(link = "logit"),
-        cores = 1,
-        refresh = 0
-      )
+# model 
+ my.glm <- 
+  myTryCatch(stan_glmer(
+    y ~ treatment + subgroup,
+    data = nma_data,
+    prior = prior,
+    prior_intercept = prior_int,
+    family = binomial(link = "logit"),
+    chains = 2,  #defult is 4 chains
+    iter = 1000, #defult is 2000; run 1000, if not enough, then run until reaching 2000
+    cores = 1,
+    refresh = 0
+  )) 
+  
+  #If warning that samples not enough, do additional 500
+  if (!is.null(my.glm$warning)){
+    my.glm = myTryCatch(
+      update(my.glm$value, iter = 500)
     )
-
+  }
+  #If warning that samples still not enough, do additional 500
+  if (!is.null(my.glm$warning)){
+    my.glm = myTryCatch(
+      update(my.glm$value, iter = 500)
+    )
+  }
+  
   ### my.glm<-myTryCatch(stan_glmer(y~treatment + subgroup + (1 | site), data = nma_data, prior = prior,
   #                           prior_intercept = prior_int, family = binomial(link = "logit"),
   #                          cores = 1, refresh=0) )
