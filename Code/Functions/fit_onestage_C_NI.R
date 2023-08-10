@@ -29,7 +29,8 @@ fit_onestage_C_NI <- function(alldata,
   
 # model 
  my.glm <- 
-  myTryCatch(stan_glmer(
+  myTryCatch(
+    stan_glm(
     y ~ treatment + subgroup,
     data = nma_data,
     prior = prior,
