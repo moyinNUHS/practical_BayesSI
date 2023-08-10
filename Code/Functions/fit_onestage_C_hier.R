@@ -27,7 +27,27 @@ fit_onestage_C_hier <- function(alldata,
     ))
   ###my.glm<-myTryCatch(glmer(y~treatment + (1 | site:subgroup),family="binomial",data=nma_data) )
   
-  
+if (!is.null(my.glm$error))
+{
+  # if there is error/warning, change optimizer
+  my.glm <-
+    myTryCatch(glmer(
+      y ~ treatment + (1 | subgroup),
+      family = "binomial",
+      data = nma_data, control=glmerControl(optimizer="bobyqa")
+      ))
+      if (!is.null(my.glm$error)){
+        
+        # if there is still error/warning, change to fixed effect model 
+        my.glm <-
+          myTryCatch(glm(
+            y ~ treatment + subgroup,
+            family = "binomial",
+            data = nma_data
+            ))
+        
+      }  
+}
   if (is.null(my.glm$error))
     #if do not have an error, model is fitted
   {
