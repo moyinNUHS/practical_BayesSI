@@ -36,6 +36,7 @@ fit_onestage_C_hier_prior <- function(alldata_prior,
         data = nma_data_prior, control=glmerControl(optimizer="bobyqa")
       ))
   }
+
   
   if (!is.null(my.glm_prior$error|!is.null(my.glm_prior$warning))){
       
@@ -46,9 +47,11 @@ fit_onestage_C_hier_prior <- function(alldata_prior,
           family = "binomial",
           data = nma_data_prior
         ))
-      
-    }  
-  my.glm_prior_coeff <- fixef(my.glm_prior$value)
+       my.glm_prior_coeff <- my.glm_prior$coefficients
+    } else {
+    my.glm_prior_coeff <- fixef(my.glm_prior$value)
+    }
+  
   
   prior <-
     normal(
