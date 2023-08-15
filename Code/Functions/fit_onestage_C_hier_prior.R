@@ -47,7 +47,7 @@ fit_onestage_C_hier_prior <- function(alldata_prior,
       
     }  
   }
-
+  my.glm_prior_coeff <- fixef(my.glm_prior$value)
   
   prior <-
     normal(
