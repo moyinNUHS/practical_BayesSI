@@ -3,7 +3,7 @@
 estimator_prop <- function(q, output_replication, method.names, phi_v, R) { # q being the comparison treatment with reference treatment 
   
   out = list()
-  
+  n_method = length(method.names) # n_method for below function was not defined, so I guess it is the number of methods
   # get a list of estimator properties for each method 
   for (m in method.names){
     df_list = map(output_replication, m)
