@@ -19,11 +19,35 @@ fit_onestage_C_hier_prior <- function(alldata_prior,
   )
   
   my.glm_prior <-
-    glmer(y ~ treatment + (1 | subgroup),
+    myTryCatch(glmer(
+      y ~ treatment + (1 | subgroup),
+      family = "binomial",
+      data = nma_data_prior
+    ))
+  ###my.glm<-myTryCatch(glmer(y~treatment + (1 | site:subgroup),family="binomial",data=nma_data) )
+  
+  if (!is.null(my.glm_prior$error))
+  {
+    # if there is error/warning, change optimizer
+    my.glm_prior <-
+      myTryCatch(glmer(
+        y ~ treatment + (1 | subgroup),
+        family = "binomial",
+        data = nma_data_prior, control=glmerControl(optimizer="bobyqa")
+      ))
+    if (!is.null(my.glm_prior$error)){
+      
+      # if there is still error/warning, change to fixed effect model 
+      my.glm <-
+        myTryCatch(glm(
+          y ~ treatment + subgroup,
           family = "binomial",
-          data = nma_data_prior)
-  # my.glm_prior<-glmer(y~treatment + (1 | site:subgroup),family="binomial",data=nma_data_prior)
-  my.glm_prior_coeff <- fixef(my.glm_prior)
+          data = nma_data_prior
+        ))
+      
+    }  
+  }
+
   
   prior <-
     normal(
