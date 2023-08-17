@@ -41,7 +41,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                scenario_name = '1.1'
@@ -60,7 +60,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.45, 0.35, 0.45, 0.45),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                scenario_name = '1.2'
@@ -79,7 +79,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                scenario_name = '1.3'
@@ -98,7 +98,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.30, 0.40, 0.50, 0.60),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                scenario_name = '1.4'
@@ -120,7 +120,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.175, 0.175, 0.175, 0.175),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                scenario_name = '2.1'
@@ -139,7 +139,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.10, 0.15, 0.20, 0.25),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                scenario_name = '2.2'
@@ -158,7 +158,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.825, 0.825, 0.825, 0.825),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                scenario_name = '2.3'
@@ -177,7 +177,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.75, 0.80, 0.85, 0.90),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                scenario_name = '2.4'
@@ -199,7 +199,7 @@ run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # P
                T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                scenario_name = '3.1'
@@ -218,7 +218,7 @@ run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # P
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                scenario_name = '3.2'
@@ -240,7 +240,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.20, 0.25, 0.30, 0.35),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                pattsame = FALSE,    # If effects are the same across patterns
@@ -261,7 +261,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                pattsame = FALSE,    # If effects are the same across patterns
@@ -282,7 +282,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                N_patients_max = 200, # Max number of patients
-               N_patients_min = 100, # Max number of patients
+               N_patients_min = 100, # Min number of patients
                N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = 2,          # Number of iterations
                pattsame = FALSE,    # if effects are the same across patterns
