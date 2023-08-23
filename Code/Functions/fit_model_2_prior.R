@@ -1,3 +1,6 @@
+# ----------------------------------------------------------------------------------------------- #
+# model 1 extension informative prior: fit fixed model to all data using historical data as prior #
+# ----------------------------------------------------------------------------------------------- #
 fit_model_2_prior <- function(nma_data, 
                               nma_data_prior,
                               alldata,
