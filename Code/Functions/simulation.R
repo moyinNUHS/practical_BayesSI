@@ -26,10 +26,6 @@ simulation <- function(N,
     sapply(1:no_treatment, function(i) {
       paste0("treatment_", i)
     })
-  rownames(res_probability_all) <-
-    sapply(1:no_pattern, function(i) {
-      paste0("alpha_", i)
-    })
   # response rate: row = pattern, column = treatment
   
   # generate which pattern each patient in N patients belong to
@@ -42,7 +38,6 @@ simulation <- function(N,
   
   # number of patients in each subgroup that is defined by the pattern
   size_pattern <<- apply(assigned_pattern, 2, sum)
-  lambda <- prob_pattern # true prevalence rate of patterns
   
   true.response.r <-
     lapply(1:no_pattern, function(i)
