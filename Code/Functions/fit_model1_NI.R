@@ -2,7 +2,7 @@
 # model 1 extension non-informative prior: fit fixed effect model to all data  #
 # ---------------------------------------------------------------------------- #
 
-fit_onestage_C_NI <- function(nma_data, 
+fit_model1_NI <- function(nma_data, 
                               alldata, 
                               alternative = 'two-sided', 
                               p = 0.05,
