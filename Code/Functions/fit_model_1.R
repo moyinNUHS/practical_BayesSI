@@ -1,18 +1,11 @@
-# ----------------------------------------- #
-# method C original: fit one step model to current trial data  # 
-# ----------------------------------------- #
+# ---------------------------------------------------------------- #
+# method 1 original: fit fixed effect model to current trial data  # 
+# ---------------------------------------------------------------- #
 
-fit_onestage_C <- function(alldata, alt_hypothesis = 'two.sided', type1correction = T){
+fit_model <- function(nma_data, alldata, alt_hypothesis = 'two.sided', type1correction = T){
   
   # number of patterns
   no_p <- no_pattern
-  
-  # put trial data in a dataframe - outcome, treatment, pattern/subgroup
-  nma_data <- data.frame(y = unlist(alldata[1,]),
-                         treatment = factor(unlist(alldata[2,]), levels = sort(unique(unlist(alldata[2,])))),
-                         subgroup = factor(unlist(alldata[4,]))#, 
-                         #site=factor(unlist(alldata[5,]))
-  )
   
   # model 
   my.glm <- myTryCatch(glm(y ~ treatment + subgroup, family = "binomial", data = nma_data) )
