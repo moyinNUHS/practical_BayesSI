@@ -1,8 +1,9 @@
-## ------------------------------------------------------------------------- #
-# method C extension non-informative prior: fit one step model to all data  #
-# ------------------------------------------------------------------------- #
+## --------------------------------------------------------------------------- #
+# model 1 extension non-informative prior: fit fixed effect model to all data  #
+# ---------------------------------------------------------------------------- #
 
-fit_onestage_C_NI <- function(alldata, 
+fit_onestage_C_NI <- function(nma_data, 
+                              alldata, 
                               alternative = 'two-sided', 
                               p = 0.05,
                               type1correction = T) {
@@ -15,17 +16,6 @@ fit_onestage_C_NI <- function(alldata,
   scale_NI <- 5
   prior <- student_t(df = 7, loc_NI, scale_NI)
   prior_int <- student_t(df = 7, loc_NI, scale_NI)
-  
-  # put trial data in a dataframe - outcome, treatment, pattern/subgroup
-  nma_data <- data.frame(
-    y = unlist(alldata[1, ]),
-    treatment = factor(unlist(alldata[2, ]),
-                       levels = sort(unique(unlist(
-                         alldata[2, ]
-                       )))),
-    subgroup = factor(unlist(alldata[4, ]))
-    #site=factor(unlist(alldata[5,]))
-  )
   
 # model 
  my.glm <- 
