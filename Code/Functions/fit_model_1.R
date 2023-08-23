@@ -2,7 +2,10 @@
 # method 1 original: fit fixed effect model to current trial data  # 
 # ---------------------------------------------------------------- #
 
-fit_model_1 <- function(nma_data, alldata, alt_hypothesis = 'two.sided', type1correction = T){
+fit_model_1 <- function(nma_data, 
+                        alldata, 
+                        alt_hypothesis = 'two.sided', 
+                        type1correction = T){
   
   # number of patterns
   no_p <- no_pattern
