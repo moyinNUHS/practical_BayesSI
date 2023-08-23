@@ -1,8 +1,8 @@
 # -------------------------------------------------------------------------------------------------------- #
 # model 2 extension informative prior: fit random effects model to all data using historical data as prior #
 # -------------------------------------------------------------------------------------------------------- #
-fit_model_2_prior <- function(nma_data, 
-                              nma_data_prior,
+fit_model_2_prior <- function(nma_data_prior, 
+                              nma_data,
                               alldata,
                               Scale, 
                               alternative = 'two-sided', 
