@@ -80,23 +80,44 @@ simulation <- function(N,
     # We explore both a weakly & strongly informative prior distribution
     Scale_wk <- 5     #Larger scale assigns less importance to prior distribution
     Scale_str <- 1    #Smaller scale assigns more importance to prior distribution
+
+    # generate prior historical data 
+    # put historical data in a dataframe - outcome, treatment, pattern/subgroup
+    nma_data_prior <- data.frame(
+      y = unlist(sim_data[['prior_data']][1,]),
+      treatment = factor(unlist(sim_data[['prior_data']][2,]), levels = sort(unique(
+        unlist(sim_data[['prior_data']][2,])
+      ))),
+      subgroup = factor(unlist(sim_data[['prior_data']][4,]))#,
+      #site=factor(unlist(sim_data[['prior_data']][5,]))
+    )
     
+    # generate current data 
+    # put current data in a dataframe - outcome, treatment, pattern/subgroup
+    nma_data <- data.frame(
+      y = unlist(sim_data[['trial_data']][1,]),
+      treatment = factor(unlist(sim_data[['trial_data']][2,]), levels = sort(unique(
+        unlist(sim_data[['trial_data']][2,])
+      ))),
+      subgroup = factor(unlist(sim_data[['trial_data']][4,]))#,
+      #site=factor(unlist(sim_data[['trial_data']][5,]))
+    )
     
     # Fixed effects models
-    est_method_C <- fit_onestage_C(sim_data[['trial_data']]) # use current trial data
-    est_method_C_NI <- fit_onestage_C_NI(sim_data[['trial_data']]) # use current trial data, Bayesian
-    est_method_C_wk <- fit_onestage_C_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_wk) # use current trial data + prior data, Bayesian
-    est_method_C_str <- fit_onestage_C_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_str) # use current trial data + prior data, Bayesian
+    est_method_1 <- fit_model_1(nma_data, sim_data[['trial_data']]) # use current trial data
+    est_method_1_NI <- fit_model_1_NI(nma_data, sim_data[['trial_data']]) # use current trial data, Bayesian
+    est_method_1_wk <- fit_model_1_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale_wk) # use current trial data + prior data, Bayesian
+    est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale_str) # use current trial data + prior data, Bayesian
     
     # Use a hierarchical structure
-    est_method_C2 <-
-      fit_onestage_C_hier(sim_data[['trial_data']]) # use current trial data
-    est_method_C2_NI <-
-      fit_onestage_C_hier_NI(sim_data[['trial_data']]) # use current trial data, Bayesian
-    est_method_C2_wk <-
-      fit_onestage_C_hier_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_wk) # use current trial data + prior data, Bayesian
-    est_method_C2_str <-
-      fit_onestage_C_hier_prior(sim_data[['prior_data']], sim_data[['trial_data']], Scale_str) # use current trial data + prior data, Bayesian
+    est_method_2 <-
+      fit_model_2(nma_data, sim_data[['trial_data']]) # use current trial data
+    est_method_2_NI <-
+      fit_model_2_NI(nma_data, sim_data[['trial_data']]) # use current trial data, Bayesian
+    est_method_2_wk <-
+      fit_model_2_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale_wk) # use current trial data + prior data, Bayesian
+    est_method_2_str <-
+      fit_model_2_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale_str) # use current trial data + prior data, Bayesian
     
     ##############################################################
     ## Ranking of treatments
@@ -104,14 +125,14 @@ simulation <- function(N,
     
     # combine estimated best treatments from all methods, row = methods, column = pattern
     identified_best_t <- rbind(
-      method_C = est_method_C$ranking[1, ],
-      method_C_NI = est_method_C_NI$ranking[1, ],
-      method_C_wk = est_method_C_wk$ranking[1, ],
-      method_C_str = est_method_C_str$ranking[1, ],
-      method_C2 = est_method_C2$ranking[1, ],
-      method_C2_NI = est_method_C2_NI$ranking[1, ],
-      method_C2_wk = est_method_C2_wk$ranking[1, ],
-      method_C2_str = est_method_C2_str$ranking[1, ]
+      method_1 = est_method_1$ranking[1, ],
+      method_1_NI = est_method_1_NI$ranking[1, ],
+      method_1_wk = est_method_1_wk$ranking[1, ],
+      method_1_str = est_method_1_str$ranking[1, ],
+      method_2 = est_method_2$ranking[1, ],
+      method_2_NI = est_method_2_NI$ranking[1, ],
+      method_2_wk = est_method_2_wk$ranking[1, ],
+      method_2_str = est_method_2_str$ranking[1, ]
     )
     
     n_method <- dim(identified_best_t)[1] # how many methods compared 
@@ -162,18 +183,17 @@ simulation <- function(N,
       nearbest_treatment_10 = nearbest_treatment_10,
       diff_min = diff_min
     )
-    #names(measure)<-c("pattern1", "pattern2", "pattern3", "pattern4", "pattern5", "pattern6", "pattern7", "pattern8")
     
     # identify which models did not fit 
     identify_fail <- rbind(
-      method_C = est_method_C$ranking[2, ],
-      method_C_NI = est_method_C_NI$ranking[2, ],
-      method_C_wk = est_method_C_wk$ranking[2, ],
-      method_C_str = est_method_C_str$ranking[2, ],
-      method_C2 = est_method_C2$ranking[2, ],
-      method_C2_NI = est_method_C2_NI$ranking[2, ],
-      method_C2_wk = est_method_C2_wk$ranking[2, ],
-      method_C2_str = est_method_C2_str$ranking[2, ]
+      method_1 = est_method_1$ranking[2, ],
+      method_1_NI = est_method_1_NI$ranking[2, ],
+      method_1_wk = est_method_1_wk$ranking[2, ],
+      method_1_str = est_method_1_str$ranking[2, ],
+      method_2 = est_method_2$ranking[2, ],
+      method_2_NI = est_method_2_NI$ranking[2, ],
+      method_2_wk = est_method_2_wk$ranking[2, ],
+      method_2_str = est_method_2_str$ranking[2, ]
     )
     
     # print errors if a model did not fit 
@@ -190,14 +210,14 @@ simulation <- function(N,
     # output of all results 
     list(
       identified_best_t = identified_best_t,
-      est_method_C = est_method_C$contrast.est,
-      est_method_C_NI = est_method_C_NI$contrast.est,
-      est_method_C_wk = est_method_C_wk$contrast.est,
-      est_method_C_str = est_method_C_str$contrast.est,
-      est_method_C2 = est_method_C2$contrast.est,
-      est_method_C2_NI = est_method_C2_NI$contrast.est,
-      est_method_C2_wk = est_method_C2_wk$contrast.est,
-      est_method_C2_str = est_method_C2_str$contrast.est,
+      est_method_1 = est_method_1$contrast.est,
+      est_method_1_NI = est_method_1_NI$contrast.est,
+      est_method_1_wk = est_method_1_wk$contrast.est,
+      est_method_1_str = est_method_1_str$contrast.est,
+      est_method_2 = est_method_2$contrast.est,
+      est_method_2_NI = est_method_2_NI$contrast.est,
+      est_method_2_wk = est_method_2_wk$contrast.est,
+      est_method_2_str = est_method_2_str$contrast.est,
       performance_m = estimand2,
       identify_fail = identify_fail,
       freq_t_subgroup = sim_data[['freq_t_subgroup']],
