@@ -160,27 +160,26 @@ simulation <- function(N,
         identify_best_rate[m, ] - true.mean.min[2, ]
       }))
     
-    best_treatment_I <- diff_min == 0
+ #   best_treatment_I <- diff_min == 0
     
     nearbest_treatment_5 <- diff_min - 0.05 <= 0
-    nearbest_treatment_10 <- diff_min - 0.1 <= 0
+  #  nearbest_treatment_10 <- diff_min - 0.1 <= 0
     
     rownames(mortality_gain) <-
       rownames(mortality_gain_ratio) <-
-      rownames(better_treatment_I) <- rownames(identified_best_t)
-    rownames(diff_min) <-
-      rownames(best_treatment_I) <- rownames(identified_best_t)
-    
-    rownames(nearbest_treatment_5) <-
-      rownames(nearbest_treatment_10) <- rownames(identified_best_t)
+      rownames(better_treatment_I) <- 
+      rownames(diff_min) <- 
+  #    rownames(best_treatment_I) <- 
+    #  rownames(nearbest_treatment_10) <- 
+      rownames(nearbest_treatment_5) <- rownames(identified_best_t)
     
     estimand2 <- list(
       mortality_gain = mortality_gain,
       mortality_gain_ratio = mortality_gain_ratio,
       better_treatment_I = better_treatment_I,
-      best_treatment_I = best_treatment_I,
+   #   best_treatment_I = best_treatment_I,
       nearbest_treatment_5 = nearbest_treatment_5,
-      nearbest_treatment_10 = nearbest_treatment_10,
+   #   nearbest_treatment_10 = nearbest_treatment_10,
       diff_min = diff_min
     )
     
