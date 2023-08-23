@@ -19,11 +19,39 @@ fit_onestage_C_hier_prior <- function(alldata_prior,
   )
   
   my.glm_prior <-
-    glmer(y ~ treatment + (1 | subgroup),
+    myTryCatch(glmer(
+      y ~ treatment + (1 | subgroup),
+      family = "binomial",
+      data = nma_data_prior
+    ))
+  ###my.glm<-myTryCatch(glmer(y~treatment + (1 | site:subgroup),family="binomial",data=nma_data) )
+  
+  if (!is.null(my.glm_prior$error))
+  {
+    # if there is error/warning, change optimizer
+    my.glm_prior <-
+      myTryCatch(glmer(
+        y ~ treatment + (1 | subgroup),
+        family = "binomial",
+        data = nma_data_prior, control=glmerControl(optimizer="bobyqa")
+      ))
+  }
+
+  
+  if (!is.null(my.glm_prior$error|!is.null(my.glm_prior$warning))){
+      
+      # if there is still error/warning, change to fixed effect model 
+      my.glm_prior <-
+        myTryCatch(glm(
+          y ~ treatment + subgroup,
           family = "binomial",
-          data = nma_data_prior)
-  # my.glm_prior<-glmer(y~treatment + (1 | site:subgroup),family="binomial",data=nma_data_prior)
-  my.glm_prior_coeff <- fixef(my.glm_prior)
+          data = nma_data_prior
+        ))
+       my.glm_prior_coeff <- my.glm_prior$coefficients
+    } else {
+    my.glm_prior_coeff <- fixef(my.glm_prior$value)
+    }
+  
   
   prior <-
     normal(
@@ -47,18 +75,34 @@ fit_onestage_C_hier_prior <- function(alldata_prior,
   )
   
   # model 
-  my.glm <-
-    myTryCatch(
-      stan_glmer(
-        y ~ treatment + (1 | subgroup),
-        data = nma_data,
-        prior = prior,
-        prior_intercept = prior_int,
-        family = binomial(link = "logit"),
-        cores = 1,
-        refresh = 0
-      )
+my.glm <- 
+  myTryCatch(
+    stan_glmer(
+    y ~ treatment + (1 | subgroup),
+    data = nma_data,
+    prior = prior,
+    prior_intercept = prior_int,
+    family = binomial(link = "logit"),
+    chains = 2,  
+    iter = 1000, 
+    cores = 1,
+    refresh = 0
+  )) 
+  
+  #If warning that samples not enough, do additional 500
+  if (!is.null(my.glm$warning)){
+    my.glm = myTryCatch(
+      update(my.glm$value, iter = 500)
     )
+  }
+  #If warning that samples still not enough, do additional 500
+  if (!is.null(my.glm$warning)){
+    my.glm = myTryCatch(
+      update(my.glm$value, iter = 500)
+    )
+  }
+
+  
   ### my.glm<-myTryCatch(stan_glmer(y~treatment + (1 | site:subgroup), data = nma_data, prior = prior,
   #                           prior_intercept = prior_int, family = binomial(link = "logit"),
   #                           cores = 1, refresh=0) )

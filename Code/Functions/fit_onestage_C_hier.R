@@ -27,6 +27,27 @@ fit_onestage_C_hier <- function(alldata,
     ))
   ###my.glm<-myTryCatch(glmer(y~treatment + (1 | site:subgroup),family="binomial",data=nma_data) )
   
+if (!is.null(my.glm$error)) {
+  # if there is error, change optimizer
+  my.glm <-
+    myTryCatch(glmer(
+      y ~ treatment + (1 | subgroup),
+      family = "binomial",
+      data = nma_data, control=glmerControl(optimizer="bobyqa")
+      ))
+}
+  
+  # If there is still error, or warning about singularity - indicate null random effects, use fixed effect model
+  if (!is.null(my.glm$error)|!is.null(my.glm$warning)){
+    
+    my.glm <-
+      myTryCatch(glm(
+        y ~ treatment + subgroup,
+        family = "binomial",
+        data = nma_data
+      ))
+    
+  }  
   
   if (is.null(my.glm$error))
     #if do not have an error, model is fitted

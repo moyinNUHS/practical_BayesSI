@@ -18,21 +18,26 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   
   ### put estimators and variance for each method into a list
   method.names = names(output_replication[[1]])[grep('method', names(output_replication[[1]]))] # get vector of method names 
-  estimator_all = model_var_all = list()
+  estimator_all = model_var_all = conti_grp = list()
   for (m in method.names){
+    # list of data frames containing the estimates calculated using method `m`
     df_list = map(output_replication, m)
     
     # estimators 
     rows = lapply(df_list, function(x) {
-      x['Estimate']
+      x[,'Estimate']
     })
     estimator_all[[m]] = do.call(rbind, rows)
     
     # variance 
     rows = lapply(df_list, function(x) {
-      x['model_var']
+      x[,'model_var']
     })
     model_var_all[[m]] = do.call(rbind, rows)
+    
+    # contiguous groups
+    conti_grp[[m]] = lapply(df_list, find_contig_grp)
+    
   }
   
   ### get properties of estimators 
@@ -137,6 +142,7 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
     ex_performance_out = ex_performance_out,
     suggested_treatment_each = suggested_treatment_each,
     estimator_all = estimator_all,
+    contiguous_grp = conti_grp,
     #model_var_all=model_var_all,
     #all_diff_min=all_diff_min,
     method_fail_no = methodA_fail_no,
