@@ -1,6 +1,6 @@
-# ---------------------------------------------------------------- #
-# method 1 original: fit fixed effect model to current trial data  # 
-# ---------------------------------------------------------------- #
+# ------------------------------------------------------ #
+# model 1: fit fixed effect model to current trial data  # 
+# ------------------------------------------------------ #
 
 fit_model_1 <- function(nma_data, 
                         alldata, 
