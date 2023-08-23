@@ -1,24 +1,16 @@
-# --------------------------------------------------------------------- #
-# method C extension informative prior: fit one step model to all data  #
-# --------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------------------------- #
+# model 1 extension informative prior: fit fixed model to all data using historical data as prior #
+# ----------------------------------------------------------------------------------------------- #
 
-fit_onestage_C_prior <- function(alldata_prior, alldata, Scale, 
-                                 alternative = 'two-sided', 
-                                 p = 0.05,
-                                 type1correction = T) {
+fit_model_1_prior <- function(nma_data_prior, 
+                              nma_data, 
+                              alldata, 
+                              Scale, 
+                              alternative = 'two-sided', 
+                              p = 0.05,
+                              type1correction = T) {
   # number of patterns
   no_p <- no_pattern
-  
-  # generate current trial data using prior historical data 
-  # put historical data in a dataframe - outcome, treatment, pattern/subgroup
-  nma_data_prior <- data.frame(
-    y = unlist(alldata_prior[1,]),
-    treatment = factor(unlist(alldata_prior[2,]), levels = sort(unique(
-      unlist(alldata_prior[2,])
-    ))),
-    subgroup = factor(unlist(alldata_prior[4,]))#,
-    #site=factor(unlist(alldata_prior[5,]))
-  )
   
   my.glm_prior <-
     glm(y ~ treatment + subgroup, family = "binomial", data =
@@ -31,18 +23,7 @@ fit_onestage_C_prior <- function(alldata_prior, alldata, Scale,
     normal(location = my.glm_prior_coeff[2:(no_treatment + no_p - 1)], 
            scale = rep(Scale, (no_treatment + no_p - 2)))
   prior_int <-
-    normal(location = my.glm_prior_coeff[1], scale = Scale)
-  
-  # put current trial data in a dataframe - outcome, treatment, pattern/subgroup
-  nma_data <- data.frame(
-    y = unlist(alldata[1,]),
-    treatment = factor(unlist(alldata[2,]), levels = sort(unique(unlist(
-      alldata[2,]
-    )))),
-    subgroup = factor(unlist(alldata[4,]))#,
-    #site=factor(unlist(alldata_prior[5,]))
-  )
-  
+    normal(location = my.glm_prior_coeff[1], scale = Scale)  
   
   # logistic regression
   my.glm <- 

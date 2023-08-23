@@ -1,8 +1,6 @@
 ## function to run one scenario
 
-run_simulation <- function(no_treatment = 4,
-                           # No. of treatments within simulation
-                           pattern_list = list( # Treatment patterns
+run_simulation <- function(pattern_list = list( # Treatment patterns
                              pattern1 = c(2, 3), 
                              pattern2 = c(1, 2, 3),
                              pattern3 = c(2, 3, 4),
@@ -13,12 +11,8 @@ run_simulation <- function(no_treatment = 4,
                            # Treatment effects - first one being baseline
                            res_rate_prior,
                            # Priors
-                           N_patients_max,
-                           # Max number of patients
-                           N_patients_min,
-                           # Max number of patients
-                           N_patients_brk,
-                           # Breaks within max and min number of patients
+                           samplesize_vec, 
+                           #Sample size for each simulation
                            N_iter,
                            # Number of iterations
                            pattsame = TRUE,
@@ -31,9 +25,6 @@ run_simulation <- function(no_treatment = 4,
   alpha_ref = find_phi(p = T_vector[1], alpha = 0)   # reference treatment effect 
   phi_vector = find_phi(p = T_vector, alpha = alpha_ref) # specify each treatment effect in terms of OR
   # you may get back T_vector with res_probability(phi_vector, alpha_ref)
-  
-  #Specify sample size for each run
-  samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk)
   
   store = list()
   for (N in samplesize_vec) {

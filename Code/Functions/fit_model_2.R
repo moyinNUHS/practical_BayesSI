@@ -1,22 +1,13 @@
-# ---------------------------------------------------------------------- #
-# method C: fit one step model to all data using hierarchical structure  #
-# ---------------------------------------------------------------------- #
-fit_onestage_C_hier <- function(alldata,
-                                alternative = 'two-sided', 
-                                p = 0.05,
-                                type1correction = T) {
+# --------------------------------------------------------------------------- #
+# model 2: fit random effects model to all data using hierarchical structure  #
+# --------------------------------------------------------------------------- #
+fit_model_2 <- function(nma_data, 
+                        alldata,
+                        alternative = 'two-sided', 
+                        p = 0.05,
+                        type1correction = T) {
   # number of patterns
   no_p <- no_pattern
-  
-  # put trial data in a dataframe - outcome, treatment, pattern/subgroup
-  nma_data <- data.frame(
-    y = unlist(alldata[1, ]),
-    treatment = factor(unlist(alldata[2, ]), levels = sort(unique(unlist(
-      alldata[2, ]
-    )))),
-    subgroup = factor(unlist(alldata[4, ]))#,
-    #  site=factor(unlist(alldata[5,]))
-  )
   
   # logistic regression
   my.glm <-

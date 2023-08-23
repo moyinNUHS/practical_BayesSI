@@ -1,22 +1,15 @@
-fit_onestage_C_hier_prior <- function(alldata_prior,
-                                      alldata,
-                                      Scale, 
-                                      alternative = 'two-sided', 
-                                      p = 0.05,
-                                      type1correction = T) {
+# -------------------------------------------------------------------------------------------------------- #
+# model 2 extension informative prior: fit random effects model to all data using historical data as prior #
+# -------------------------------------------------------------------------------------------------------- #
+fit_model_2_prior <- function(nma_data_prior, 
+                              nma_data,
+                              alldata,
+                              Scale, 
+                              alternative = 'two-sided', 
+                              p = 0.05,
+                              type1correction = T) {
   # number of patterns
   no_p <- no_pattern
-  
-  # generate current trial data using prior historical data 
-  # put historical data in a dataframe - outcome, treatment, pattern/subgroup
-  nma_data_prior <- data.frame(
-    y = unlist(alldata_prior[1,]),
-    treatment = factor(unlist(alldata_prior[2,]), levels = sort(unique(
-      unlist(alldata_prior[2,])
-    ))),
-    subgroup = factor(unlist(alldata_prior[4,]))#,
-    #site=factor(unlist(alldata_prior[5,]))
-  )
   
   my.glm_prior <-
     myTryCatch(glmer(
@@ -63,17 +56,7 @@ fit_onestage_C_hier_prior <- function(alldata_prior,
     normal(location = my.glm_prior_coeff[1],
            scale = Scale,
            autoscale = TRUE)
-  
-  # put current trial data in a dataframe - outcome, treatment, pattern/subgroup
-  nma_data <- data.frame(
-    y = unlist(alldata[1,]),
-    treatment = factor(unlist(alldata[2,]), levels = sort(unique(unlist(
-      alldata[2,]
-    )))),
-    subgroup = factor(unlist(alldata[4,]))
-    #site=factor(unlist(alldata[5,]))
-  )
-  
+   
   # model 
 my.glm <- 
   myTryCatch(
