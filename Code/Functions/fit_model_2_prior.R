@@ -1,6 +1,6 @@
-# ----------------------------------------------------------------------------------------------- #
-# model 1 extension informative prior: fit fixed model to all data using historical data as prior #
-# ----------------------------------------------------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------- #
+# model 2 extension informative prior: fit random effects model to all data using historical data as prior #
+# -------------------------------------------------------------------------------------------------------- #
 fit_model_2_prior <- function(nma_data, 
                               nma_data_prior,
                               alldata,
