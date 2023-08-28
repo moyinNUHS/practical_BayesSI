@@ -59,7 +59,7 @@ simulation <- function(N,
   
   # run simulation and analysis over R iterations
   output_replication <- foreach(k = 1:R) %dopar% {
-    set.seed(k+1000)
+    set.seed(k)
     
     library(tidymodels)
     library(parsnip)
