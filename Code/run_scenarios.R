@@ -7,11 +7,36 @@ rm(list = ls())
 
 # set working directory to the `practical/` folder 
 wd = '~/Documents/GitHub/practical/'
+# wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
 setwd(wd)
 
 # load libraries and functions
+run_hpc <- TRUE
+
 scripts = paste0(wd, 'Code/Functions/', list.files('Code/Functions/'))
 lapply(scripts, source)
+
+# if run hpc, need to reload the updated simulation.R function
+# need to change the working directory in the simulation.R function
+
+if(run_hpc){
+  #library(crayon)
+  library(parallel) # one of the core R packages
+  library(doParallel)
+  library(foreach)
+  library(iterators)
+  
+  parallel::detectCores()
+  #n.cores <- parallel::detectCores() - 1
+  n.cores <- 7
+  my.cluster <- parallel::makeCluster(
+    n.cores
+  )
+  doParallel::registerDoParallel(cl = my.cluster)
+  
+  source(paste0(wd, 'Code/hpc/simulation.R'))
+}
+
 
 # set seed for reproducibility
 set.seed(3127) 
