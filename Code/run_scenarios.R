@@ -326,3 +326,4 @@ cat("Scenario 4.1 takes", timings$S4.1, "minutes\n")
 cat("Scenario 4.2 takes", timings$S4.2, "minutes\n")
 cat("Scenario 4.3 takes", timings$S4.3, "minutes\n")
 
+saveRDS(timings,paste0("./Code/Run_output/timing.rds"))
