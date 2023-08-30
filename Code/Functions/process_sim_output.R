@@ -84,9 +84,9 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   estimand2_MCSE <- sqrt(estimand2[, 3:6] * (1 - estimand2[, 3:6]) / R)
   
   
-  all_diff_min <- lapply(1:R, function(z) {
-      output_replication[[z]]$performance_m$diff_min
-    })
+  #all_diff_min <- lapply(1:R, function(z) {
+  #    output_replication[[z]]$performance_m$diff_min
+  #  })
   
   mortality_gain <- do.call(rbind, lapply(1:R, function(z) {
     apply(output_replication[[z]]$performance_m$mortality_gain, 1, function(x) {
