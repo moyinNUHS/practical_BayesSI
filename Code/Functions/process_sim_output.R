@@ -68,7 +68,8 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   
   # performance of each method
   indicator.names.all = names(output_replication[[1]]$performance_m)
-  indicator.names = indicator.names.all[-which(indicator.names.all == 'nearbest_treatment_10')]
+  #indicator.names = indicator.names.all[-which(indicator.names.all == 'nearbest_treatment_10')]
+  indicator.names = indicator.names.all
   ex_performance_out <- lapply(indicator.names, function(j) {
     sapply(1:no_pattern, function(i)
       ex_performance(j, i, output_replication, R))
@@ -81,7 +82,7 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
       })
     }))
   
-  estimand2_MCSE <- sqrt(estimand2[, 3:6] * (1 - estimand2[, 3:6]) / R)
+  estimand2_MCSE <- sqrt(estimand2[, 3:5] * (1 - estimand2[, 3:5]) / R)
   
   
   #all_diff_min <- lapply(1:R, function(z) {
