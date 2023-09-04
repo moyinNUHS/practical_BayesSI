@@ -7,7 +7,6 @@ rm(list = ls())
 
 # set working directory to the `practical/` folder 
 wd = '~/Documents/GitHub/practical/'
-# wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
 setwd(wd)
 
 # load libraries and functions
