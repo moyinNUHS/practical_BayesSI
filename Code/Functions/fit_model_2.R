@@ -22,7 +22,7 @@ if (!is.null(my.glm$error)) {
   # if there is error, change optimizer
   my.glm <-
     myTryCatch(glmer(
-      y ~ treatment + (1 | subgroup),
+      y ~ -1 + treatment + (1 | subgroup),
       family = "binomial",
       data = nma_data, control=glmerControl(optimizer="bobyqa")
       ))
@@ -33,7 +33,7 @@ if (!is.null(my.glm$error)) {
     
     my.glm <-
       myTryCatch(glm(
-        y ~ treatment + subgroup,
+        y ~ -1 + treatment + subgroup,
         family = "binomial",
         data = nma_data
       ))
