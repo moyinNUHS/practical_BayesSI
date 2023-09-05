@@ -21,13 +21,13 @@ fit_model_1_NI <- function(nma_data,
  my.glm <- 
   myTryCatch(
     stan_glm(
-    y ~ treatment + subgroup,
+    y ~ -1 + treatment + subgroup,
     data = nma_data,
     prior = prior,
     prior_intercept = prior_int,
     family = binomial(link = "logit"),
-    chains = 2,  #defult is 4 chains
-    iter = 1000, #defult is 2000; run 1000, if not enough, then run until reaching 2000
+    chains = 8,  #defult is 4 chains
+    iter = 2000, #defult is 2000; run 1000, if not enough, then run until reaching 2000
     cores = 1,
     refresh = 0
   )) 
