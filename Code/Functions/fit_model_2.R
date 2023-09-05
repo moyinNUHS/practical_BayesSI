@@ -12,7 +12,7 @@ fit_model_2 <- function(nma_data,
   # logistic regression
   my.glm <-
     myTryCatch(glmer(
-      y ~ treatment + (1 | subgroup),
+      y ~ -1 + treatment + (1 | subgroup),
       family = "binomial",
       data = nma_data
     ))
