@@ -53,9 +53,7 @@ my.glm <-
     cores = 1,
     refresh = 0
   )) 
-}
-  
-  if (!is.null(my.glm_prior$error|!is.null(my.glm_prior$warning))){
+} else {
       
       # if there is still error/warning, change to fixed effect model 
       my.glm_prior <-
