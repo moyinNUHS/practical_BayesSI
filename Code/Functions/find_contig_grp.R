@@ -14,16 +14,18 @@ find_contig_grp <- function(df) {
   }))
   
   # Function to check if two ranges overlap
-  check_overlap <- function(x) {
-    if (x[1] <= x[4] && x[2] >= x[3]) {
-      return(TRUE)  # Ranges overlap
-    } else {
-      return(FALSE) # Ranges do not overlap
+    check_overlap <- function(x) {
+      if(any(is.na(x))) {
+        return(NA)
+      }else{
+      if (x[1] <= x[4] && x[2] >= x[3]) {
+        return(TRUE)  # Ranges overlap
+      } else {
+        return(FALSE) # Ranges do not overlap
+      }}
     }
-  }
-  
-  out = apply(range_tb, 1, check_overlap)
-  names(out) = paste(rangelab_tb_uniq[,1], rangelab_tb_uniq[,2], sep = '-')
+    out = apply(range_tb, 1, check_overlap)
+    names(out) = paste(rangelab_tb_uniq[,1], rangelab_tb_uniq[,2], sep = '-')
   
   return(out)
 }

@@ -10,8 +10,32 @@ wd = '~/Documents/GitHub/practical/'
 setwd(wd)
 
 # load libraries and functions
+run_hpc <- FALSE
+
 scripts = paste0(wd, 'Code/Functions/', list.files('Code/Functions/'))
 lapply(scripts, source)
+
+# if run hpc, need to reload the updated simulation.R function
+# need to change the working directory in the simulation.R function
+
+if(run_hpc){
+  #library(crayon)
+  library(parallel) # one of the core R packages
+  library(doParallel)
+  library(foreach)
+  library(iterators)
+  
+  parallel::detectCores()
+  #n.cores <- parallel::detectCores() - 1
+  n.cores <- 7
+  my.cluster <- parallel::makeCluster(
+    n.cores
+  )
+  doParallel::registerDoParallel(cl = my.cluster)
+  
+  source(paste0(wd, 'Code/hpc/simulation.R'))
+}
+
 
 # set seed for reproducibility
 set.seed(3127) 
@@ -100,7 +124,6 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                T_vector = c(0.30, 0.40, 0.50, 0.60),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
-               N_patients_brk = 50, # Breaks within max and min number of patients
                N_iter = No_iter,          # Number of iterations
                scenario_name = '1.4'
 )
@@ -301,3 +324,4 @@ cat("Scenario 4.1 takes", timings$S4.1, "minutes\n")
 cat("Scenario 4.2 takes", timings$S4.2, "minutes\n")
 cat("Scenario 4.3 takes", timings$S4.3, "minutes\n")
 
+saveRDS(timings,paste0("./Code/Run_output/timing.rds"))
