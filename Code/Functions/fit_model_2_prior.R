@@ -21,7 +21,7 @@ fit_model_2_prior <- function(nma_data_prior,
   
   if (!is.null(my.glm_prior$error))
   {
-    # if there is error/warning, change optimizer
+    # if there is error, change optimizer
     my.glm_prior <-
       myTryCatch(glmer(
         y ~ -1 + treatment + (1 | subgroup),
@@ -61,7 +61,7 @@ my.glm <-
     refresh = 0
   )) 
 } else {
-#If no error
+#If no error/warning
     my.glm_prior_coeff <- fixef(my.glm_prior$value)
     
     prior <-
