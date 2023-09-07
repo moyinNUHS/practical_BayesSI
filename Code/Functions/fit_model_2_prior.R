@@ -26,79 +26,81 @@ fit_model_2_prior <- function(nma_data_prior,
       myTryCatch(glmer(
         y ~ -1 + treatment + (1 | subgroup),
         family = "binomial",
-        data = nma_data_prior, control=glmerControl(optimizer="bobyqa")
+        data = nma_data_prior, 
+        control=glmerControl(optimizer="bobyqa")
       ))
   }
-
-  if (!is.null(my.glm_prior$error | !is.null(my.glm_prior$warning))){
+  
+  if (!is.null(my.glm_prior$error) | !is.null(my.glm_prior$warning)){
     # if there is still error/warning, change to fixed effect model 
-      my.glm_prior <-
-        myTryCatch(glm(
-          y ~ -1 + treatment + subgroup,
-          family = "binomial",
-          data = nma_data_prior
-        ))
-       my.glm_prior_coeff <- my.glm_prior$coefficients
-
+    my.glm_prior <-
+      myTryCatch(glm(
+        y ~ -1 + treatment + subgroup,
+        family = "binomial",
+        data = nma_data_prior
+      ))
+    my.glm_prior_coeff <- my.glm_prior$value$coefficients
+    
     prior <-
-    normal(
-      location = my.glm_prior_coeff[1:(no_treatment + no_p - 1)],
-      scale = rep(Scale, (no_treatment + no_p - 1)),
-      autoscale = TRUE
-    )
-   
-  # model 
-my.glm <- 
-  myTryCatch(
-    stan_glmer(
-    y ~ -1 + treatment + subgroup,
-    data = nma_data,
-    prior = prior,
-    family = binomial(link = "logit"),
-    chains = 8,  
-    iter = 2000, 
-    cores = 1,
-    refresh = 0
-  )) 
-} else {
-#If no error/warning
+      normal(
+        location = my.glm_prior_coeff[1:(no_treatment + no_p - 1)],
+        scale = rep(Scale, (no_treatment + no_p - 1)),
+        autoscale = TRUE
+      )
+    
+    # model 
+    my.glm <- 
+      myTryCatch(
+        stan_glm(
+          y ~ -1 + treatment + subgroup,
+          data = nma_data,
+          prior = prior,
+          family = binomial(link = "logit"),
+          chains = 8,  
+          iter = 2000, 
+          cores = 1,
+          refresh = 0
+        )) 
+    
+  } else {
+    #If no error/warning
     my.glm_prior_coeff <- fixef(my.glm_prior$value)
     
     prior <-
-    normal(
-      location = my.glm_prior_coeff[1:no_treatment],
-      scale = rep(Scale, (no_treatment)),
-      autoscale = TRUE
-    )
-   
-  # model 
-my.glm <- 
-  myTryCatch(
-    stan_glmer(
-    y ~ -1 + treatment + (1 | subgroup),
-    data = nma_data,
-    prior = prior,
-    family = binomial(link = "logit"),
-    chains = 8,  
-    iter = 2000, 
-    cores = 1,
-    refresh = 0
-  )) 
-}
+      normal(
+        location = my.glm_prior_coeff[1:no_treatment],
+        scale = rep(Scale, (no_treatment)),
+        autoscale = TRUE
+      )
+    
+    # model 
+    my.glm <- 
+      myTryCatch(
+        stan_glmer(
+          y ~ -1 + treatment + (1 | subgroup),
+          data = nma_data,
+          prior = prior,
+          family = binomial(link = "logit"),
+          chains = 8,  
+          iter = 2000, 
+          cores = 1,
+          refresh = 0
+        )) 
+  }
   
   #If warning that samples not enough, do additional 500#
-#  if (!is.null(my.glm$warning)){
-#    my.glm = myTryCatch(
-#      update(my.glm$value, iter = 500)
-#    )
-#  }
+  #  if (!is.null(my.glm$warning)){
+  #    my.glm = myTryCatch(
+  #      update(my.glm$value, iter = 500)
+  #    )
+  #  }
   #If warning that samples still not enough, do additional 500
-#  if (!is.null(my.glm$warning)){
-#    my.glm = myTryCatch(
-#      update(my.glm$value, iter = 500)
-#    )
-#  }
-
+  #  if (!is.null(my.glm$warning)){
+  #    my.glm = myTryCatch(
+  #      update(my.glm$value, iter = 500)
+  #    )
+  #  }
+  
   
   ### my.glm<-myTryCatch(stan_glmer(y~treatment + (1 | site:subgroup), data = nma_data, prior = prior,
   #                           prior_intercept = prior_int, family = binomial(link = "logit"),

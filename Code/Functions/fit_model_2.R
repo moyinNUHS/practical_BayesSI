@@ -41,9 +41,8 @@ if (!is.null(my.glm$error)) {
     
   }  
   
-  if (is.null(my.glm$error))
+  if (is.null(my.glm$error)) {
     #if do not have an error, model is fitted
-  {
     my.glmm <- my.glm[[1]]
     
     # Type 1 error correction

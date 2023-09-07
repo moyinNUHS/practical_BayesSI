@@ -69,7 +69,7 @@ fit_model_1_NI <- function(nma_data,
     
   } else { # if there is error, do not fit model
     
-    out <- matrix(rep(NA, (no_treatment - 1) * 5), nrow = no_treatment - 1, ncol = 5)
+    out <- matrix(rep(NA, (no_treatment) * 5), nrow = no_treatment, ncol = 5)
     out[1, 5] <- my.glm$error[1]$message
     out[which(abs(out[, 1]) > 12), ] <- NA #parameter not converged is set to NA
     # } else {

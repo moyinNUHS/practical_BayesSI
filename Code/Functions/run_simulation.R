@@ -98,7 +98,6 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
                                      no_treatment = length(phi_vector), 
                                      no_pattern = length(prob_pattern),
                                      lambda = prob_pattern)
-    # for each pattern, the number of pairwise comparisons fixing a reference treatment)
     
     message('simulation outputs summarised...')
     

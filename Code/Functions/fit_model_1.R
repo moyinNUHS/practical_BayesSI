@@ -5,9 +5,9 @@
 fit_model_1 <- function(nma_data, 
                         alldata, 
                         alt_hypothesis = 'two.sided', 
+                        p = 0.05,
                         bonferr = T, 
-                        dunnett = F, 
-                        stepwise = F){
+                        dunnett = F){
   
   # number of patterns
   no_p <- no_pattern
@@ -32,10 +32,6 @@ fit_model_1 <- function(nma_data,
     } else if (bonferr == T) {
       
       out = glm_output_bonferr(model = my.glmm, p, no_treatment)
-      
-    } else if (stepwise == T) {
-      
-      stepwise_compare
       
     } else {
       
@@ -63,7 +59,7 @@ fit_model_1 <- function(nma_data,
   } else { 
     
     # if there is error, do not fit model
-    out <- matrix(rep(NA,(no_treatment-1)*5), nrow = no_treatment-1, ncol = 5 )
+    out <- matrix(rep(NA,(no_treatment)*5), nrow = no_treatment, ncol = 5 )
     out[1,5] <- my.glm$error[1]$message
     
   } 

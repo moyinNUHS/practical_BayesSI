@@ -9,11 +9,11 @@ glm_output_nocorrection <- function(model, t1_error = 0.05, alt_hypothesis = 'tw
   
   q.val.naive <- qnorm(1 - t1_error/2)
   
-  out <- cbind(Estimate = coefficients(mof)[2:no_treatment],
+  out <- cbind(Estimate = coefficients(mof)[1:no_treatment],
                model_var = std.err.naive^2,
-               z = abs(coefficients(mof)[2:no_treatment] / std.err.naive),
-               LL = coefficients(mof)[2:no_treatment] - q.val.naive  * std.err.naive,
-               UL = coefficients(mof)[2:no_treatment] + q.val.naive  * std.err.naive)
+               z = abs(coefficients(mof)[1:no_treatment] / std.err.naive),
+               LL = coefficients(mof)[1:no_treatment] - q.val.naive  * std.err.naive,
+               UL = coefficients(mof)[1:no_treatment] + q.val.naive  * std.err.naive)
   
   return(out)
 }

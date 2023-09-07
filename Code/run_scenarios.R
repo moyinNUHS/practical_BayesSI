@@ -44,8 +44,8 @@ set.seed(3127)
 timings <- list()
 
 #Specify sample size(s) for each run
-N_patients_max = 200 # Max number of patients
-N_patients_min = 100 # Min number of patients
+N_patients_max = 700 # Max number of patients
+N_patients_min = 600 # Min number of patients
 N_patients_brk = 50 # Breaks within max and min number of patients
 
 #Specify number of iterations for each scenario
@@ -70,8 +70,8 @@ No_iter = 2
 start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
-               T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - first one being reference 
-               res_rate_prior = (0.375, 0.375, 0.375, 0.375), # Priors
+               T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - % mortality 
+               res_rate_prior = c(0.375, 0.375, 0.375, 0.375), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '1.1'
