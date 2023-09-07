@@ -13,7 +13,7 @@ fit_model_1 <- function(nma_data,
   no_p <- no_pattern
   
   # model 
-  my.glm <- myTryCatch(glm(y ~ treatment + subgroup, family = "binomial", data = nma_data) )
+  my.glm <- myTryCatch(glm(y ~ -1 + treatment + subgroup, family = "binomial", data = nma_data) )
   
   if( is.null(my.glm$error) ) #if do not have an error, model is fitted
   { 

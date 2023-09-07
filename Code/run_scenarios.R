@@ -7,7 +7,6 @@ rm(list = ls())
 
 # set working directory to the `practical/` folder 
 wd = '~/Documents/GitHub/practical/'
-# wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
 setwd(wd)
 
 # load libraries and functions
@@ -71,8 +70,8 @@ No_iter = 2
 start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
-               T_vector = c(0.9, 0.01, 0.01, 0.01),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - first one being reference 
+               res_rate_prior = (0.375, 0.375, 0.375, 0.375), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '1.1'
@@ -89,7 +88,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.45, 0.35, 0.45, 0.45),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.45, 0.35, 0.45, 0.45), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '1.2'
@@ -106,7 +105,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.30, 0.35, 0.40, 0.45), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '1.3'
@@ -123,7 +122,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.30, 0.40, 0.50, 0.60),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.30, 0.40, 0.50, 0.60), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '1.4'
@@ -143,7 +142,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.175, 0.175, 0.175, 0.175),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.175, 0.175, 0.175, 0.175), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '2.1'
@@ -160,7 +159,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.10, 0.15, 0.20, 0.25),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.10, 0.15, 0.20, 0.25), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '2.2'
@@ -177,7 +176,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.825, 0.825, 0.825, 0.825),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.825, 0.825, 0.825, 0.825), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '2.3'
@@ -194,7 +193,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.75, 0.80, 0.85, 0.90),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.75, 0.80, 0.85, 0.90), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '2.4'
@@ -214,7 +213,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # Prevalence of each pattern
                T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.375, 0.375, 0.375, 0.375), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '3.1'
@@ -231,7 +230,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # Prevalence of each pattern
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.30, 0.35, 0.40, 0.45), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                scenario_name = '3.2'
@@ -251,7 +250,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.20, 0.25, 0.30, 0.35),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.20, 0.25, 0.30, 0.35), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                pattsame = FALSE,    # If effects are the same across patterns
@@ -270,7 +269,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.30, 0.35, 0.40, 0.45), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                pattsame = FALSE,    # If effects are the same across patterns
@@ -289,7 +288,7 @@ start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
+               res_rate_prior = c(0.30, 0.35, 0.40, 0.45), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations
                pattsame = FALSE,    # if effects are the same across patterns

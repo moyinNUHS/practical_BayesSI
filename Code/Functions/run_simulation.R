@@ -52,14 +52,28 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
         # pattern 4
       )
     }
-    
-    # make a matrix of prior treatment effect per pattern
+
+    if (pattsame) {
+      # make a matrix of prior treatment effect per pattern
     res_rate_mat_prior = matrix(
       res_rate_prior,
       byrow = T,
       nrow = length(pattern_list),
       ncol = length(res_rate_prior)
     )
+    } else {
+      # for scenario where treatment effects differ across patterns
+      res_rate_mat_prior = rbind(
+        c(0.2, 0.25, 0.3, 0.35),
+        # pattern 1
+        c(0.2, 0.3, 0.4, 0.5),
+        # pattern 2
+        c(0.4, 0.6, 0.75, 0.95),
+        # pattern 3
+        c(0.3, 0.4, 0.8, 0.9)     
+        # pattern 4
+      )
+    }
     
     # run code to simulate data and do analysis
     scenario_out = simulation(

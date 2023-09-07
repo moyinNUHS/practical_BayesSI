@@ -18,29 +18,29 @@ fit_model_2_NI <- function(nma_data,
   # model 
 my.glm <- 
   myTryCatch(stan_glmer(
-    y ~ treatment + (1 | subgroup),
+    y ~ -1 + treatment + (1 | subgroup),
     data = nma_data,
     prior = prior,
     prior_intercept = prior_int,
     family = binomial(link = "logit"),
-    chains = 2,  
-    iter = 1000, 
+    chains = 8,  
+    iter = 2000, 
     cores = 1,
     refresh = 0
   )) 
   
   #If warning that samples not enough, do additional 500
-  if (!is.null(my.glm$warning)){
-    my.glm = myTryCatch(
-      update(my.glm$value, iter = 500)
-    )
-  }
+#  if (!is.null(my.glm$warning)){
+#    my.glm = myTryCatch(
+#      update(my.glm$value, iter = 500)
+#    )
+#  }
   #If warning that samples still not enough, do additional 500
-  if (!is.null(my.glm$warning)){
-    my.glm = myTryCatch(
-      update(my.glm$value, iter = 500)
-    )
-  }
+#  if (!is.null(my.glm$warning)){
+#    my.glm = myTryCatch(
+#      update(my.glm$value, iter = 500)
+#    )
+#  }
   ###my.glm<-myTryCatch(stan_glmer(y~treatment + (1 | site:subgroup), data = nma_data, prior = prior,
   #prior_intercept = prior_int, family = binomial(link = "logit"),
   #cores = 1, refresh=0) )

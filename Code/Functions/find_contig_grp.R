@@ -17,19 +17,18 @@ find_contig_grp <- function(df) {
   #                   last column is upper limit of second treatment effect to be compared.
   
   # Function to check if two ranges overlap
-  if(any(is.na(range_tb))) {
-    out = NA
-  } else {
     check_overlap <- function(x) {
+      if(any(is.na(x))) {
+        return(NA)
+      }else{
       if (x[1] <= x[4] && x[2] >= x[3]) {
         return(TRUE)  # Ranges overlap
       } else {
         return(FALSE) # Ranges do not overlap
-      }
+      }}
     }
     out = apply(range_tb, 1, check_overlap)
     names(out) = paste(rangelab_tb_uniq[,1], rangelab_tb_uniq[,2], sep = '-')
-  }
   
   return(out)
 }
