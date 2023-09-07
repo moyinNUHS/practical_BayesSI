@@ -7,7 +7,7 @@ fit_model_2_prior <- function(nma_data_prior,
                               Scale, 
                               alternative = 'two-sided', 
                               p = 0.05,
-                              type1correction = T) {
+                              bonferr = T) {
   # number of patterns
   no_p <- no_pattern
   
@@ -97,13 +97,13 @@ my.glm <-
     # Treat.best<-which.min(c(0, my.glmm$coefficients[2:no_treatment]))
     # if (Treat.best==1){
     
-    if (type1correction == T) {
+    if (bonferr == T) {
       
-      out = glm_output_stan_bonferr(model =  my.glmm, p, no_treatment)
+      out = glm_output_stan_bonferr(model = my.glmm, p, no_treatment)
       
     } else {
       
-      out = glm_output_stan_nocorrection(model =  my.glmm, p, no_treatment)
+      out = glm_output_stan_nocorrection(model = my.glmm, p, no_treatment)
     }
     
     #} else {

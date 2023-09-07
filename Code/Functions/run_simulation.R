@@ -1,25 +1,25 @@
 ## function to run one scenario
 
 run_simulation <- function(pattern_list = list( # Treatment patterns
-                             pattern1 = c(2, 3), 
-                             pattern2 = c(1, 2, 3),
-                             pattern3 = c(2, 3, 4),
-                             pattern4 = c(1, 2, 3, 4)),
-                           prob_pattern,
-                           # prevalence of each pattern
-                           T_vector,
-                           # Treatment effects - first one being baseline
-                           res_rate_prior,
-                           # Priors
-                           samplesize_vec, 
-                           #Sample size for each simulation
-                           N_iter,
-                           # Number of iterations
-                           pattsame = TRUE,
-                           # if effects are the same across patterns,
-                           differsite = 0,
-                           #  how many sites have different effects,
-                           scenario_name) {
+  pattern1 = c(2, 3), 
+  pattern2 = c(1, 2, 3),
+  pattern3 = c(2, 3, 4),
+  pattern4 = c(1, 2, 3, 4)),
+  prob_pattern,
+  # prevalence of each pattern
+  T_vector,
+  # Treatment effects - first one being baseline
+  res_rate_prior,
+  # Priors
+  samplesize_vec, 
+  #Sample size for each simulation
+  N_iter,
+  # Number of iterations
+  pattsame = TRUE,
+  # if effects are the same across patterns,
+  differsite = 0,
+  #  how many sites have different effects,
+  scenario_name) {
   
   #Specify each treatment risk
   alpha_ref = find_phi(p = T_vector[1], alpha = 0)   # reference treatment effect 
@@ -89,7 +89,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     message('simulation outputs summarised...')
     
     store[[paste0('for size size = ', N)]] = list(scenario_out = scenario_out, 
-                                                   analyse_out = analyse_out)
+                                                  analyse_out = analyse_out)
     
   }
   

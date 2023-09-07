@@ -71,7 +71,7 @@ No_iter = 2
 start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
-               T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - first one being reference 
+               T_vector = c(0.9, 0.01, 0.01, 0.01),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.9, 0.7, 0.5, 0.1), # Priors
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                N_iter = No_iter,          # Number of iterations

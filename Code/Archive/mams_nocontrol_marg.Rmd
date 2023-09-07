@@ -10,7 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 rm(list = ls())
 ```
 
-_Reference: Magaret, Design of a multi-arm randomized clinical trial with no control arm. 2016 (Appendix A)_ 
+## _Reference: Magaret, Design of a multi-arm randomized clinical trial with no control arm. 2016 (Appendix A)_  {.tabset}
+
+### Magaret's method 
 
 At each interim and final analysis, decisions regarding dropping arms, stopping early for efficacy, or stopping early for futility will be made. A step-wise approach was proposed. 
 
@@ -48,7 +50,7 @@ tottx <- 4                              # total number of treatments
 num.sites <- 4                          # say we enrolled from 4 sites
 num.patients.site <- 1000               # and enrol 1000 patients per site
 num.patients.site.arm <- num.patients.site / tottx      
-p.assign <- .25 * rep(1, tottx)  # same probability of being randomised to any of the treatments 
+p.assign <- .25 * rep(1, tottx)         # same probability of being randomised to any of the treatments 
 ## say treatment efficacy for respective treatments are as follows (proportion survived), i.e. T1 is clearly the best 
 ## say no site effects at all i.e. patients from all sites had the same probability of survival
 tx_eff = c(0.9, 0.6, 0.3, 0.1) 
@@ -65,7 +67,7 @@ d = data.frame(
   dead = rep(rep(c(0, 1), 2), tottx * num.sites),
   wts = rep(c(tx_eff[1], 1 - tx_eff[1], 
               tx_eff[2], 1 - tx_eff[2], 
-              tx_eff[3], 1 - tx_eff[3], 
+              tx_eff[3], 1 - tx_eff[3], # weights referred to total number of patients who died vs survived at each site, per treatment
               tx_eff[4], 1 - tx_eff[4]) * num.patients.site.arm, num.sites)
 )
 
@@ -90,14 +92,14 @@ coefs
 
 ### Rank treatments according to coefficient values
 
-Take variance covariance matrix to use for hypothesis testing
+Take variance covariance matrix to use for hypothesis testing later
 
 ```{r}
 vc <- vcov(moddfactor)  ;  dimnames(vc) <- list(active.tx,active.tx)
 vc 
 ```
 
-Add intercept to other coefficients in order to provide mortality rate estimate (on log scale) for each treatment
+Add intercept value to other coefficients in order to provide mortality rate estimate (on log scale) for each treatment
 
 ```{r}
 ests <- coefs[,1]  
@@ -118,9 +120,11 @@ besttx; secbest; remainingb
 
 ### Step 1
 
-See if we can drop all but best by comparing best to second best, and if significant, drop all remaining
-If reference treatment in the regression is among best two, directly compare the z values (step 1b).
-If reference treatment in the regression is NOT among the best two, need correlation matrix (`vc`), we need to take into account the correlation between these coefficients (step 1c). Since the dummy variables are not orthogonal (they are correlated), the coefficients are also correlated. Therefore, directly comparing the coefficients can be misleading, as it does not account for the uncertainty and interdependence between them. The correlation matrix will give you insights into the relationships between the coefficients, indicating which treatments have similar effects and which ones have different effects on the outcome variable.
+Step 1a: See if we can drop all but best by comparing best to second best, and if significant, drop all remaining
+
+Step 1b: If reference treatment in the regression is among best two, directly compare the z values.
+
+Step 1c: If reference treatment in the regression is NOT among the best two, need correlation matrix (`vc`), we need to take into account the correlation between these coefficients. Since the dummy variables are not orthogonal (they are correlated), the coefficients are also correlated. Therefore, directly comparing the coefficients can be misleading, as it does not account for the uncertainty and interdependence between them. The correlation matrix will give you insights into the relationships between the coefficients, indicating which treatments have similar effects and which ones have different effects on the outcome variable.
 
 ```{r}
 
@@ -140,7 +144,7 @@ if (is.element(refreg, c(besttx, secbest))) { # if the reference treatment is wi
   
   ######    STEP 1c #######
   ## if reference is not among best two, need correlation matrix to compare 
-  vardiff.best <- vc[besttx, besttx] + vc[secbest,secbest] - 2*vc[besttx, secbest]
+  vardiff.best <- vc[besttx, besttx] + vc[secbest, secbest] - 2*vc[besttx, secbest]
   Zbest <- diff(rankstxs[c(besttx,secbest)]) / sqrt(vardiff.best)
   pbest <- 2*pnorm(-abs(Zbest),0,1,lower.tail=T)  
   
@@ -205,6 +209,7 @@ if (max(dropeff[remainingb]) == 0)  { # if there are treatments not dropped
     active.tx <- namestx[dropeff < 1]
     numactive.tx <- length(active.tx)
     numtries <- numtries + 1
+    
   } ## end loop over whether dropped worst 
 
   newdropfut <- 1*(pworst > pfut)
@@ -215,3 +220,6 @@ if (max(dropeff[remainingb]) == 0)  { # if there are treatments not dropped
 
 ```
 
+### PRACTical design
+
+At each interim and final analysis, decisions regarding _dropping arms_ and _stopping early for efficacy_ will be made. 

@@ -3,10 +3,10 @@
 # ---------------------------------------------------------------------------- #
 
 fit_model_1_NI <- function(nma_data, 
-                              alldata, 
-                              alternative = 'two-sided', 
-                              p = 0.05,
-                              type1correction = T) {
+                           alldata, 
+                           alternative = 'two-sided', 
+                           p = 0.05,
+                           bonferr = T) {
   
   # number of patterns
   no_p <- no_pattern
@@ -17,20 +17,20 @@ fit_model_1_NI <- function(nma_data,
   prior <- student_t(df = 7, loc_NI, scale_NI)
   prior_int <- student_t(df = 7, loc_NI, scale_NI)
   
-# model 
- my.glm <- 
-  myTryCatch(
-    stan_glm(
-    y ~ treatment + subgroup,
-    data = nma_data,
-    prior = prior,
-    prior_intercept = prior_int,
-    family = binomial(link = "logit"),
-    chains = 2,  #defult is 4 chains
-    iter = 1000, #defult is 2000; run 1000, if not enough, then run until reaching 2000
-    cores = 1,
-    refresh = 0
-  )) 
+  # model 
+  my.glm <- 
+    myTryCatch(
+      stan_glm(
+        y ~ treatment + subgroup,
+        data = nma_data,
+        prior = prior,
+        prior_intercept = prior_int,
+        family = binomial(link = "logit"),
+        chains = 2,  #defult is 4 chains
+        iter = 1000, #defult is 2000; run 1000, if not enough, then run until reaching 2000
+        cores = 1,
+        refresh = 0
+      )) 
   
   #If warning that samples not enough, do additional 500
   if (!is.null(my.glm$warning)){
@@ -58,7 +58,7 @@ fit_model_1_NI <- function(nma_data,
     #Treat.best<-which.min(c(0, my.glmm$coefficients[2:no_treatment]))
     #if (Treat.best==1){
     
-    if (type1correction == T) {
+    if (bonferr == T) {
       
       out = glm_output_stan_bonferr(model =  my.glmm, p, no_treatment)
       
