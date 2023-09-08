@@ -1,10 +1,10 @@
 # plot type 1 error - for non-NULL scenarios only
 
-plot_type2 <- function (scenario, d) {
+plot_type2 <- function (Scenario, d) {
   
-  if (scenario == '1.2') {
+  if (Scenario == '1.2') {
     best_tx = 'treatment2'
-  } else if (scenario %in% c('1.3', '1.4', '2.2', '2.4', '3.2', '4.1', '4.2', '4.3') ){
+  } else if (Scenario %in% c('1.3', '1.4', '2.2', '2.4', '3.2', '4.1', '4.2', '4.3') ){
     best_tx = 'treatment1'
     secbest_tx = 'treatment2'
   } else {
@@ -25,7 +25,11 @@ plot_type2 <- function (scenario, d) {
   
   # calculate type 2 error 
   
+  # plot 
   
+  
+  
+  ggsave(paste0(wd,"Plot/",Scenario,"_type2.png"), f, width = 8,height = 7)
   
   return()
 }

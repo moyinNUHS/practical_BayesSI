@@ -47,7 +47,7 @@ plot_mort <- function(Scenario) {
   result_plot$metrics <- factor(result_plot$metrics, levels = c("bias","empirical_var","coverage_prob","mse","mortality_gain"),
                                 labels = c("Relative bias of treatment contrasts (%)","Empirical variance", "Coverage probability (%)", "Mean squared error (%)", "Mortality reduction (%)"))
   
-  f1 = ggplot(subset(result_plot, scenario==Scenario&metrics=="Mortality reduction (%)"), aes(x=samplesize, y=value, color=method, group=method))+
+  f = ggplot(subset(result_plot, scenario==Scenario&metrics=="Mortality reduction (%)"), aes(x=samplesize, y=value, color=method, group=method))+
     geom_point(shape=3)+
     geom_line(linetype = 2,linewidth=0.5)+ 
     guides(color=guide_legend(nrow=2, byrow=TRUE))+

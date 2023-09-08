@@ -1,6 +1,6 @@
 # plot type 1 error - for NULL scenarios only
 
-plot_type1 <- function (scenario, d) {
+plot_type1 <- function (Scenario, d) {
   
   # make a long form data
   n = extract_numeric(names(d))
@@ -16,8 +16,11 @@ plot_type1 <- function (scenario, d) {
   
   # calculate type 1 error 
   
+  # plot 
   
   
+  
+  ggsave(paste0(wd,"Plot/",Scenario,"_type1.png"), f, width = 8,height = 7)
   
   return()
 }

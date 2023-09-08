@@ -49,7 +49,7 @@ plot_biasmse <- function(Scenario) {
                                 labels = c("Relative bias of treatment contrasts (%)","Empirical variance", "Coverage probability (%)", "Mean squared error (%)", "Mortality reduction (%)"))
   
   
-  f1 = ggplot(subset(result_plot, scenario==Scenario&metrics!="Mortality reduction (%)"&metrics!="Empirical variance"), aes(x=samplesize, y=value, color=method,group=interaction(treatment,method), shape=method))+
+  f = ggplot(subset(result_plot, scenario==Scenario&metrics!="Mortality reduction (%)"&metrics!="Empirical variance"), aes(x=samplesize, y=value, color=method,group=interaction(treatment,method), shape=method))+
     facet_wrap(metrics~., scales = "free_y",strip.position = "top", ncol = 1)+
     geom_point(size=1.4, position = position_dodge(width = 45))+ 
     guides(color=guide_legend(nrow=1, byrow=TRUE))+
@@ -86,9 +86,10 @@ plot_biasmse <- function(Scenario) {
       panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5),
       panel.grid.major.x = element_blank()
     )
-  ggsave(paste0(wd,"Plot/",Scenario,"_result_plot.png"),f1,width = 8,height = 7)
   
-  return(f1)
+  ggsave(paste0(wd,"Plot/",Scenario,"_biasmse.png"),f,width = 8,height = 7)
+  
+  return(f)
 }
 
 
