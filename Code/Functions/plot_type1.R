@@ -18,5 +18,6 @@ plot_type1 <- function (scenario, d) {
   
   
   
+  
   return()
 }

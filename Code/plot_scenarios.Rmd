@@ -25,6 +25,13 @@ outputs = list()
 for (file in files){
   outputs[[sub('.*/', '', file)]] = readRDS(file)
 }
+
+# define colors and shapes 
+shapes <- c("1" = 0, "1_NI" = 1, "1_wk" = 2, "1_str" = 5,
+            "2" = 15, "2_NI" = 16, "2_wk" = 17, "2_str" = 18)
+
+colors <- c("1" = "#1f78b4", "1_NI" = "#33a02c", "1_wk" = "#e31a1c", "1_str" = "#ff7f00",
+            "2" = "#6a3d9a", "2_NI" = "#a6cee3", "2_wk" = "#b2df8a", "2_str" = "#fb9a99")
 ```
 
 ## Final analysis report {.tabset .tabset-fade .tabset-pills}
