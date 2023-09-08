@@ -1,51 +1,34 @@
 # plot mortality reduction
 
-plot_mort <- function(Scenario) {
+plot_mort <- function(Scenario, d, method_labs) {
   
-  scenario <- unique(file_list)
-  samplesize <- names(output[[1]])
-  method <- names(output[[1]][[1]][["analyse_out"]][["method.property"]])
-  metrics <- c("bias", "empirical_var","coverage_prob","mse","mortality_gain")
-  treatment <- 1:nrow(output[[1]][[1]][["analyse_out"]][["method.property"]][[1]])
+  # make a long form data
+  n = parse_number(names(d))
+  wide_raw = list()
+  for (i in n) {
+    subset_size = d[[grep(as.character(i), names(d))]]
+    raw = as.data.frame(do.call(rbind, subset_size$analyse_out$method.property))
+    raw$method = rep(names(subset_size$analyse_out$method.property), each = nrow(subset_size$analyse_out$method.property[[1]]))
+    raw$n = i
+    raw$treatment = paste0('treatment', substr(rownames(raw), 4, 4))
+    wide_raw[[i]] = raw
+  }
+  wide_wide = as.data.frame(do.call(rbind, wide_raw))
+  wide = long_wide[,which(colnames(wide_wide) %in% c("treatment", "method", "bias", "empirical_var","coverage_prob","mse"))]
+  wide$method = factor(wide$method, 
+                       levels = c("est_method_1", "est_method_1_NI", "est_method_1_wk", "est_method_1_str",
+                                  "est_method_2", "est_method_2_NI", "est_method_2_wk","est_method_2_str"), 
+                       labels = method_labs)
   
-  scenario <- rep(scenario,each = length(samplesize)*length(method)*length(metrics)*length(treatment))
-  samplesize <- rep(rep(samplesize, each = length(method)*length(metrics)*length(treatment)),length(unique(scenario)))
-  method <- rep(rep(method, each = length(metrics)*length(treatment)),length(unique(scenario))*length(unique(samplesize)))
-  metrics <- rep(rep(metrics, each = length(treatment)), length(unique(scenario))*length(unique(samplesize))*length(unique(method)))
-  treatment <- rep(treatment, length(unique(scenario))*length(unique(samplesize))*length(unique(method))*length(unique(metrics)))
-  result <- data.frame(scenario, samplesize, method, metrics, treatment)
+  long = reshape2::melt(wide, id.var = c('method', 'treatment'), 
+                        variable.name = 'metric')
+  long$metric <- factor(long$metric, levels = c("bias","empirical_var","coverage_prob","mse"),
+                         labels = c("Relative bias of treatment contrasts (%)",
+                                    "Empirical variance", 
+                                    "Coverage probability (%)", 
+                                    "Mean squared error (%)"))
   
-  ## get the value for each combination 
-  value <- sapply(1:nrow(result), function(i){
-    scenario = result$scenario[i]
-    samplesize = result$samplesize[i]
-    method = result$method[i]
-    treatment = result$treatment[i]
-    metrics = result$metrics[i]
-    if(metrics %in% c("bias", "empirical_var","coverage_prob","mse")) {
-      return(as.numeric(output[[scenario]][[samplesize]][["analyse_out"]][["method.property"]][[method]][treatment,metrics]))
-    }
-    if(metrics %in% c("mortality_gain")){
-      method_all <- sapply(row.names(output[[scenario]][[samplesize]][["analyse_out"]][["estimand2"]]),function(x){
-        paste("est",x,sep = "_")
-      })
-      return(as.numeric(output[[scenario]][[samplesize]][["analyse_out"]][["estimand2"]][which(method_all==method),1]))
-    }
-  })
-  
-  result <- data.frame(result, value)
-  
-  result_plot <- result
-  ### label the method using the same symbol as those used in simulations
-  
-  result_plot$method <- factor(substr(result_plot$method, 12, nchar(result_plot$method)))
-  result_plot$scenario <- factor(substr(result_plot$scenario, 1, nchar(result_plot$scenario)-4))
-  result_plot$samplesize <- as.numeric(substr(result_plot$samplesize, 17, nchar(result_plot$samplesize)))
-  ## Levels: C C_NI C_str C_wk C2 C2_NI C2_str C2_wk
-  ## label change to -> 1 1_NI 1_str 1_wk 2 2_NI 2_str 2_wk 
-  result_plot$treatment <- factor(result_plot$treatment)
-  result_plot$metrics <- factor(result_plot$metrics, levels = c("bias","empirical_var","coverage_prob","mse","mortality_gain"),
-                                labels = c("Relative bias of treatment contrasts (%)","Empirical variance", "Coverage probability (%)", "Mean squared error (%)", "Mortality reduction (%)"))
+  # plot 
   
   f = ggplot(subset(result_plot, scenario==Scenario&metrics=="Mortality reduction (%)"), aes(x=samplesize, y=value, color=method, group=method))+
     geom_point(shape=3)+
