@@ -29,9 +29,17 @@ for (file in files){
 
 ## Final analysis report {.tabset .tabset-fade .tabset-pills}
 
-### Plots 
+### Power
+
+```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+
+
+
+```
+
+
+### Type 1 error
 
 ```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
 
 ```
-
