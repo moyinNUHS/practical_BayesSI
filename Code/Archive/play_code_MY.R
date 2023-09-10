@@ -129,6 +129,3 @@ alt_hypothesis = 'two.sided'
 bonferr = T
 dunnett = F
 p = 0.05
-
-Scale_wk <- 5     #Larger scale assigns less importance to prior distribution
-Scale_str <- 1    #Smaller scale assigns more importance to prior distribution

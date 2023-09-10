@@ -1,8 +1,9 @@
 
 find_contig_grp <- function(df) {
   
-  ranges = apply(df, 1, function(x) {
-    c(x[['LL']], x[['UL']])
+  # Extract ranges from the data.frames 
+  ranges = apply(df, 1, function(tx) {
+    c(tx[['LL']], tx[['UL']])
   })
   
   # Create list for comparison 
@@ -17,18 +18,40 @@ find_contig_grp <- function(df) {
   #                   last column is upper limit of second treatment effect to be compared.
   
   # Function to check if two ranges overlap
-    check_overlap <- function(x) {
-      if(any(is.na(x))) {
-        return(NA)
-      }else{
+  check_overlap <- function(x) {
+    if(any(is.na(x))) {
+      
+      return('no estimates')
+      
+    } else {
       if (x[1] <= x[4] && x[2] >= x[3]) {
-        return(TRUE)  # Ranges overlap
+        
+        return('overlap')  # Ranges overlap
+        
       } else {
-        return(FALSE) # Ranges do not overlap
-      }}
+        
+        if (x[2] < x[3]) {
+          
+          return('1st is better') # Ranges do not overlap
+          
+        } else {
+          
+          return('2nd is better') # Ranges do not overlap
+          
+        }
+        
+      }
     }
-    out = apply(range_tb, 1, check_overlap)
-    names(out) = paste(rangelab_tb_uniq[,1], rangelab_tb_uniq[,2], sep = '-')
+  }
+  
+  out = apply(range_tb, 1, check_overlap)
+  names(out) = paste(rangelab_tb_uniq[,1], rangelab_tb_uniq[,2], sep = '-')
+  
+  # Label which treatment is better 
+  out[which(out == '1st is better')] = parse_number(names(out)[which(out == '1st is better')])
+  out[which(out == '2nd is better')] = substr((names(out)[which(out == '2nd is better')]), 
+                                              nchar((names(out)[which(out == '2nd is better')])), 
+                                              nchar((names(out)[which(out == '2nd is better')])))
   
   return(out)
 }

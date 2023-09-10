@@ -1,7 +1,7 @@
 # plot bias, coverage and MSE
 
 
-plot_biasmse <- function(Scenario, method_labs) {
+plot_biasmse <- function(Scenario, .method_labs = method_labs, d) {
   
   # make a long form data
   n = parse_number(names(d))
@@ -21,7 +21,7 @@ plot_biasmse <- function(Scenario, method_labs) {
   wide$method = factor(wide$method, 
                        levels = c("est_method_1", "est_method_1_NI", "est_method_1_wk", "est_method_1_str",
                                   "est_method_2", "est_method_2_NI", "est_method_2_wk","est_method_2_str"), 
-                       labels = method_labs)
+                       labels = .method_labs)
   
   long = reshape2::melt(wide, id.var = c('method', 'treatment', 'n'), 
                         variable.name = 'metric')
@@ -70,8 +70,7 @@ plot_biasmse <- function(Scenario, method_labs) {
       panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5),
       panel.grid.major.x = element_blank()
     )
-  
-  ggsave(paste0(wd,"Plot/", Scenario, "_biasmse.png"), f, width = 8,height = 7)
+
   
   return(f)
 }

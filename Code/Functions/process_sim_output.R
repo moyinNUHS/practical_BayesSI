@@ -36,8 +36,8 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
     model_var_all[[m]] = do.call(rbind, rows)
     
     # contiguous groups
-    rows = lapply(df_list, find_contig_grp)
-    conti_grp[[m]] = do.call(rbind, rows)
+    # rows = lapply(df_list, find_contig_grp)
+    # conti_grp[[m]] = do.call(rbind, rows)
     
   }
     
@@ -144,7 +144,7 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
     ex_performance_out = ex_performance_out,
     suggested_treatment_each = suggested_treatment_each,
     estimator_all = estimator_all,
-    contiguous_grp = conti_grp,
+    #contiguous_grp = conti_grp,
     #model_var_all=model_var_all,
     #all_diff_min=all_diff_min,
     method_fail_no = methodA_fail_no,

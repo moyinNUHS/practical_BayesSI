@@ -7,40 +7,29 @@ plot_mort <- function(Scenario, d, method_labs) {
   wide_raw = list()
   for (i in n) {
     subset_size = d[[grep(as.character(i), names(d))]]
-    raw = as.data.frame(do.call(rbind, subset_size$analyse_out$method.property))
-    raw$method = rep(names(subset_size$analyse_out$method.property), each = nrow(subset_size$analyse_out$method.property[[1]]))
+    raw = as.data.frame(subset_size$analyse_out$estimand2)
+    raw$method = rownames(raw)
     raw$n = i
-    raw$treatment = paste0('treatment', substr(rownames(raw), 4, 4))
     wide_raw[[i]] = raw
   }
-  wide_wide = as.data.frame(do.call(rbind, wide_raw))
-  wide = long_wide[,which(colnames(wide_wide) %in% c("treatment", "method", "bias", "empirical_var","coverage_prob","mse"))]
-  wide$method = factor(wide$method, 
-                       levels = c("est_method_1", "est_method_1_NI", "est_method_1_wk", "est_method_1_str",
-                                  "est_method_2", "est_method_2_NI", "est_method_2_wk","est_method_2_str"), 
+  wide = as.data.frame(do.call(rbind, wide_raw))
+  long = wide[,which(colnames(wide) %in% c("n", "treatment", "method", "mortality_gain"))]
+  long$method = factor(long$method, 
+                       levels = c("method_1", "method_1_NI", "method_1_wk", "method_1_str",
+                                  "method_2", "method_2_NI", "method_2_wk","method_2_str"), 
                        labels = method_labs)
   
-  long = reshape2::melt(wide, id.var = c('method', 'treatment'), 
-                        variable.name = 'metric')
-  long$metric <- factor(long$metric, levels = c("bias","empirical_var","coverage_prob","mse"),
-                         labels = c("Relative bias of treatment contrasts (%)",
-                                    "Empirical variance", 
-                                    "Coverage probability (%)", 
-                                    "Mean squared error (%)"))
-  
   # plot 
-  
-  f = ggplot(subset(result_plot, scenario==Scenario&metrics=="Mortality reduction (%)"), aes(x=samplesize, y=value, color=method, group=method))+
+  f = ggplot(long, aes(x = n, y = mortality_gain, color = method, group = method)) +
     geom_point(shape=3)+
     geom_line(linetype = 2,linewidth=0.5)+ 
     guides(color=guide_legend(nrow=2, byrow=TRUE))+
     scale_color_manual(values = colors)+
     labs(shape = NULL, color=NULL)+
-    scale_x_continuous(breaks = c(100,150,200))+
+    scale_x_continuous(breaks = unique(long$n))+
     labs(
       linetype = NULL,
       color = NULL,
-      title = "Mortality Reduction by Sample Size",
       x = "Sample Size",
       y = "Mortality reduction (%)"
     )+
@@ -60,18 +49,12 @@ plot_mort <- function(Scenario, d, method_labs) {
       panel.grid.major.x = element_blank(),
       panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5))
   
-  ggsave(paste0(wd,"Plots/", Scenario,"_mortality_plot.png"), f1,width = 8,height = 5)
+  ggsave(paste0(wd,"Plots/", Scenario,"_mortality_plot.png"), f,width = 8, height = 6)
   
-  return(f1)
+  return(f)
   
 }
 
-lapply(1:length(unique(result_plot$scenario)), function(x){
-  genFigure(Scenario = as.character(unique(result_plot$scenario)[x]),Metrics = "estimation")
-})
-lapply(1:length(unique(result_plot$scenario)), function(x){
-  genFigure(Scenario = as.character(unique(result_plot$scenario)[x]),Metrics = "mortality")
-})
 
 
 

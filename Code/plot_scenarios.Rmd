@@ -1,7 +1,7 @@
 ---
 title: "Plots for simulation scenarios"
 author: "Mo Yin"
-date: "2023-06-21"
+date: "2023-09-08"
 output: html_document
 ---
 
@@ -16,11 +16,11 @@ wd = '~/Documents/GitHub/practical/'
 setwd(wd)
 
 # load libraries and functions
-scripts = paste0(wd, 'Code/Functions/', list.files('Code/Functions/'))
+scripts = paste0(wd, 'Code/Functions/', list.files(paste0(wd, 'Code/Functions/')))
 lapply(scripts, source)
 
 # load data in the output folder 
-files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "*.rds")
+files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "10_2023-09-08*.rds")
 outputs = list()
 for (file in files){
   outputs[[sub('.*/', '', file)]] = readRDS(file)
@@ -38,17 +38,166 @@ names(shapes) = names(colors) = method_labs
 
 ## Final analysis report {.tabset .tabset-fade .tabset-pills}
 
-### Power
+### Bias, Coverage, MSE
+
+Each point from left to right for each method represents a performance measure of an estimated \ncontrast between treatments 2, 3, and 4 relative to treatment 1.
+
+#### Scenario 1.1
 
 ```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
 
+ind = grep('1.1', files)
+if (length(ind) == 1) {
+  f = plot_biasmse(Scenario = '1.1', d = outputs[[ind]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
 
+f
+
+#ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
 
 
-### Type 1 error
+#### Scenario 1.2
+Treatment B is better than treatments A, C and D: 
+TB = 35%; and 
+Tj = 45%, j = A, C, D
 
 ```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+
+ind = grep('1.2', files)
+if (length(ind) == 1) {
+  f = plot_biasmse(Scenario = '1.2', d = outputs[[ind]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+f
+
+#ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.2_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+#### Scenario 1.3
+All 4 treatments have different effects (small difference):
+TA = 30%; TB = 35%; TC = 40%; TD = 45%
+
+```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+
+ind = grep('1.3', files)
+if (length(ind) == 1) {
+  f = plot_biasmse(Scenario = '1.3', d = outputs[[ind]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+f
+
+#ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+
+### Mortality gain
+
+#### Scenario 1.2
+Treatment B is better than treatments A, C and D: 
+TB = 35%; and 
+Tj = 45%, j = A, C, D
+
+```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+
+ind = grep('1.2', files)
+if (length(ind) == 1) {
+  f = plot_mort(Scenario = '1.2', d = outputs[[ind]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+f
+
+#ggsave(paste0(wd,"Code/Plots/mort_scenario1.2_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+#### Scenario 1.3
+All 4 treatments have different effects (small difference):
+TA = 30%; TB = 35%; TC = 40%; TD = 45%
+
+```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+
+ind = grep('1.3', files)
+if (length(ind) == 1) {
+  f = plot_mort(Scenario = '1.3', d = outputs[[ind]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+f
+
+#ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+
+### Power
+
+#### Scenario 1.2
+Treatment B is better than treatments A, C and D: 
+TB = 35%; and 
+Tj = 45%, j = A, C, D
+
+```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+
+ind = grep('1.2', files)
+if (length(ind) == 1) {
+  f = plot_type2(Scenario = '1.2', d = outputs[[ind]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+f
+
+#ggsave(paste0(wd,"Code/Plots/type2_scenario1.2_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+#### Scenario 1.3
+All 4 treatments have different effects (small difference):
+TA = 30%; TB = 35%; TC = 40%; TD = 45%
+
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+
+ind = grep('1.3', files)
+if (length(ind) == 1) {
+  f = plot_type2(Scenario = '1.3', d = outputs[[ind]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+f
+
+#ggsave(paste0(wd,"Code/Plots/type2_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+### Type 1 error
+
+#### Scenario 1.1
+
+```{r, echo = FALSE, fig.align="center",fig.height = 10, fig.width = 12}
+
+ind = grep('1.1', files)
+if (length(ind) == 1) {
+  f = plot_type1(Scenario = '1.1', d = outputs[[ind]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+f
+
+#ggsave(paste0(wd,"Code/Plots/type1_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
