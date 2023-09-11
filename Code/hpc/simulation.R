@@ -6,6 +6,8 @@ simulation <- function(N,
                        phi_v,
                        pattern,
                        res_probability_prior,
+                       res_probability_prior_ur1,
+                       res_probability_prior_ur2,
                        res_probability_all,
                        prob_pattern,
                        differsite = 0,
@@ -75,7 +77,8 @@ simulation <- function(N,
     library(multcomp)
     library(rstanarm)
     
-    wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
+    #wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
+    wd = '/data/chakraborty/home/e0859927/practical/'
     setwd(wd)
     scripts = paste0(wd, 'Code/Functions/', list.files('Code/Functions/')[which(list.files('Code/Functions/')!="simulation.R")])
     lapply(scripts, source)
@@ -91,6 +94,8 @@ simulation <- function(N,
       size_pattern,
       pattern,
       res_probability_prior,
+      res_probability_prior_ur1,
+      res_probability_prior_ur2,
       res_probability_all,
       differsite
     )
@@ -103,7 +108,7 @@ simulation <- function(N,
     # We explore both a weakly & strongly informative prior distribution
     Scale_wk <- 5     #Larger scale assigns less importance to prior distribution
     Scale_str <- 1    #Smaller scale assigns more importance to prior distribution
-
+    
     # generate prior historical data 
     # put historical data in a dataframe - outcome, treatment, pattern/subgroup
     nma_data_prior <- data.frame(
@@ -112,6 +117,26 @@ simulation <- function(N,
         unlist(sim_data[['prior_data']][2,])
       ))),
       subgroup = factor(unlist(sim_data[['prior_data']][4,]))#,
+      #site=factor(unlist(sim_data[['prior_data']][5,]))
+    )
+    
+    # put historical data in a dataframe - outcome, treatment, pattern/subgroup
+    nma_data_prior_ur1 <- data.frame(
+      y = unlist(sim_data[['prior_data_ur1']][1,]),
+      treatment = factor(unlist(sim_data[['prior_data_ur1']][2,]), levels = sort(unique(
+        unlist(sim_data[['prior_data_ur1']][2,])
+      ))),
+      subgroup = factor(unlist(sim_data[['prior_data_ur1']][4,]))#,
+      #site=factor(unlist(sim_data[['prior_data']][5,]))
+    )
+    
+    # put historical data in a dataframe - outcome, treatment, pattern/subgroup
+    nma_data_prior_ur2 <- data.frame(
+      y = unlist(sim_data[['prior_data_ur2']][1,]),
+      treatment = factor(unlist(sim_data[['prior_data_ur2']][2,]), levels = sort(unique(
+        unlist(sim_data[['prior_data_ur2']][2,])
+      ))),
+      subgroup = factor(unlist(sim_data[['prior_data_ur2']][4,]))#,
       #site=factor(unlist(sim_data[['prior_data']][5,]))
     )
     
@@ -129,8 +154,14 @@ simulation <- function(N,
     # Fixed effects models
     est_method_1 <- fit_model_1(nma_data, sim_data[['trial_data']]) # use current trial data
     est_method_1_NI <- fit_model_1_NI(nma_data, sim_data[['trial_data']]) # use current trial data, Bayesian
-    est_method_1_wk <- fit_model_1_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale_wk) # use current trial data + prior data, Bayesian
-    est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale_str) # use current trial data + prior data, Bayesian
+    est_method_1_wk <- fit_model_1_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data, Bayesian
+    est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data, Bayesian
+    
+    est_method_1_wk_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
+    est_method_1_str_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
+    
+    est_method_1_wk_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
+    est_method_1_str_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
     
     # Use a hierarchical structure
     est_method_2 <-
@@ -138,9 +169,15 @@ simulation <- function(N,
     est_method_2_NI <-
       fit_model_2_NI(nma_data, sim_data[['trial_data']]) # use current trial data, Bayesian
     est_method_2_wk <-
-      fit_model_2_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale_wk) # use current trial data + prior data, Bayesian
+      fit_model_2_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data, Bayesian
     est_method_2_str <-
-      fit_model_2_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale_str) # use current trial data + prior data, Bayesian
+      fit_model_2_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data, Bayesian
+    
+    
+    est_method_2_wk_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
+    est_method_2_str_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
+    est_method_2_wk_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
+    est_method_2_str_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
     
     ##############################################################
     ## Ranking of treatments
@@ -152,10 +189,18 @@ simulation <- function(N,
       method_1_NI = est_method_1_NI$ranking[1, ],
       method_1_wk = est_method_1_wk$ranking[1, ],
       method_1_str = est_method_1_str$ranking[1, ],
+      method_1_wk_ur1 = est_method_1_wk_ur1$ranking[1, ],
+      method_1_str_ur1 = est_method_1_str_ur1$ranking[1, ],
+      method_1_wk_ur2 = est_method_1_wk_ur2$ranking[1, ],
+      method_1_str_ur2 = est_method_1_str_ur2$ranking[1, ],
       method_2 = est_method_2$ranking[1, ],
       method_2_NI = est_method_2_NI$ranking[1, ],
       method_2_wk = est_method_2_wk$ranking[1, ],
-      method_2_str = est_method_2_str$ranking[1, ]
+      method_2_str = est_method_2_str$ranking[1, ],
+      method_2_wk_ur1 = est_method_2_wk_ur1$ranking[1, ],
+      method_2_str_ur1 = est_method_2_str_ur1$ranking[1, ],
+      method_2_wk_ur2 = est_method_2_wk_ur2$ranking[1, ],
+      method_2_str_ur2 = est_method_2_str_ur2$ranking[1, ]
     )
     
     n_method <- dim(identified_best_t)[1] # how many methods compared 
@@ -183,26 +228,26 @@ simulation <- function(N,
         identify_best_rate[m, ] - true.mean.min[2, ]
       }))
     
- #   best_treatment_I <- diff_min == 0
+    #   best_treatment_I <- diff_min == 0
     
     nearbest_treatment_5 <- diff_min - 0.05 <= 0
-  #  nearbest_treatment_10 <- diff_min - 0.1 <= 0
+    #  nearbest_treatment_10 <- diff_min - 0.1 <= 0
     
     rownames(mortality_gain) <-
       rownames(mortality_gain_ratio) <-
       rownames(better_treatment_I) <- 
       rownames(diff_min) <- 
-  #    rownames(best_treatment_I) <- 
-    #  rownames(nearbest_treatment_10) <- 
+      #    rownames(best_treatment_I) <- 
+      #  rownames(nearbest_treatment_10) <- 
       rownames(nearbest_treatment_5) <- rownames(identified_best_t)
     
     estimand2 <- list(
       mortality_gain = mortality_gain,
       mortality_gain_ratio = mortality_gain_ratio,
       better_treatment_I = better_treatment_I,
-   #   best_treatment_I = best_treatment_I,
+      #   best_treatment_I = best_treatment_I,
       nearbest_treatment_5 = nearbest_treatment_5,
-   #   nearbest_treatment_10 = nearbest_treatment_10,
+      #   nearbest_treatment_10 = nearbest_treatment_10,
       diff_min = diff_min
     )
     
@@ -212,10 +257,19 @@ simulation <- function(N,
       method_1_NI = est_method_1_NI$ranking[2, ],
       method_1_wk = est_method_1_wk$ranking[2, ],
       method_1_str = est_method_1_str$ranking[2, ],
+      method_1_wk_ur1 = est_method_1_wk_ur1$ranking[2, ],
+      method_1_str_ur1 = est_method_1_str_ur1$ranking[2, ],
+      method_1_wk_ur2 = est_method_1_wk_ur2$ranking[2, ],
+      method_1_str_ur2 = est_method_1_str_ur2$ranking[2, ],
+      
       method_2 = est_method_2$ranking[2, ],
       method_2_NI = est_method_2_NI$ranking[2, ],
       method_2_wk = est_method_2_wk$ranking[2, ],
-      method_2_str = est_method_2_str$ranking[2, ]
+      method_2_str = est_method_2_str$ranking[2, ],
+      method_2_wk_ur1 = est_method_2_wk_ur1$ranking[2, ],
+      method_2_str_ur1 = est_method_2_str_ur1$ranking[2, ],
+      method_2_wk_ur2 = est_method_2_wk_ur2$ranking[2, ],
+      method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
     )
     
     # print errors if a model did not fit 
@@ -236,10 +290,19 @@ simulation <- function(N,
       est_method_1_NI = est_method_1_NI$contrast.est,
       est_method_1_wk = est_method_1_wk$contrast.est,
       est_method_1_str = est_method_1_str$contrast.est,
+      est_method_1_wk_ur1 = est_method_1_wk_ur1$contrast.est,
+      est_method_1_str_ur1 = est_method_1_str_ur1$contrast.est,
+      est_method_1_wk_ur2 = est_method_1_wk_ur2$contrast.est,
+      est_method_1_str_ur2 = est_method_1_str_ur2$contrast.est,
+      
       est_method_2 = est_method_2$contrast.est,
       est_method_2_NI = est_method_2_NI$contrast.est,
       est_method_2_wk = est_method_2_wk$contrast.est,
       est_method_2_str = est_method_2_str$contrast.est,
+      est_method_2_wk_ur1 = est_method_2_wk_ur1$contrast.est,
+      est_method_2_str_ur1 = est_method_2_str_ur1$contrast.est,
+      est_method_2_wk_ur2 = est_method_2_wk_ur2$contrast.est,
+      est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
       performance_m = estimand2,
       identify_fail = identify_fail,
       freq_t_subgroup = sim_data[['freq_t_subgroup']],
