@@ -2,6 +2,7 @@
 
 gen.data <- function(no_pattern, 
                      size_pattern, 
+                     size_pattern_hist,
                      pattern, 
                      res_probability_prior,
                      res_probability_prior_ur1,
@@ -12,7 +13,7 @@ gen.data <- function(no_pattern,
   # generate one prior dataset - to use as priors for Bayesian analysis with representative priors
   Alldata_prior <- sapply(1:no_pattern, function(i){
     generate_subset_data(i, 
-                         size_pattern. = size_pattern, 
+                         size_pattern. = size_pattern_hist, 
                          pattern. = pattern, 
                          res_probability_all. = res_probability_prior)
   })
@@ -20,7 +21,7 @@ gen.data <- function(no_pattern,
   # generate one prior dataset - to use as priors for Bayesian analysis with unrepresentative priors 1
   Alldata_prior_ur1 <- sapply(1:no_pattern, function(i){
     generate_subset_data(i, 
-                         size_pattern. = size_pattern, 
+                         size_pattern. = size_pattern_hist, 
                          pattern. = pattern, 
                          res_probability_all. = res_probability_prior_ur1)
   })
@@ -28,7 +29,7 @@ gen.data <- function(no_pattern,
   # generate one prior dataset - to use as priors for Bayesian analysis with unrepresentative priors 2
   Alldata_prior_ur2 <- sapply(1:no_pattern, function(i){
     generate_subset_data(i, 
-                         size_pattern. = size_pattern, 
+                         size_pattern. = size_pattern_hist, 
                          pattern. = pattern, 
                          res_probability_all. = res_probability_prior_ur2)
   })

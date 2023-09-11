@@ -51,6 +51,9 @@ N_patients_max = 700 # Max number of patients
 N_patients_min = 400 # Min number of patients
 N_patients_brk = 100 # Breaks within max and min number of patients
 
+#Specify sample size of historical clinical trial
+N_hist=500
+
 #Specify number of iterations for each scenario
 No_iter = 10
 
@@ -78,6 +81,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.275, 0.275, 0.275, 0.275), # Priors ur1
                res_rate_prior_ur2 = c(0.175, 0.175, 0.175, 0.175), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario1.1', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
@@ -97,6 +101,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.35, 0.25, 0.35, 0.35), # Priors ur1
                res_rate_prior_ur2 = c(0.25, 0.15, 0.25, 0.25), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario1.2', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
@@ -116,6 +121,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.20, 0.25, 0.30, 0.35), # Priors ur1
                res_rate_prior_ur2 = c(0.10, 0.15, 0.20, 0.25), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario1.3', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
@@ -135,6 +141,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.20, 0.30, 0.40, 0.50), # Priors ur1
                res_rate_prior_ur2 = c(0.10, 0.20, 0.30, 0.40), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario1.4', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
@@ -157,6 +164,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.075, 0.075, 0.075, 0.075), # Priors ur1
                res_rate_prior_ur2 = c(-0.925, -0.925, -0.925, -0.925), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario2.1', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
@@ -176,6 +184,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.10-0.1, 0.15-0.1, 0.20-0.1, 0.25-0.1), # Priors ur1
                res_rate_prior_ur2 = c(0.10-0.1, 0.15-0.1, 0.20-0.1, 0.25-0.1), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario2.2', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
@@ -195,6 +204,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.825-0.1, 0.825-0.1, 0.825-0.1, 0.825-0.1), # Priors ur1
                res_rate_prior_ur2 = c(0.825-0.1, 0.825-0.1, 0.825-0.1, 0.825-0.1), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario2.3', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
@@ -214,6 +224,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.75-0.1, 0.80-0.1, 0.85-0.1, 0.90-0.1), # Priors ur1
                res_rate_prior_ur2 = c(0.75-0.1, 0.80-0.1, 0.85-0.1, 0.90-0.1), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario2.4', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
@@ -236,6 +247,7 @@ run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # P
                res_rate_prior_ur1 = c(0.375-0.1, 0.375-0.1, 0.375-0.1, 0.375-0.1), # Priors ur1
                res_rate_prior_ur2 = c(0.375-0.1, 0.375-0.1, 0.375-0.1, 0.375-0.1), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario3.1', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
@@ -255,6 +267,7 @@ run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # P
                res_rate_prior_ur1 = c(0.30-0.1, 0.35-0.1, 0.40-0.1, 0.45-0.1), # Priors ur1
                res_rate_prior_ur2 = c(0.30-0.1, 0.35-0.1, 0.40-0.1, 0.45-0.1), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario3.2', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
@@ -277,6 +290,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.20-0.1, 0.25-0.1, 0.30-0.1, 0.35-0.1), # Priors ur1
                res_rate_prior_ur2 = c(0.20-0.1, 0.25-0.1, 0.30-0.1, 0.35-0.1), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                pattsame = FALSE,    # If effects are the same across patterns
                differsite = 0,      # How many sites have different effects
@@ -298,6 +312,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.30-0.1, 0.35-0.1, 0.40-0.1, 0.45-0.1), # Priors ur1
                res_rate_prior_ur2 = c(0.30-0.1, 0.35-0.1, 0.40-0.1, 0.45-0.1), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                pattsame = TRUE,    # If effects are the same across patterns
                differsite = 2,      # How many sites have different effects
@@ -319,6 +334,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                res_rate_prior_ur1 = c(0.30-0.1, 0.35-0.1, 0.40-0.1, 0.45-0.1), # Priors ur1
                res_rate_prior_ur2 = c(0.30-0.1, 0.35-0.1, 0.40-0.1, 0.45-0.1), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                pattsame = TRUE,    # if effects are the same across patterns
                differsite = 4,      # how many sites have different effects
