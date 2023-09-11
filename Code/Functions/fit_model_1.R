@@ -5,7 +5,9 @@
 fit_model_1 <- function(nma_data, 
                         alldata, 
                         alt_hypothesis = 'two.sided', 
-                        type1correction = T){
+                        p = 0.05,
+                        bonferr = T, 
+                        dunnett = F){
   
   # number of patterns
   no_p <- no_pattern
@@ -23,17 +25,21 @@ fit_model_1 <- function(nma_data,
     # if (Treat.best==1){
     
     # Type 1 error correction 
-    if (type1correction == T) {
+    if (dunnett == T) {
       
       out = glm_output_dunnett(my.glmm)
 
+    } else if (bonferr == T) {
+      
+      out = glm_output_bonferr(model = my.glmm, p, no_treatment)
+      
     } else {
       
       out = glm_output_nocorrection(my.glmm)
       
     }
 
-    # comparison between no adjustmentfor multiplicity vs with adjustment with Dunnett Stepdown
+    # comparison between no adjustment for multiplicity vs with adjustment with Dunnett Stepdown
     ## estimates remain the same between out and out.naive 
     ## model variance and confidence intervals inflated 
     
@@ -53,7 +59,7 @@ fit_model_1 <- function(nma_data,
   } else { 
     
     # if there is error, do not fit model
-    out <- matrix(rep(NA,(no_treatment-1)*5), nrow = no_treatment-1, ncol = 5 )
+    out <- matrix(rep(NA,(no_treatment)*5), nrow = no_treatment, ncol = 5 )
     out[1,5] <- my.glm$error[1]$message
     
   } 

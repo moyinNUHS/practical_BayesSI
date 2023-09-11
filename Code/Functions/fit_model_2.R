@@ -5,7 +5,8 @@ fit_model_2 <- function(nma_data,
                         alldata,
                         alternative = 'two-sided', 
                         p = 0.05,
-                        type1correction = T) {
+                        bonferr = T, 
+                        dunnett = F) {
   # number of patterns
   no_p <- no_pattern
   
@@ -40,20 +41,22 @@ if (!is.null(my.glm$error)) {
     
   }  
   
-  if (is.null(my.glm$error))
+  if (is.null(my.glm$error)) {
     #if do not have an error, model is fitted
-  {
     my.glmm <- my.glm[[1]]
     
     # Type 1 error correction
-    
-    #########
-    #THIS IS NOT WORKING YET!!!
-    #########
-    if (type1correction == T) {
+  
+    if (dunnett == T) {
+      
       out = glm_output_dunnett(my.glmm)
       
+    } else if (bonferr == T) {
+      
+      out = glm_output_bonferr(model = my.glmm, p, no_treatment)
+      
     } else {
+      
       out = glm_output_nocorrection(my.glmm)
       
     }

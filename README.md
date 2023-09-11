@@ -14,4 +14,8 @@ This Rmd file plots the outputs loaded from the `Code/Run_outputs` folder.
 
 This folder contains all functions used for simulation, analysis and plots. 
 
-the key function is the `simulation.R` function which creates simulated data and performs the analysis.
+The key function is the `simulation.R` function which creates simulated data and performs the analysis.
+
+## `Plots` folder 
+
+This folder contains all plots.

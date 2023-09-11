@@ -1,11 +1,12 @@
 library(ggplot2)
 #### set working directory
-wd <- './practical/'
+wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
 setwd(wd)
 ### detect scenarios in the run_output
 
 file_list <- list.files("Code/Run_output")
-file_num <- length(list.files("Code/Run_output"))
+file_list <- file_list[grep("2023-09-09", file_list)] ## specify the date of the data you would like to extract
+file_num <- length(file_list)
 output <-   lapply(1:file_num, function(i){
   readRDS(paste0(wd,"Code/Run_output/",file_list[i]))})
 
@@ -50,28 +51,31 @@ result_plot <- result
 ### label the method using the same symbol as those used in simulations
 
 result_plot$method <- factor(substr(result_plot$method, 12, nchar(result_plot$method)))
-result_plot$scenario <- factor(substr(result_plot$scenario, 1, nchar(result_plot$scenario)-4))
+result_plot$scenario <- factor(substr(result_plot$scenario, 9, 19))
 result_plot$samplesize <- as.numeric(substr(result_plot$samplesize, 17, nchar(result_plot$samplesize)))
 ## Levels: C C_NI C_str C_wk C2 C2_NI C2_str C2_wk
 ## label change to -> 1 1_NI 1_str 1_wk 2 2_NI 2_str 2_wk 
 result_plot$treatment <- factor(result_plot$treatment)
 result_plot$metrics <- factor(result_plot$metrics, levels = c("bias","empirical_var","coverage_prob","mse","mortality_gain"),
                               labels = c("Relative bias of treatment contrasts (%)","Empirical variance", "Coverage probability (%)", "Mean squared error (%)", "Mortality reduction (%)"))
-
+result_plot$method <- factor(result_plot$method, levels = c("1", "1_NI", "1_wk", "1_str","1_wk_ur1", "1_str_ur1","1_wk_ur2", "1_str_ur2",
+                                                            "2", "2_NI", "2_wk", "2_str", "2_wk_ur1", "2_str_ur1", "2_wk_ur2", "2_str_ur2"))
 
 genFigure <- function(Scenario,Metrics){
-  shapes <- c("1" = 0, "1_NI" = 1, "1_wk" = 2, "1_str" = 5,
-              "2" = 15, "2_NI" = 16, "2_wk" = 17, "2_str" = 18)
+  shapes <- c("1" = 48, "1_NI" = 49, "1_wk" = 50, "1_str" = 51,"1_wk_ur1" = 52, "1_str_ur1" = 53,"1_wk_ur2" = 54, "1_str_ur2" = 55,
+              "2" = 97, "2_NI" = 98, "2_wk" = 99, "2_str" = 100, "2_wk_ur1" = 101, "2_str_ur1" = 102, "2_wk_ur2" = 103, "2_str_ur2" = 104)
   
   colors <- c("1" = "#1f78b4", "1_NI" = "#33a02c", "1_wk" = "#e31a1c", "1_str" = "#ff7f00",
-              "2" = "#6a3d9a", "2_NI" = "#a6cee3", "2_wk" = "#b2df8a", "2_str" = "#fb9a99")
+              "1_wk_ur1" = "#fdbf6f", "1_str_ur1" = "#cab2d6","1_wk_ur2" = "#b15928", "1_str_ur2" = "#660033",
+              "2" = "#6a3d9a", "2_NI" = "#a6cee3", "2_wk" = "#b2df8a", "2_str" = "#fb9a99",
+              "2_wk_ur1" = "#FF5733", "2_str_ur1" = "#007A33" , "2_wk_ur2" = "#FFC300", "2_str_ur2" =  "#00FF00")
   
   ### for mse, bias coverage
   if(Metrics=="estimation"){
     f1 = ggplot(subset(result_plot, scenario==Scenario&metrics!="Mortality reduction (%)"&metrics!="Empirical variance"), aes(x=samplesize, y=value, color=method,group=interaction(treatment,method), shape=method))+
       facet_wrap(metrics~., scales = "free_y",strip.position = "top", ncol = 1)+
-      geom_point(size=1.4, position = position_dodge(width = 45))+ 
-      guides(color=guide_legend(nrow=1, byrow=TRUE))+
+      geom_point(size=1.4, position = position_dodge(width = 100))+ 
+      guides(color=guide_legend(nrow=2, byrow=TRUE))+
       scale_shape_manual(values = shapes)+
       scale_color_manual(values = colors)+
       labs(
@@ -82,9 +86,10 @@ genFigure <- function(Scenario,Metrics){
         x = "Sample Size",
         y = NULL,  # No y-axis label to avoid redundancy
       )+
-      scale_x_continuous(breaks = c(100,150,200))+
-      geom_segment(aes(x = 125, xend = 125, y = -Inf, yend = Inf), color = "red", linetype = "dashed") +
-      geom_segment(aes(x = 175, xend = 175, y = -Inf, yend = Inf), color = "red", linetype = "dashed") +
+      scale_x_continuous(breaks = c(400,500,600,700))+
+      geom_segment(aes(x = 450, xend = 450, y = -Inf, yend = Inf), color = "red", linetype = "dashed") +
+      geom_segment(aes(x = 550, xend = 550, y = -Inf, yend = Inf), color = "red", linetype = "dashed") +
+      geom_segment(aes(x = 650, xend = 650, y = -Inf, yend = Inf), color = "red", linetype = "dashed") +
       xlab("Sample size") +
       theme_minimal()+
       theme(
@@ -114,7 +119,7 @@ genFigure <- function(Scenario,Metrics){
           guides(color=guide_legend(nrow=2, byrow=TRUE))+
           scale_color_manual(values = colors)+
           labs(shape = NULL, color=NULL)+
-          scale_x_continuous(breaks = c(100,150,200))+
+          scale_x_continuous(breaks = c(400,500,600,700))+
           labs(
             linetype = NULL,
             color = NULL,

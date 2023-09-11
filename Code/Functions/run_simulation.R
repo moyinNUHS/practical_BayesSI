@@ -1,25 +1,29 @@
 ## function to run one scenario
 
 run_simulation <- function(pattern_list = list( # Treatment patterns
-                             pattern1 = c(2, 3), 
-                             pattern2 = c(1, 2, 3),
-                             pattern3 = c(2, 3, 4),
-                             pattern4 = c(1, 2, 3, 4)),
-                           prob_pattern,
-                           # prevalence of each pattern
-                           T_vector,
-                           # Treatment effects - first one being baseline
-                           res_rate_prior,
-                           # Priors
-                           samplesize_vec, 
-                           #Sample size for each simulation
-                           N_iter,
-                           # Number of iterations
-                           pattsame = TRUE,
-                           # if effects are the same across patterns,
-                           differsite = 0,
-                           #  how many sites have different effects,
-                           scenario_name) {
+  pattern1 = c(2, 3), 
+  pattern2 = c(1, 2, 3),
+  pattern3 = c(2, 3, 4),
+  pattern4 = c(1, 2, 3, 4)),
+  prob_pattern,
+  # prevalence of each pattern
+  T_vector,
+  # Treatment effects - first one being baseline
+  res_rate_prior,
+  # Priors
+  res_rate_prior_ur1,
+  # Priors
+  res_rate_prior_ur2,
+  # Priors
+  samplesize_vec, 
+  #Sample size for each simulation
+  N_iter,
+  # Number of iterations
+  pattsame = TRUE,
+  # if effects are the same across patterns,
+  differsite = 0,
+  #  how many sites have different effects,
+  scenario_name) {
   
   #Specify each treatment risk
   alpha_ref = find_phi(p = T_vector[1], alpha = 0)   # reference treatment effect 
@@ -61,6 +65,20 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       nrow = length(pattern_list),
       ncol = length(res_rate_prior)
     )
+    
+    res_rate_mat_prior_ur1 = matrix(
+      res_rate_prior,
+      byrow = T,
+      nrow = length(pattern_list),
+      ncol = length(res_rate_prior_ur1)
+    )
+    
+    res_rate_mat_prior_ur2 = matrix(
+      res_rate_prior,
+      byrow = T,
+      nrow = length(pattern_list),
+      ncol = length(res_rate_prior_ur2)
+    )
     } else {
       # for scenario where treatment effects differ across patterns
       res_rate_mat_prior = rbind(
@@ -73,6 +91,28 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
         c(0.3, 0.4, 0.8, 0.9)     
         # pattern 4
       )
+      
+      res_rate_mat_prior_ur1 = rbind(
+        c(0.2-0.1, 0.25-0.1, 0.3-0.1, 0.35-0.1),
+        # pattern 1
+        c(0.2-0.1, 0.3-0.1, 0.4-0.1, 0.5-0.1),
+        # pattern 2
+        c(0.4-0.1, 0.6-0.1, 0.75-0.1, 0.95-0.1),
+        # pattern 3
+        c(0.3-0.1, 0.4-0.1, 0.8-0.1, 0.9-0.1)     
+        # pattern 4
+      )
+      
+      res_rate_mat_prior_ur2 = rbind(
+        c(0.2-0.1, 0.25-0.1, 0.3-0.1, 0.35-0.1),
+        # pattern 1
+        c(0.2-0.1, 0.3-0.1, 0.4-0.1, 0.5-0.1),
+        # pattern 2
+        c(0.4-0.1, 0.6-0.1, 0.75-0.1, 0.95-0.1),
+        # pattern 3
+        c(0.3-0.1, 0.4-0.1, 0.8-0.1, 0.9-0.1)     
+        # pattern 4
+      )
     }
     
     # run code to simulate data and do analysis
@@ -82,6 +122,8 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       phi_v = phi_vector,
       pattern = pattern_list,
       res_probability_prior = res_rate_mat_prior,
+      res_probability_prior_ur1 = res_rate_mat_prior_ur1,
+      res_probability_prior_ur2 = res_rate_mat_prior_ur2,
       res_probability_all = res_rate_mat,
       prob_pattern = prob_pattern,
       differsite = differsite,
@@ -98,12 +140,11 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
                                      no_treatment = length(phi_vector), 
                                      no_pattern = length(prob_pattern),
                                      lambda = prob_pattern)
-    # for each pattern, the number of pairwise comparisons fixing a reference treatment)
     
     message('simulation outputs summarised...')
     
     store[[paste0('for size size = ', N)]] = list(scenario_out = scenario_out, 
-                                                   analyse_out = analyse_out)
+                                                  analyse_out = analyse_out)
     
   }
   

@@ -3,6 +3,8 @@
 ## library list 
 require(pacman)
 p_load(stringr,
+       ggplot2,
+       readr,
        multiwayvcov,
        sandwich,
        rstanarm,

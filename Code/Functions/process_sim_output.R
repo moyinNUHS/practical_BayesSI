@@ -36,10 +36,11 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
     model_var_all[[m]] = do.call(rbind, rows)
     
     # contiguous groups
-    conti_grp[[m]] = lapply(df_list, find_contig_grp)
+    # rows = lapply(df_list, find_contig_grp)
+    # conti_grp[[m]] = do.call(rbind, rows)
     
   }
-  
+    
   ### get properties of estimators 
   estimator_property = lapply(1:(no_treatment - 1), function(x) {
     estimator_prop(x, output_replication, method.names, phi_v, R)
@@ -102,11 +103,11 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   }))
   
   estimand2_MCSE <-
-    cbind(Mortaliy_ratio = apply(mortality_gain_ratio, 2, function(x) {
+    cbind(Mortality_ratio = apply(mortality_gain_ratio, 2, function(x) {
       sqrt(var(x[complete.cases(x)]) / length(x[complete.cases(x)]))
     }), estimand2_MCSE)
   
-  estimand2_MCSE <- cbind(Mortaliy = apply(mortality_gain, 2, function(x) {
+  estimand2_MCSE <- cbind(Mortality = apply(mortality_gain, 2, function(x) {
     sqrt(var(x[complete.cases(x)]) / length(x[complete.cases(x)]))
   }), estimand2_MCSE)
   
@@ -143,7 +144,7 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
     ex_performance_out = ex_performance_out,
     suggested_treatment_each = suggested_treatment_each,
     estimator_all = estimator_all,
-    contiguous_grp = conti_grp,
+    #contiguous_grp = conti_grp,
     #model_var_all=model_var_all,
     #all_diff_min=all_diff_min,
     method_fail_no = methodA_fail_no,

@@ -358,8 +358,12 @@ approach from Magaret 2016</h1>
 </div>
 
 
-<p><em>Reference: Magaret, Design of a multi-arm randomized clinical
-trial with no control arm. 2016 (Appendix A)</em></p>
+<div id="reference-magaret-design-of-a-multi-arm-randomized-clinical-trial-with-no-control-arm.-2016-appendix-a" class="section level2 tabset">
+<h2 class="tabset"><em>Reference: Magaret, Design of a multi-arm
+randomized clinical trial with no control arm. 2016 (Appendix
+A)</em></h2>
+<div id="magarets-method" class="section level3">
+<h3>Magaret’s method</h3>
 <p>At each interim and final analysis, decisions regarding dropping
 arms, stopping early for efficacy, or stopping early for futility will
 be made. A step-wise approach was proposed.</p>
@@ -416,6 +420,7 @@ this time compare the p-value to the futility cutoff.</p></li>
 <li><p>If there is insufficient evidence to stop for futility, continue
 to the next interim analysis.</p></li>
 </ol>
+</div>
 <div id="data-simulation" class="section level3">
 <h3>Data simulation</h3>
 <p>data.model is a data.frame with one row per site per treatment arm it
@@ -429,11 +434,11 @@ in that arm</li>
 <pre class="r"><code>## starting values
 namestx &lt;- c(&quot;T1&quot;,&quot;T2&quot;,&quot;T3&quot;,&quot;T4&quot;)       # tx = factor variable indicating the four arms:  T1, T2, T3, T4
 active.tx &lt;- namestx                
-numactive.tx &lt;- 4                       # number of treatments 
+tottx &lt;- 4                              # total number of treatments 
 num.sites &lt;- 4                          # say we enrolled from 4 sites
 num.patients.site &lt;- 1000               # and enrol 1000 patients per site
-num.patients.site.arm &lt;- num.patients.site / numactive.tx      
-p.assign &lt;- .25 * rep(1, numactive.tx)  # same probability of being randomised to any of the treatments 
+num.patients.site.arm &lt;- num.patients.site / tottx      
+p.assign &lt;- .25 * rep(1, tottx)         # same probability of being randomised to any of the treatments 
 ## say treatment efficacy for respective treatments are as follows (proportion survived), i.e. T1 is clearly the best 
 ## say no site effects at all i.e. patients from all sites had the same probability of survival
 tx_eff = c(0.9, 0.6, 0.3, 0.1) 
@@ -445,12 +450,12 @@ dropfut &lt;- dropeff
 
 ### assume no site effect at all 
 d = data.frame(
-  site = rep(1:num.sites, each = 2 * numactive.tx), ## say we enrolled from 4 sites
+  site = rep(1:num.sites, each = 2 * tottx), ## say we enrolled from 4 sites
   tx = rep(rep(namestx, each = 2), num.sites), 
-  dead = rep(rep(c(0, 1), 2), numactive.tx * num.sites),
+  dead = rep(rep(c(0, 1), 2), tottx * num.sites),
   wts = rep(c(tx_eff[1], 1 - tx_eff[1], 
               tx_eff[2], 1 - tx_eff[2], 
-              tx_eff[3], 1 - tx_eff[3], 
+              tx_eff[3], 1 - tx_eff[3], # weights referred to total number of patients who died vs survived at each site, per treatment
               tx_eff[4], 1 - tx_eff[4]) * num.patients.site.arm, num.sites)
 )
 
@@ -483,7 +488,8 @@ coefs</code></pre>
 </div>
 <div id="rank-treatments-according-to-coefficient-values" class="section level3">
 <h3>Rank treatments according to coefficient values</h3>
-<p>Take variance covariance matrix to use for hypothesis testing</p>
+<p>Take variance covariance matrix to use for hypothesis testing
+later</p>
 <pre class="r"><code>vc &lt;- vcov(moddfactor)  ;  dimnames(vc) &lt;- list(active.tx,active.tx)
 vc </code></pre>
 <pre><code>## 4 x 4 Matrix of class &quot;dpoMatrix&quot;
@@ -492,10 +498,10 @@ vc </code></pre>
 ## T2 -0.005000010  0.006250010  0.005000011  0.005000011
 ## T3 -0.005000011  0.005000011  0.005714297  0.005000011
 ## T4 -0.005000011  0.005000011  0.005000011  0.005555567</code></pre>
-<p>Add intercept to other coefficients in order to provide mortality
-rate estimate (on log scale) for each treatment</p>
+<p>Add intercept value to other coefficients in order to provide
+mortality rate estimate (on log scale) for each treatment</p>
 <pre class="r"><code>ests &lt;- coefs[,1]  
-ests[2:numactive.tx] &lt;- ests[2:numactive.tx] + coefs[1,1]
+ests[2:tottx] &lt;- ests[2:tottx] + coefs[1,1]
 refreg &lt;- names(ests[1]) ## find the reference treatment in the regression, which is T1 in this current examples
 ests; refreg</code></pre>
 <pre><code>##         T1         T2         T3         T4 
@@ -505,7 +511,7 @@ ests; refreg</code></pre>
 <pre class="r"><code>rankstxs &lt;- sort(ests)   
 ## determine the names of the treatments 
 besttx &lt;- names(rankstxs[1])  ;  secbest &lt;- names(rankstxs[2])
-remainingb &lt;- names(rankstxs[2:numactive.tx])
+remainingb &lt;- names(rankstxs[2:tottx])
 
 besttx; secbest; remainingb</code></pre>
 <pre><code>## [1] &quot;T1&quot;</code></pre>
@@ -514,12 +520,13 @@ besttx; secbest; remainingb</code></pre>
 </div>
 <div id="step-1" class="section level3">
 <h3>Step 1</h3>
-<p>See if we can drop all but best by comparing best to second best, and
-if significant, drop all remaining If reference treatment in the
-regression is among best two, directly compare the z values (step 1b).
-If reference treatment in the regression is NOT among the best two, need
-correlation matrix (<code>vc</code>), we need to take into account the
-correlation between these coefficients (step 1c). Since the dummy
+<p>Step 1a: See if we can drop all but best by comparing best to second
+best, and if significant, drop all remaining</p>
+<p>Step 1b: If reference treatment in the regression is among best two,
+directly compare the z values.</p>
+<p>Step 1c: If reference treatment in the regression is NOT among the
+best two, need correlation matrix (<code>vc</code>), we need to take
+into account the correlation between these coefficients. Since the dummy
 variables are not orthogonal (they are correlated), the coefficients are
 also correlated. Therefore, directly comparing the coefficients can be
 misleading, as it does not account for the uncertainty and
@@ -543,7 +550,7 @@ effects on the outcome variable.</p>
   
   ######    STEP 1c #######
   ## if reference is not among best two, need correlation matrix to compare 
-  vardiff.best &lt;- vc[besttx, besttx] + vc[secbest,secbest] - 2*vc[besttx, secbest]
+  vardiff.best &lt;- vc[besttx, besttx] + vc[secbest, secbest] - 2*vc[besttx, secbest]
   Zbest &lt;- diff(rankstxs[c(besttx,secbest)]) / sqrt(vardiff.best)
   pbest &lt;- 2*pnorm(-abs(Zbest),0,1,lower.tail=T)  
   
@@ -567,9 +574,10 @@ active treatments left</p>
 current best to worst</p>
 <pre class="r"><code>if (max(dropeff[remainingb]) == 0)  { # if there are treatments not dropped
   
-  numtries &lt;- 1  ## try twice if have 4 txs, see if can drop 2, etc.
+  numtries &lt;- 1            ## try twice if have 4 txs, see if can drop 2, etc.
+  numactive.tx &lt;- tottx    ## track number of active treatments (number of treatments still in the trial)
   
-  while (numactive.tx &gt;= 2 &amp; numtries &lt;= (numactive.tx-2)) { 
+  while (numactive.tx &gt;= 2 &amp; numtries &lt;= (tottx-2)) { 
     rankstxs &lt;- sort(ests[active.tx])  
     besttx &lt;- names(rankstxs[1])  
     worsttx &lt;- names(rankstxs[numactive.tx])  
@@ -602,12 +610,69 @@ current best to worst</p>
     active.tx &lt;- namestx[dropeff &lt; 1]
     numactive.tx &lt;- length(active.tx)
     numtries &lt;- numtries + 1
+    
   } ## end loop over whether dropped worst 
 
   newdropfut &lt;- 1*(pworst &gt; pfut)
   dropfut[active.tx] &lt;- newdropfut 
   
 }  ## end loop over whether can drop all but best</code></pre>
+</div>
+<div id="practical-design" class="section level3">
+<h3>PRACTical design</h3>
+<p>At each interim and final analysis, decisions regarding <em>dropping
+arms</em> and <em>stopping early for efficacy</em> will be made. In both
+cases, only 1 comparison is made hence no</p>
+<ol style="list-style-type: decimal">
+<li>Test whether there is any single treatment with mortality rate
+smaller than every other treatment and, if so, drop all remaining
+treatments and conclude that the best performing one is most
+efficacious. Stop the study:</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>If treatment A (lowest mortality rate) is T4 then this is equivalent
+to testing that min(1,2,3) = 0 using the specified efficacy
+cutoff.<br />
+</li>
+<li>If treatment A = TK and K  [1,2,3}, and treatment B (second best)
+is T4, then this hypothesis is equivalent to testing K = 0 using the
+efficacy cutoff, where K is the coefficient for the indicator I(Ti=TK)
+from the model.</li>
+<li>If both treatments A and B are  [T1,T2,T3}, call them TK and TJ,
+then this hypothesis is equivalent to testing K = J using the efficacy
+cutoff, where K and J are defined as above.</li>
+</ol>
+<ol start="2" style="list-style-type: decimal">
+<li>If test 1 fails, test whether the worst performing treatment has a
+significantly higher mortality rate larger than the best performing
+treatment and, if so, discontinue the worst performing arm. This step
+will be repeated if an arm is dropped, as subsequently there will be a
+new remaining worst performing treatment and it will also be compared
+against the best. There will be at least 2 active arms after this step,
+otherwise we would have stopped after test 1.</li>
+</ol>
+<ol style="list-style-type: lower-alpha">
+<li>If treatment A (best) is T4 and treatment (worst) D is TK, K 
+[1,2,3}, then this is equivalent to testing K = 0 using the efficacy
+cutoff, where K is the coefficient for the indicator I(Ti= TK).</li>
+<li>If both treatments A and D are  [T1,T2,T3}, call them TK and TJ,
+then this is equivalent to testing K = J using the efficacy
+cutoff.</li>
+</ol>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Regardless of the findings in test 2, continue by testing whether
+the p-value for the difference in mortality rates between the current
+best and worst performing arms is more than the futility cutoff and, if
+so, discontinue all remaining treatments for futility and stop the
+study. If any arms are dropped in step 2, re-rank the treatments such
+that MA (&lt; MB) &lt; MD; the number of remaining treatments will be
+either 2 or 3 but let’s continue to call the worst-performing treatment
+with the highest mortality MD. Perform the same steps as in test 2, but
+this time compare the p-value to the futility cutoff.</p></li>
+<li><p>If there is insufficient evidence to stop for futility, continue
+to the next interim analysis.</p></li>
+</ol>
+</div>
 </div>
 
 
