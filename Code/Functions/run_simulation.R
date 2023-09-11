@@ -17,6 +17,8 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
   # Priors
   samplesize_vec, 
   #Sample size for each simulation
+  samplesize_hist,
+  #Sample size for historical trial
   N_iter,
   # Number of iterations
   pattsame = TRUE,
@@ -118,6 +120,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     # run code to simulate data and do analysis
     scenario_out = simulation(
       N = N,
+      N_hist = samplesize_hist,
       # for N patients
       phi_v = phi_vector,
       pattern = pattern_list,
