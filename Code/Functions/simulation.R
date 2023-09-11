@@ -2,7 +2,8 @@
 # the following is to run simulation with replications #
 # ---------------------------------------------------- #
 
-simulation <- function(N,
+simulation <- function(N,      
+                       N_hist,
                        phi_v,
                        pattern,
                        res_probability_prior,
@@ -40,6 +41,17 @@ simulation <- function(N,
   
   # number of patients in each subgroup that is defined by the pattern
   size_pattern <<- apply(assigned_pattern, 2, sum)
+
+  # generate which pattern each historical patient in N_hist patients belong to
+  # each historical person has prob_pattern to be allocated to one of the treatment patterns
+  assigned_pattern_hist <- t(rmultinom(N_hist, size = 1, prob_pattern))
+  colnames(assigned_pattern_hist) <-
+    sapply(1:no_pattern, function(i) {
+      paste0("subgroup", i)
+    })
+  
+  # number of patients in each subgroup that is defined by the pattern
+  size_pattern_hist <<- apply(assigned_pattern_hist, 2, sum)
   
   true.response.r <-
     lapply(1:no_pattern, function(i)
@@ -63,6 +75,7 @@ simulation <- function(N,
     sim_data = gen.data(
       no_pattern,
       size_pattern,
+      size_pattern_hist,
       pattern,
       res_probability_prior,
       res_probability_prior_ur1,
