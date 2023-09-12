@@ -1,6 +1,6 @@
 # plot type 1 error - for NULL scenarios only
 
-plot_type1 <- function (Scenario, d, .method_labs = method_labs) {
+plot_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_names = all_method_names, .font_size = font_size) {
   
   # number of treatment comparisons
   n_tx = nrow(d[[1]][['scenario_out']][[1]][['est_method_1']]) - 1
@@ -35,8 +35,7 @@ plot_type1 <- function (Scenario, d, .method_labs = method_labs) {
   dat = do.call(rbind, contig)
   
   dat$method = factor(dat$method, 
-                      levels = c("est_method_1", "est_method_1_NI", "est_method_1_wk", "est_method_1_str",
-                                 "est_method_2", "est_method_2_NI", "est_method_2_wk","est_method_2_str"), 
+                      levels = .all_method_names, 
                       labels = .method_labs)
   
   dat.lean = dat[, grep('treatment', names(dat))]
@@ -139,7 +138,6 @@ plot_type1 <- function (Scenario, d, .method_labs = method_labs) {
   ggplot(out, aes(x = n, y = type1error, color = method, group = method)) +
     geom_point(shape=3)+
     geom_line(linetype = 2,linewidth=0.5)+ 
-    guides(color=guide_legend(nrow=2, byrow=TRUE))+
     scale_color_manual(values = colors)+
     labs(shape = NULL, color=NULL)+
     scale_x_continuous(breaks = unique(out$n)) +labs(
@@ -157,10 +155,11 @@ plot_type1 <- function (Scenario, d, .method_labs = method_labs) {
       legend.position = "bottom",
       legend.spacing.y = unit(0.02, 'cm'),
       legend.margin=margin(0,0,0,0),
-      text = element_text(size = 14, color = "#4d4d4d"),
+      text = element_text(size = font_size, color = "#4d4d4d"),
       legend.title = element_text(),
       legend.key.size = unit(0.5, 'cm'),
       panel.grid.major.x = element_blank(),
-      panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5))
+      panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5)) + 
+    guides(color = guide_legend(ncol = 2))
   
 }

@@ -3,6 +3,8 @@ title: "Plots for simulation scenarios"
 author: "Mo Yin"
 date: "2023-09-08"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -20,20 +22,38 @@ scripts = paste0(wd, 'Code/Functions/', list.files(paste0(wd, 'Code/Functions/')
 lapply(scripts, source)
 
 # load data in the output folder 
-files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "10_2023-09-08*.rds")
+files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "500_2023-09-09*.rds")
 outputs = list()
 for (file in files){
   outputs[[sub('.*/', '', file)]] = readRDS(file)
 }
 
+# get names of methods
+all_names = names(outputs[[1]][[1]]$scenario_out[[1]])
+all_method_names = all_names[grep('method', all_names)]
+
+method_labs = rep(NA, length(all_method_names))
+method_labs[grep('method_1', all_method_names)] = "Fixed-effect (frequentist)"
+method_labs[grep('method_1_', all_method_names)] = "Fixed-effect (Bayesian, "
+method_labs[grep('method_2', all_method_names)] = "Mixed-effect (frequentist)"
+method_labs[grep('method_2_', all_method_names)] = "Mixed-effect (Bayesian, "
+method_labs[grep('NI', all_method_names)] = paste0(method_labs[grep('NI', all_method_names)], 'non-informative prior)')
+method_labs[grep('str_ur1', all_method_names)] = paste0(method_labs[grep('str_ur1', all_method_names)], 'strongly-informative/UR1 prior)')
+method_labs[grep('str_ur2', all_method_names)] = paste0(method_labs[grep('str_ur1', all_method_names)], 'strongly-informative/UR2 prior)')
+method_labs[grep('wk_ur1', all_method_names)] = paste0(method_labs[grep('wk_ur1', all_method_names)], 'weakly-informative/UR1 prior)')
+method_labs[grep('wk_ur2', all_method_names)] = paste0(method_labs[grep('wk_ur1', all_method_names)], 'weakly-informative/UR2 prior)')
+method_labs[endsWith(all_method_names, 'str')] = paste0(method_labs[endsWith(all_method_names, 'str')], 'strongly-informative prior)')
+method_labs[endsWith(all_method_names, 'wk')] = paste0(method_labs[endsWith(all_method_names, 'wk')], 'weakly-informative prior)')
+
 # define colors and shapes 
-method_labs = c("Fixed-effect (frequentist)", "Fixed-effect (Bayesian, non-informative prior)",
-                "Fixed-effect (Bayesian, weakly-informative prior)", "Fixed-effect (Bayesian, strongly-informative prior)", 
-                "Mixed-effect (frequentist)", "Mixed-effect (Bayesian, non-informative prior)", 
-                "Fixed-effect (Bayesian, weakly-informative prior)", "Fixed-effect (Bayesian, strongly-informative prior)")
-shapes = c(0, 1, 2, 5, 15, 16, 17, 18)
-colors = c("#1f78b4",  "#33a02c", "#e31a1c", "#ff7f00", "#6a3d9a", "#a6cee3", "#b2df8a", "#fb9a99")
+n_methods = length(method_labs)
+shapes = 1:n_methods
+qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
+colors_list = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals))) 
+colors = sample(colors_list, n_methods)
 names(shapes) = names(colors) = method_labs
+
+font_size = 24
 ```
 
 ## Final analysis report {.tabset .tabset-fade .tabset-pills}
@@ -44,16 +64,15 @@ Each point from left to right for each method represents a performance measure o
 
 #### Scenario 1.1
 
-```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
-ind = grep('1.1', files)
-if (length(ind) == 1) {
-  f = plot_biasmse(Scenario = '1.1', d = outputs[[ind]])
+ind1.1 = grep('1.1', files)
+if (length(ind1.1) == 1) {
+  f = plot_biasmse(Scenario = '1.1', d = outputs[[ind1.1]])
+  f
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
-
-f
 
 #ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
@@ -65,16 +84,17 @@ Treatment B is better than treatments A, C and D:
 $T_B = 35\%$; and 
 $T_j = 45\%$, $j = A, C, D$
 
-```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 
-ind = grep('1.2', files)
-if (length(ind) == 1) {
-  f = plot_biasmse(Scenario = '1.2', d = outputs[[ind]])
+ind1.2 = grep('1.2', files)
+if (length(ind1.2) == 1) {
+  f = plot_biasmse(Scenario = '1.2', d = outputs[[ind1.2]])
+  f
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
 
-f
+
 
 #ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.2_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
@@ -84,16 +104,15 @@ f
 All 4 treatments have different effects (small difference):
 $T_A = 30\%$; $T_B = 35\%$; $T_C = 40\%$; $T_D = 45\%$
 
-```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
-ind = grep('1.3', files)
-if (length(ind) == 1) {
-  f = plot_biasmse(Scenario = '1.3', d = outputs[[ind]])
+ind1.3 = grep('1.3', files)
+if (length(ind1.3) == 1) {
+  f = plot_biasmse(Scenario = '1.3', d = outputs[[ind1.3]])
+  f
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
-
-f
 
 #ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
@@ -107,16 +126,15 @@ Treatment B is better than treatments A, C and D:
 $T_B = 35\%$; and 
 $T_j = 45\%$, $j = A, C, D$
 
-```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
 
-ind = grep('1.2', files)
-if (length(ind) == 1) {
-  f = plot_mort(Scenario = '1.2', d = outputs[[ind]])
+ind1.2 = grep('1.2', files)
+if (length(ind1.2) == 1) {
+  f = plot_mort(Scenario = '1.2', d = outputs[[ind1.2]])
+  f
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
-
-f
 
 #ggsave(paste0(wd,"Code/Plots/mort_scenario1.2_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
@@ -126,16 +144,15 @@ f
 All 4 treatments have different effects (small difference):
 $T_A = 30\%$; $T_B = 35\%$; $T_C = 40\%$; $T_D = 45\%$
 
-```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
 
-ind = grep('1.3', files)
-if (length(ind) == 1) {
-  f = plot_mort(Scenario = '1.3', d = outputs[[ind]])
+ind1.3 = grep('1.3', files)
+if (length(ind1.3) == 1) {
+  f = plot_mort(Scenario = '1.3', d = outputs[[ind1.3]])
+  f
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
-
-f
 
 #ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
@@ -149,16 +166,16 @@ Treatment B is better than treatments A, C and D:
 $T_B = 35\%$; and 
 $T_j = 45\%$, $j = A, C, D$
 
-```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 
-ind = grep('1.2', files)
-if (length(ind) == 1) {
-  f = plot_type2(Scenario = '1.2', d = outputs[[ind]])
+ind1.2 = grep('1.2', files)
+if (length(ind1.2) == 1) {
+  f = plot_type2(Scenario = '1.2', d = outputs[[ind1.2]])
+  f
 } else {
-  message('There are multiple output files in `output`. Please select one.')
+  message('There are no or multiple output files in `output`. Please select one.')
 }
 
-f
 
 #ggsave(paste0(wd,"Code/Plots/type2_scenario1.2_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
@@ -168,16 +185,16 @@ f
 All 4 treatments have different effects (small difference):
 $T_A = 30\%$; $T_B = 35\%$; $T_C = 40\%$; $T_D = 45\%$
 
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+```{r, echo = FALSE, fig.align="center",fig.width = 14, fig.width = 18}
 
-ind = grep('1.3', files)
-if (length(ind) == 1) {
-  f = plot_type2(Scenario = '1.3', d = outputs[[ind]])
+ind1.3 = grep('1.3', files)
+if (length(ind1.3) == 1) {
+  f = plot_type2(Scenario = '1.3', d = outputs[[ind1.3]])
+  f
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
 
-f
 
 #ggsave(paste0(wd,"Code/Plots/type2_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
@@ -187,16 +204,15 @@ f
 
 #### Scenario 1.1
 
-```{r, echo = FALSE, fig.align="center",fig.height = 10, fig.width = 12}
+```{r, echo = FALSE, fig.align="center",fig.width = 14, fig.width = 18}
 
-ind = grep('1.1', files)
-if (length(ind) == 1) {
-  f = plot_type1(Scenario = '1.1', d = outputs[[ind]])
+ind1.1 = grep('1.1', files)
+if (length(ind1.1) == 1) {
+  f = plot_type1(Scenario = '1.1', d = outputs[[ind1.1]])
+  f
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
-
-f
 
 #ggsave(paste0(wd,"Code/Plots/type1_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 

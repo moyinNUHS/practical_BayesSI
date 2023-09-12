@@ -1,7 +1,7 @@
 # plot bias, coverage and MSE
 
 
-plot_biasmse <- function(Scenario, .method_labs = method_labs, d) {
+plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_names = all_method_names, .font_size = font_size) {
   
   # make a long form data
   n = parse_number(names(d))
@@ -19,8 +19,7 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d) {
                                                      #"empirical_var",
                                                      "coverage_prob","mse"))]
   wide$method = factor(wide$method, 
-                       levels = c("est_method_1", "est_method_1_NI", "est_method_1_wk", "est_method_1_str",
-                                  "est_method_2", "est_method_2_NI", "est_method_2_wk","est_method_2_str"), 
+                       levels = all_method_names, 
                        labels = .method_labs)
   
   long = reshape2::melt(wide, id.var = c('method', 'treatment', 'n'), 
@@ -42,7 +41,6 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d) {
                        shape = method)) +
     facet_wrap(metric ~., scales = "free_y",strip.position = "top", ncol = 1) +
     geom_point(size=1.4, position = position_dodge(width = 45))+ 
-    guides(color = guide_legend(nrow=1, byrow=TRUE))+
     scale_shape_manual(values = shapes) +
     scale_color_manual(values = colors) +
     labs(
@@ -61,7 +59,7 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d) {
       strip.background = element_blank(), 
       legend.spacing.y = unit(0.02, 'cm'),
       legend.margin=margin(0,0,0,0),
-      text = element_text(size = 15),
+      text = element_text(size = font_size),
       legend.title = element_text(),
       legend.key.size = unit(0.5, 'cm'),
       panel.spacing = unit(0.05, 'cm'),
@@ -69,7 +67,8 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d) {
       panel.grid.minor = element_blank(),
       panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5),
       panel.grid.major.x = element_blank()
-    )
+    )+ 
+    guides(color = guide_legend(ncol = 2))
 
   
   return(f)
