@@ -7,7 +7,7 @@ plot_type1 <- function (plot.data, .font_size = font_size) {
     geom_line(linetype = 2,linewidth=0.5)+ 
     scale_color_manual(values = colors)+
     labs(shape = NULL, color=NULL)+
-    scale_x_continuous(breaks = unique(out$n)) +labs(
+    scale_x_continuous(breaks = unique(plot.data$n)) +labs(
       linetype = NULL,
       color = NULL,
       x = "Sample Size",

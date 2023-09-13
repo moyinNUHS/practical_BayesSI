@@ -23,6 +23,7 @@ lapply(scripts, source)
 
 # load data in the output folder 
 files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "500_2023-09-09*.rds")
+files = files[-grep('power_|t1_', files)]
 outputs = list()
 for (file in files){
   outputs[[sub('.*/', '', file)]] = readRDS(file)
@@ -173,10 +174,10 @@ if (length(ind1.2) == 1) {
   power_filename = paste0('power_', sub('.*/', '', files[[ind1.2]]))
   if (power_filename %in% list.files('Code/Run_output/')) {
     # retrieve data if file already present 
-    plot.d = readRDS(paste0('Code/Run_output/', power_filename))
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', power_filename))
   } else {
     plot.d = get_type2(Scenario = '1.2', d = outputs[[ind1.2]])
-    saveRDS(plot.d, paste0("Code/Run_output/power_", sub('.*/', '', files[[ind1.2]])))
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind1.2]])))
   }
   # plot 
   f = plot_type2(plot.d)
@@ -202,13 +203,13 @@ if (length(ind1.3) == 1) {
   power_filename = paste0('power_', sub('.*/', '', files[[ind1.3]]))
   if (power_filename %in% list.files('Code/Run_output/')) {
     # retrieve data if file already present 
-    plot.d = readRDS(paste0('Code/Run_output/', power_filename))
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', power_filename))
   } else {
     plot.d = get_type2(Scenario = '1.3', d = outputs[[ind1.3]])
-    saveRDS(plot.d, paste0("Code/Run_output/power_", sub('.*/', '', files[[ind1.3]])))
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind1.3]])))
   }
   # plot 
-  f = plot_type2(plot.d)
+  f = plot_type2(Scenario = '1.3', plot.d)
   f
 } else {
   message('There are multiple output files in `output`. Please select one.')
@@ -228,13 +229,13 @@ if (length(ind1.3) == 1) {
 ind1.1 = grep('1.1', files)
 if (length(ind1.1) == 1) {
   
-  power_filename = paste0('power_', sub('.*/', '', files[[ind1.1]]))
-  if (power_filename %in% list.files('Code/Run_output/')) {
+  t1_filename = paste0('t1_', sub('.*/', '', files[[ind1.1]]))
+  if (t1_filename %in% list.files('Code/Run_output/')) {
     # retrieve data if file already present 
-    plot.d = readRDS(paste0('Code/Run_output/', power_filename))
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', t1_filename))
   } else {
     plot.d = get_type1(Scenario = '1.1', d = outputs[[ind1.1]])
-    saveRDS(plot.d, paste0("Code/Run_output/power_", sub('.*/', '', files[[ind1.1]])))
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind1.1]])))
   }
   # plot 
   f = plot_type1(plot.d)
