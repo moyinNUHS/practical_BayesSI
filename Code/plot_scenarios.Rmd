@@ -38,12 +38,12 @@ method_labs[grep('method_1_', all_method_names)] = "Fixed-effect (Bayesian, "
 method_labs[grep('method_2', all_method_names)] = "Mixed-effect (frequentist)"
 method_labs[grep('method_2_', all_method_names)] = "Mixed-effect (Bayesian, "
 method_labs[grep('NI', all_method_names)] = paste0(method_labs[grep('NI', all_method_names)], 'non-informative prior)')
-method_labs[grep('str_ur1', all_method_names)] = paste0(method_labs[grep('str_ur1', all_method_names)], 'strongly-informative/UR1 prior)')
-method_labs[grep('str_ur2', all_method_names)] = paste0(method_labs[grep('str_ur1', all_method_names)], 'strongly-informative/UR2 prior)')
-method_labs[grep('wk_ur1', all_method_names)] = paste0(method_labs[grep('wk_ur1', all_method_names)], 'weakly-informative/UR1 prior)')
-method_labs[grep('wk_ur2', all_method_names)] = paste0(method_labs[grep('wk_ur1', all_method_names)], 'weakly-informative/UR2 prior)')
 method_labs[endsWith(all_method_names, 'str')] = paste0(method_labs[endsWith(all_method_names, 'str')], 'strongly-informative prior)')
 method_labs[endsWith(all_method_names, 'wk')] = paste0(method_labs[endsWith(all_method_names, 'wk')], 'weakly-informative prior)')
+method_labs[endsWith(all_method_names, 'str_ur1')] = paste0(method_labs[endsWith(all_method_names, 'str_ur1')], 'strongly-informative/UR1 prior)')
+method_labs[endsWith(all_method_names, 'str_ur2')] = paste0(method_labs[endsWith(all_method_names, 'str_ur2')], 'strongly-informative/UR2 prior)')
+method_labs[endsWith(all_method_names, 'wk_ur1')] = paste0(method_labs[endsWith(all_method_names, 'wk_ur1')], 'weakly-informative/UR1 prior)')
+method_labs[endsWith(all_method_names, 'wk_ur2')] = paste0(method_labs[endsWith(all_method_names, 'wk_ur2')], 'weakly-informative/UR2 prior)')
 
 # define colors and shapes 
 n_methods = length(method_labs)
@@ -55,7 +55,6 @@ names(shapes) = names(colors) = method_labs
 
 font_size = 24
 ```
-
 ## Final analysis report {.tabset .tabset-fade .tabset-pills}
 
 ### Bias, Coverage, MSE
@@ -170,7 +169,17 @@ $T_j = 45\%$, $j = A, C, D$
 
 ind1.2 = grep('1.2', files)
 if (length(ind1.2) == 1) {
-  f = plot_type2(Scenario = '1.2', d = outputs[[ind1.2]])
+  
+  power_filename = paste0('power_', sub('.*/', '', files[[ind1.2]]))
+  if (power_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0('Code/Run_output/', power_filename))
+  } else {
+    plot.d = get_type2(Scenario = '1.2', d = outputs[[ind1.2]])
+    saveRDS(plot.d, paste0("Code/Run_output/power_", sub('.*/', '', files[[ind1.2]])))
+  }
+  # plot 
+  f = plot_type2(plot.d)
   f
 } else {
   message('There are no or multiple output files in `output`. Please select one.')
@@ -185,11 +194,21 @@ if (length(ind1.2) == 1) {
 All 4 treatments have different effects (small difference):
 $T_A = 30\%$; $T_B = 35\%$; $T_C = 40\%$; $T_D = 45\%$
 
-```{r, echo = FALSE, fig.align="center",fig.width = 14, fig.width = 18}
+```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind1.3 = grep('1.3', files)
 if (length(ind1.3) == 1) {
-  f = plot_type2(Scenario = '1.3', d = outputs[[ind1.3]])
+  
+  power_filename = paste0('power_', sub('.*/', '', files[[ind1.3]]))
+  if (power_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0('Code/Run_output/', power_filename))
+  } else {
+    plot.d = get_type2(Scenario = '1.3', d = outputs[[ind1.3]])
+    saveRDS(plot.d, paste0("Code/Run_output/power_", sub('.*/', '', files[[ind1.3]])))
+  }
+  # plot 
+  f = plot_type2(plot.d)
   f
 } else {
   message('There are multiple output files in `output`. Please select one.')
@@ -204,14 +223,24 @@ if (length(ind1.3) == 1) {
 
 #### Scenario 1.1
 
-```{r, echo = FALSE, fig.align="center",fig.width = 14, fig.width = 18}
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 
 ind1.1 = grep('1.1', files)
 if (length(ind1.1) == 1) {
-  f = plot_type1(Scenario = '1.1', d = outputs[[ind1.1]])
+  
+  power_filename = paste0('power_', sub('.*/', '', files[[ind1.1]]))
+  if (power_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0('Code/Run_output/', power_filename))
+  } else {
+    plot.d = get_type1(Scenario = '1.1', d = outputs[[ind1.1]])
+    saveRDS(plot.d, paste0("Code/Run_output/power_", sub('.*/', '', files[[ind1.1]])))
+  }
+  # plot 
+  f = plot_type1(plot.d)
   f
 } else {
-  message('There are multiple output files in `output`. Please select one.')
+  message('There are no or multiple output files in `output`. Please select one.')
 }
 
 #ggsave(paste0(wd,"Code/Plots/type1_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)

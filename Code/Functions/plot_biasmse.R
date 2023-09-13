@@ -68,7 +68,8 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
       panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5),
       panel.grid.major.x = element_blank()
     )+ 
-    guides(color = guide_legend(ncol = 2))
+    guides(color = guide_legend(ncol = 2), 
+           shape = guide_legend(ncol = 2))
 
   
   return(f)
