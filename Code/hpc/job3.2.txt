@@ -1,8 +1,8 @@
 #!/bin/bash 
   
-#PBS -P job1.3
+#PBS -P job1.1
 #PBS -j oe 
-#PBS -N job1.3
+#PBS -N job1.1
 #PBS -l select=1:ncpus=100:mem=200GB 
 #PBS -l walltime=10:00:00
 #PBS -l place=pack
@@ -11,7 +11,7 @@
 
 cd /data/chakraborty/home/e0859927
 module load r/4.1.1
-Rscript /data/chakraborty/home/e0859927/practical/Code/hpc/run_scenarios_1.3.R
+Rscript /data/chakraborty/home/e0859927/practical/Code/hpc/run_scenarios_3.2.R
 
 
 

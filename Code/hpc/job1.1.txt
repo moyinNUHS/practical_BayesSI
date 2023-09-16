@@ -11,7 +11,7 @@
 
 cd /data/chakraborty/home/e0859927
 module load r/4.1.1
-Rscript /data/chakraborty/home/e0859927/practical/Code/run_scenarios_1.1.R
+Rscript /data/chakraborty/home/e0859927/practical/Code/hpc/run_scenarios_1.1.R
 
 
 

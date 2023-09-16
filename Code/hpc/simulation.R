@@ -2,7 +2,8 @@
 # the following is to run simulation with replications #
 # ---------------------------------------------------- #
 
-simulation <- function(N,
+simulation <- function(N,      
+                       N_hist,
                        phi_v,
                        pattern,
                        res_probability_prior,
@@ -41,9 +42,23 @@ simulation <- function(N,
   # number of patients in each subgroup that is defined by the pattern
   size_pattern <- apply(assigned_pattern, 2, sum)
   
+  
+  
+  # generate which pattern each historical patient in N_hist patients belong to
+  # each historical person has prob_pattern to be allocated to one of the treatment patterns
+  assigned_pattern_hist <- t(rmultinom(N_hist, size = 1, prob_pattern))
+  colnames(assigned_pattern_hist) <-
+    sapply(1:no_pattern, function(i) {
+      paste0("subgroup", i)
+    })
+  
+  # number of patients in each subgroup that is defined by the pattern
+  size_pattern_hist <- apply(assigned_pattern_hist, 2, sum)
+  
   .GlobalEnv$no_pattern <- no_pattern
   .GlobalEnv$no_treatment <- no_treatment
   .GlobalEnv$size_pattern <- size_pattern
+  .GlobalEnv$size_pattern_hist <- size_pattern_hist
   
   true.response.r <-
     lapply(1:no_pattern, function(i)
@@ -60,8 +75,9 @@ simulation <- function(N,
   # will be used for the performance measures about the treatment decisions
   
   # run simulation and analysis over R iterations
-  output_replication <- foreach(k = 1:R) %dopar% {
-    set.seed(k)
+  output_replication <- output_replication <- foreach(k = 1:R) %dopar% {
+    
+    print(paste0('running iteration..', k))
     
     library(tidymodels)
     library(parsnip)
@@ -77,8 +93,8 @@ simulation <- function(N,
     library(multcomp)
     library(rstanarm)
     
-    #wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
-    wd = '/data/chakraborty/home/e0859927/practical/'
+    wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
+    #wd = '/data/chakraborty/home/e0859927/practical/'
     setwd(wd)
     scripts = paste0(wd, 'Code/Functions/', list.files('Code/Functions/')[which(list.files('Code/Functions/')!="simulation.R")])
     lapply(scripts, source)
@@ -86,12 +102,12 @@ simulation <- function(N,
     .GlobalEnv$no_pattern <- no_pattern
     .GlobalEnv$no_treatment <- no_treatment
     .GlobalEnv$size_pattern <- size_pattern
-    
-    print(paste0('running iteration..', k))
+    .GlobalEnv$size_pattern_hist <- size_pattern_hist
     
     sim_data = gen.data(
       no_pattern,
       size_pattern,
+      size_pattern_hist,
       pattern,
       res_probability_prior,
       res_probability_prior_ur1,
@@ -156,12 +172,11 @@ simulation <- function(N,
     est_method_1_NI <- fit_model_1_NI(nma_data, sim_data[['trial_data']]) # use current trial data, Bayesian
     est_method_1_wk <- fit_model_1_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data, Bayesian
     est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data, Bayesian
-    
     est_method_1_wk_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
     est_method_1_str_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
-    
     est_method_1_wk_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
     est_method_1_str_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
+    
     
     # Use a hierarchical structure
     est_method_2 <-
@@ -172,8 +187,6 @@ simulation <- function(N,
       fit_model_2_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data, Bayesian
     est_method_2_str <-
       fit_model_2_prior(nma_data_prior, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data, Bayesian
-    
-    
     est_method_2_wk_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
     est_method_2_str_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, sim_data[['trial_data']], Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
     est_method_2_wk_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, sim_data[['trial_data']], Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
@@ -261,7 +274,6 @@ simulation <- function(N,
       method_1_str_ur1 = est_method_1_str_ur1$ranking[2, ],
       method_1_wk_ur2 = est_method_1_wk_ur2$ranking[2, ],
       method_1_str_ur2 = est_method_1_str_ur2$ranking[2, ],
-      
       method_2 = est_method_2$ranking[2, ],
       method_2_NI = est_method_2_NI$ranking[2, ],
       method_2_wk = est_method_2_wk$ranking[2, ],

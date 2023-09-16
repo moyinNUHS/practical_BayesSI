@@ -69,14 +69,14 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     )
     
     res_rate_mat_prior_ur1 = matrix(
-      res_rate_prior,
+      res_rate_prior_ur1,
       byrow = T,
       nrow = length(pattern_list),
       ncol = length(res_rate_prior_ur1)
     )
     
     res_rate_mat_prior_ur2 = matrix(
-      res_rate_prior,
+      res_rate_prior_ur2,
       byrow = T,
       nrow = length(pattern_list),
       ncol = length(res_rate_prior_ur2)
@@ -94,25 +94,21 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
         # pattern 4
       )
       
-      res_rate_mat_prior_ur1 = rbind(
-        c(0.2-0.1, 0.25-0.1, 0.3-0.1, 0.35-0.1),
-        # pattern 1
-        c(0.2-0.1, 0.3-0.1, 0.4-0.1, 0.5-0.1),
-        # pattern 2
-        c(0.4-0.1, 0.6-0.1, 0.75-0.1, 0.95-0.1),
-        # pattern 3
-        c(0.3-0.1, 0.4-0.1, 0.8-0.1, 0.9-0.1)     
-        # pattern 4
+      res_rate_mat_prior_ur1 = matrix(
+        c(0.20, 0.3, 0.40, 0.5),
+        byrow = T,
+        nrow = length(pattern_list),
+        ncol = length(res_rate_prior_ur1)
       )
       
       res_rate_mat_prior_ur2 = rbind(
-        c(0.2-0.1, 0.25-0.1, 0.3-0.1, 0.35-0.1),
+        c(0.275,0.275,0.275,0.275),
         # pattern 1
-        c(0.2-0.1, 0.3-0.1, 0.4-0.1, 0.5-0.1),
+        c(0.35,0.35,0.35,0.35),
         # pattern 2
-        c(0.4-0.1, 0.6-0.1, 0.75-0.1, 0.95-0.1),
+        c(0.675,0.675,0.675,0.675),
         # pattern 3
-        c(0.3-0.1, 0.4-0.1, 0.8-0.1, 0.9-0.1)     
+        c(0.6,0.6,0.6,0.6)     
         # pattern 4
       )
     }
