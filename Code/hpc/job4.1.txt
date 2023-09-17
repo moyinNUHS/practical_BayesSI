@@ -1,10 +1,10 @@
 #!/bin/bash 
   
-#PBS -P job1.1
+#PBS -P job4.1
 #PBS -j oe 
-#PBS -N job1.1
-#PBS -l select=1:ncpus=100:mem=200GB 
-#PBS -l walltime=10:00:00
+#PBS -N job4.1
+#PBS -l select=1:ncpus=20:mem=200GB 
+#PBS -l walltime=15:00:00
 #PBS -l place=pack
 #PBS -q super
 

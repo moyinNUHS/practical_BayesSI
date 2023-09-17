@@ -29,9 +29,10 @@ if(run_hpc){
   
   parallel::detectCores()
   #n.cores <- parallel::detectCores() - 1
-  n.cores <- 100
+  n.cores <- 30
   my.cluster <- parallel::makeCluster(
-    n.cores,
+    n.cores
+    ,
     type = "SOCK"
   )
   doParallel::registerDoParallel(cl = my.cluster)
@@ -54,7 +55,7 @@ N_patients_brk = 500 # Breaks within max and min number of patients
 #Specify sample size of historical clinical trial
 N_hist=500
 #Specify number of iterations for each scenario
-No_iter = 500
+No_iter = 100
 #########
 # Note
 #########

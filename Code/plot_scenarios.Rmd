@@ -247,3 +247,18 @@ if (length(ind1.1) == 1) {
 #ggsave(paste0(wd,"Code/Plots/type1_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
+
+### Running time
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+# plot running time
+files_timing = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "^timing_")
+scenario = substr(sub(".*_","",files_timing),1,3)
+outputs_timing = rep(NA,length(scenario))
+
+for (i in 1:length(scenario)){
+  outputs_timing[i] = readRDS(files_timing[i])
+}
+
+plot_timing(Scenario = scenario, Timing=outputs_timing)
+```

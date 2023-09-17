@@ -93,8 +93,8 @@ simulation <- function(N,
     library(multcomp)
     library(rstanarm)
     
-    wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
-    #wd = '/data/chakraborty/home/e0859927/practical/'
+    #wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
+    wd = '/data/chakraborty/home/e0859927/practical/'
     setwd(wd)
     scripts = paste0(wd, 'Code/Functions/', list.files('Code/Functions/')[which(list.files('Code/Functions/')!="simulation.R")])
     lapply(scripts, source)
