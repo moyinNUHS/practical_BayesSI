@@ -13,7 +13,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
   for (i in n) { # for each sample size 
     
     # subset data for the sample size 
-    subset_n = d[[grep(as.character(i), names(d))]]$scenario_out
+    subset_n = d[[grep(paste("=",as.character(i),sep=" "), names(d))]]$scenario_out
     
     # for each iteration, apply find_contig_grp function
     iter_conti = lapply(subset_n, function(iter){

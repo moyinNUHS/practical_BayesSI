@@ -4,7 +4,7 @@
 #PBS -j oe 
 #PBS -N job2.4
 #PBS -l select=1:ncpus=30:mem=200GB 
-#PBS -l walltime=20:00:00
+#PBS -l walltime=30:00:00
 #PBS -l place=pack
 #PBS -q super
 

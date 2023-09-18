@@ -7,7 +7,7 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
   n = parse_number(names(d))
   wide_raw = list()
   for (i in n) {
-    subset_size = d[[grep(as.character(i), names(d))]]
+    subset_size = d[[grep(paste("=",as.character(i),sep=" "), names(d))]]
     raw = as.data.frame(do.call(rbind, subset_size$analyse_out$method.property))
     raw$method = rep(names(subset_size$analyse_out$method.property), each = nrow(subset_size$analyse_out$method.property[[1]]))
     raw$n = i
@@ -40,7 +40,7 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
                        group = interaction(treatment, method), 
                        shape = method)) +
     facet_wrap(metric ~., scales = "free_y",strip.position = "top", ncol = 1) +
-    geom_point(size=1.4, position = position_dodge(width = 45))+ 
+    geom_point(size=1.4, position = position_dodge(width = 500))+ 
     scale_shape_manual(values = shapes) +
     scale_color_manual(values = colors) +
     labs(

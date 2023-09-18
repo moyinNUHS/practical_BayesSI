@@ -6,7 +6,7 @@ plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names
   n = parse_number(names(d))
   wide_raw = list()
   for (i in n) {
-    subset_size = d[[grep(as.character(i), names(d))]]
+    subset_size = d[[grep(paste("=",as.character(i),sep=" "), names(d))]]
     raw = as.data.frame(subset_size$analyse_out$estimand2)
     raw$method = rownames(raw)
     raw$n = i
