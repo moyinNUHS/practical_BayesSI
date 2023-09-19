@@ -183,6 +183,22 @@ if (length(ind2.3) == 1) {
 
 ```
 
+#### Scenario 2.4
+
+```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
+
+ind2.4 = grep('2.4', files)
+if (length(ind2.4) == 1) {
+  f = plot_biasmse(Scenario = '2.4', d = outputs[[ind2.4]])
+  f
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+#ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
 #### Scenario 3.1
 
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
@@ -374,6 +390,22 @@ if (length(ind2.3) == 1) {
 
 
 
+
+#### Scenario 2.4
+
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+
+ind2.4 = grep('2.4', files)
+if (length(ind2.4) == 1) {
+  f = plot_mort(Scenario = '2.4', d = outputs[[ind2.4]])
+  f
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+#ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
 
 #### Scenario 3.1
 
@@ -572,6 +604,32 @@ if (length(ind2.2) == 1) {
 
 ```
 
+#### Scenario 2.4
+
+```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
+
+ind2.4 = grep('2.4', files)
+if (length(ind2.4) == 1) {
+  
+  power_filename = paste0('power_', sub('.*/', '', files[[ind2.4]]))
+  if (power_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', power_filename))
+  } else {
+    plot.d = get_type2(Scenario = '2.4', d = outputs[[ind2.4]])
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind2.4]])))
+  }
+  # plot 
+  f = plot_type2(Scenario = '2.4', plot.d)
+  f
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+
+#ggsave(paste0(wd,"Code/Plots/type2_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
 
 
 #### Scenario 3.2
