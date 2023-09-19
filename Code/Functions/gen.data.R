@@ -8,6 +8,10 @@ gen.data <- function(no_pattern,
                      res_probability_prior_ur1,
                      res_probability_prior_ur2,
                      res_probability_all,
+                     res_probability_prior_site,
+                     res_probability_prior_ur1_site,
+                     res_probability_prior_ur2_site,
+                     res_probability_all_site,
                      differsite){    
   
   # generate one prior dataset - to use as priors for Bayesian analysis with representative priors
@@ -16,6 +20,7 @@ gen.data <- function(no_pattern,
                          size_pattern. = size_pattern_hist, 
                          pattern. = pattern, 
                          res_probability_all. = res_probability_prior,
+                         res_probability_all_site. = res_probability_prior_site,
                          differsite = differsite)
   })
   
@@ -25,6 +30,7 @@ gen.data <- function(no_pattern,
                          size_pattern. = size_pattern_hist, 
                          pattern. = pattern, 
                          res_probability_all. = res_probability_prior_ur1,
+                         res_probability_all_site. = res_probability_prior_ur1_site,
                          differsite = differsite)
   })
   
@@ -34,6 +40,7 @@ gen.data <- function(no_pattern,
                          size_pattern. = size_pattern_hist, 
                          pattern. = pattern, 
                          res_probability_all. = res_probability_prior_ur2,
+                         res_probability_all_site. = res_probability_prior_ur2_site,
                          differsite = differsite)
   })
   
@@ -42,6 +49,7 @@ gen.data <- function(no_pattern,
     generate_subset_data(i, size_pattern. = size_pattern, 
                          pattern. = pattern, 
                          res_probability_all. = res_probability_all,
+                         res_probability_all_site. = res_probability_all_prior_site,
                          differsite = differsite)})
   
   # show how many have been randomized to a treatment arm within a pattern

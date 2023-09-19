@@ -10,6 +10,10 @@ simulation <- function(N,
                        res_probability_prior_ur1,
                        res_probability_prior_ur2,
                        res_probability_all,
+                       res_probability_prior_site,
+                       res_probability_prior_ur1_site,
+                       res_probability_prior_ur2_site,
+                       res_probability_all_site,
                        prob_pattern,
                        differsite = 0,
                        R) {
@@ -81,6 +85,10 @@ simulation <- function(N,
       res_probability_prior_ur1,
       res_probability_prior_ur2,
       res_probability_all,
+      res_probability_prior_site,
+      res_probability_prior_ur1_site,
+      res_probability_prior_ur2_site,
+      res_probability_all_site,
       differsite
     )
     
@@ -100,8 +108,8 @@ simulation <- function(N,
       treatment = factor(unlist(sim_data[['prior_data']][2,]), levels = sort(unique(
         unlist(sim_data[['prior_data']][2,])
       ))),
-      subgroup = factor(unlist(sim_data[['prior_data']][4,]))#,
-      #site=factor(unlist(sim_data[['prior_data']][5,]))
+      subgroup = factor(unlist(sim_data[['prior_data']][3,])),
+      site=factor(unlist(sim_data[['prior_data']][4,]))
     )
     
     # put historical data in a dataframe - outcome, treatment, pattern/subgroup
@@ -110,8 +118,8 @@ simulation <- function(N,
       treatment = factor(unlist(sim_data[['prior_data_ur1']][2,]), levels = sort(unique(
         unlist(sim_data[['prior_data_ur1']][2,])
       ))),
-      subgroup = factor(unlist(sim_data[['prior_data_ur1']][4,]))#,
-      #site=factor(unlist(sim_data[['prior_data']][5,]))
+      subgroup = factor(unlist(sim_data[['prior_data_ur1']][3,])),
+      site=factor(unlist(sim_data[['prior_data']][4,]))
     )
     
     # put historical data in a dataframe - outcome, treatment, pattern/subgroup
@@ -120,8 +128,8 @@ simulation <- function(N,
       treatment = factor(unlist(sim_data[['prior_data_ur2']][2,]), levels = sort(unique(
         unlist(sim_data[['prior_data_ur2']][2,])
       ))),
-      subgroup = factor(unlist(sim_data[['prior_data_ur2']][4,]))#,
-      #site=factor(unlist(sim_data[['prior_data']][5,]))
+      subgroup = factor(unlist(sim_data[['prior_data_ur2']][3,])),
+      site=factor(unlist(sim_data[['prior_data']][4,]))
     )
     
     # generate current data 
@@ -131,8 +139,8 @@ simulation <- function(N,
       treatment = factor(unlist(sim_data[['trial_data']][2,]), levels = sort(unique(
         unlist(sim_data[['trial_data']][2,])
       ))),
-      subgroup = factor(unlist(sim_data[['trial_data']][4,]))#,
-      #site=factor(unlist(sim_data[['trial_data']][5,]))
+      subgroup = factor(unlist(sim_data[['trial_data']][3,])),
+      site=factor(unlist(sim_data[['trial_data']][4,]))
     )
     
     # Fixed effects models
