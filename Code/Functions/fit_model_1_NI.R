@@ -33,17 +33,17 @@ fit_model_1_NI <- function(nma_data,
   )) 
   
   #If warning that samples not enough, do additional 500
-  if (!is.null(my.glm$warning)){
-    my.glm = myTryCatch(
-      update(my.glm$value, iter = 500)
-    )
-  }
-  #If warning that samples still not enough, do additional 500
-  if (!is.null(my.glm$warning)){
-    my.glm = myTryCatch(
-      update(my.glm$value, iter = 500)
-    )
-  }
+#  if (!is.null(my.glm$warning)){
+#    my.glm = myTryCatch(
+#      update(my.glm$value, iter = 500)
+#    )
+#  }
+#  #If warning that samples still not enough, do additional 500
+#  if (!is.null(my.glm$warning)){
+#    my.glm = myTryCatch(
+#      update(my.glm$value, iter = 500)
+#    )
+#  }
   
   if (is.null(my.glm$error))
     #if do not have an error, model is fitted
