@@ -108,8 +108,8 @@ simulation <- function(N,
       treatment = factor(unlist(sim_data[['prior_data']][2,]), levels = sort(unique(
         unlist(sim_data[['prior_data']][2,])
       ))),
-      subgroup = factor(unlist(sim_data[['prior_data']][3,]))#,
-      #site=factor(unlist(sim_data[['prior_data']][4,]))
+      subgroup = factor(unlist(sim_data[['prior_data']][3,])),
+      site=factor(unlist(sim_data[['prior_data']][4,]))
     )
     
     # put historical data in a dataframe - outcome, treatment, pattern/subgroup
@@ -118,8 +118,8 @@ simulation <- function(N,
       treatment = factor(unlist(sim_data[['prior_data_ur1']][2,]), levels = sort(unique(
         unlist(sim_data[['prior_data_ur1']][2,])
       ))),
-      subgroup = factor(unlist(sim_data[['prior_data_ur1']][3,]))#,
-      #site=factor(unlist(sim_data[['prior_data']][4,]))
+      subgroup = factor(unlist(sim_data[['prior_data_ur1']][3,])),
+      site=factor(unlist(sim_data[['prior_data']][4,]))
     )
     
     # put historical data in a dataframe - outcome, treatment, pattern/subgroup
@@ -128,8 +128,8 @@ simulation <- function(N,
       treatment = factor(unlist(sim_data[['prior_data_ur2']][2,]), levels = sort(unique(
         unlist(sim_data[['prior_data_ur2']][2,])
       ))),
-      subgroup = factor(unlist(sim_data[['prior_data_ur2']][3,]))#,
-      #site=factor(unlist(sim_data[['prior_data']][4,]))
+      subgroup = factor(unlist(sim_data[['prior_data_ur2']][3,])),
+      site=factor(unlist(sim_data[['prior_data']][4,]))
     )
     
     # generate current data 
@@ -139,8 +139,8 @@ simulation <- function(N,
       treatment = factor(unlist(sim_data[['trial_data']][2,]), levels = sort(unique(
         unlist(sim_data[['trial_data']][2,])
       ))),
-      subgroup = factor(unlist(sim_data[['trial_data']][3,]))#,
-      #site=factor(unlist(sim_data[['trial_data']][4,]))
+      subgroup = factor(unlist(sim_data[['trial_data']][3,])),
+      site=factor(unlist(sim_data[['trial_data']][4,]))
     )
     
     # Fixed effects models
