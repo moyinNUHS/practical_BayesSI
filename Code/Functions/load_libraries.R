@@ -5,6 +5,7 @@ require(pacman)
 p_load(stringr,
        ggplot2,
        readr,
+       RColorBrewer,
        multiwayvcov,
        sandwich,
        rstanarm,

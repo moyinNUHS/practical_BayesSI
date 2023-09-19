@@ -15,7 +15,8 @@ gen.data <- function(no_pattern,
     generate_subset_data(i, 
                          size_pattern. = size_pattern_hist, 
                          pattern. = pattern, 
-                         res_probability_all. = res_probability_prior)
+                         res_probability_all. = res_probability_prior,
+                         differsite = differsite)
   })
   
   # generate one prior dataset - to use as priors for Bayesian analysis with unrepresentative priors 1
@@ -23,7 +24,8 @@ gen.data <- function(no_pattern,
     generate_subset_data(i, 
                          size_pattern. = size_pattern_hist, 
                          pattern. = pattern, 
-                         res_probability_all. = res_probability_prior_ur1)
+                         res_probability_all. = res_probability_prior_ur1,
+                         differsite = differsite)
   })
   
   # generate one prior dataset - to use as priors for Bayesian analysis with unrepresentative priors 2
@@ -31,7 +33,8 @@ gen.data <- function(no_pattern,
     generate_subset_data(i, 
                          size_pattern. = size_pattern_hist, 
                          pattern. = pattern, 
-                         res_probability_all. = res_probability_prior_ur2)
+                         res_probability_all. = res_probability_prior_ur2,
+                         differsite = differsite)
   })
   
   # generate one current trial dataset

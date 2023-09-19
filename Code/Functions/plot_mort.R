@@ -1,12 +1,12 @@
 # plot mortality reduction
 
-plot_mort <- function(Scenario, d, method_labs) {
+plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names = all_method_names) {
   
   # make a long form data
   n = parse_number(names(d))
   wide_raw = list()
   for (i in n) {
-    subset_size = d[[grep(as.character(i), names(d))]]
+    subset_size = d[[grep(paste("=",as.character(i),sep=" "), names(d))]]
     raw = as.data.frame(subset_size$analyse_out$estimand2)
     raw$method = rownames(raw)
     raw$n = i
@@ -15,9 +15,8 @@ plot_mort <- function(Scenario, d, method_labs) {
   wide = as.data.frame(do.call(rbind, wide_raw))
   long = wide[,which(colnames(wide) %in% c("n", "treatment", "method", "mortality_gain"))]
   long$method = factor(long$method, 
-                       levels = c("method_1", "method_1_NI", "method_1_wk", "method_1_str",
-                                  "method_2", "method_2_NI", "method_2_wk","method_2_str"), 
-                       labels = method_labs)
+                       levels = .all_method_names, 
+                       labels = .method_labs)
   
   # plot 
   f = ggplot(long, aes(x = n, y = mortality_gain, color = method, group = method)) +
@@ -48,8 +47,6 @@ plot_mort <- function(Scenario, d, method_labs) {
       legend.key.size = unit(0.5, 'cm'),
       panel.grid.major.x = element_blank(),
       panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5))
-  
-  ggsave(paste0(wd,"Plots/", Scenario,"_mortality_plot.png"), f,width = 8, height = 6)
   
   return(f)
   
