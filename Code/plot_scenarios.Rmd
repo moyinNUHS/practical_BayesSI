@@ -14,8 +14,7 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 rm(list = ls())
 
 # set working directory to the `practical/` folder 
-wd = '/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/'
-#wd = '~/Documents/GitHub/practical/'
+wd = '~/Documents/GitHub/practical/'
 setwd(wd)
 
 # load libraries and functions
