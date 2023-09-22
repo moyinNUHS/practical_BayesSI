@@ -46,7 +46,7 @@ generate_subset_data<-function(k, size_pattern., pattern., res_probability_all.,
   }
                                     
   return(list(responses=treat.site.comb$responses, 
-              treatment_label=treat.site.comb$assigned_treatment, 
+              treatment_label=treat.site.comb$treatment_label, 
               pattern_lab=treat.site.comb$pattern_lab,
               site_label = treat.site.comb$site_label))
 }
