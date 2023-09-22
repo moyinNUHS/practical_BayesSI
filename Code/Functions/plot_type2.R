@@ -1,6 +1,6 @@
 # plot type 2 error - for non-NULL scenarios only
 
-plot_type2 <- function (Scenario, plot.data, .font_size = font_size) {
+plot_type2 <- function (Scenario, plot.data, .font_size = font_size, .pt_size = pt_size) {
   
   
   if (Scenario == '1.2') {
