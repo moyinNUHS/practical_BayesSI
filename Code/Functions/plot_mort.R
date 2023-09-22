@@ -1,6 +1,8 @@
 # plot mortality reduction
 
-plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names = all_method_names) {
+plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names = all_method_names, 
+                      .tx_labs = tx_labs,
+                      .font_size = font_size, .pt_size = pt_size) {
   
   # make a long form data
   n = parse_number(names(d))
@@ -13,36 +15,34 @@ plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     wide_raw[[i]] = raw
   }
   wide = as.data.frame(do.call(rbind, wide_raw))
-  long = wide[,which(colnames(wide) %in% c("n", "treatment", "method", "mortality_gain"))]
-  long$method = factor(long$method, 
-                       levels = .all_method_names, 
+  # long = wide[,which(colnames(wide) %in% c("n", "treatment", "method", "mortality_gain"))]
+  mort_all_method_names = substr(.all_method_names, 5, nchar(.all_method_names))
+  wide$method = factor(wide$method, 
+                       levels = mort_all_method_names, 
                        labels = .method_labs)
+  long = reshape2::melt(wide, id.var = c('method', 'n'))
   
   # plot 
-  f = ggplot(long, aes(x = n, y = mortality_gain, color = method, group = method)) +
-    geom_point(shape=3)+
-    geom_line(linetype = 2,linewidth=0.5)+ 
-    guides(color=guide_legend(nrow=2, byrow=TRUE))+
-    scale_color_manual(values = colors)+
-    labs(shape = NULL, color=NULL)+
+  f = ggplot(long, aes(x = n, y = value, shape = method, group = method)) +
+    geom_point(size = .pt_size) +
+    scale_shape_manual(values = shapes, name = '') +
+    geom_line(linetype = 2,linewidth=0.5, color = "#4d4d4d") + 
+    guides(shape=guide_legend(ncol=2, byrow=TRUE), name = '') +
     scale_x_continuous(breaks = unique(long$n))+
     labs(
       linetype = NULL,
-      color = NULL,
+      shapes = NULL,
       x = "Sample Size",
       y = "Mortality reduction (%)"
-    )+
-    theme_minimal()+
+    ) +
+    theme_minimal() +
+    facet_wrap(variable ~., scales = "free") + 
     theme(
       plot.title.position = "plot",
-      plot.title = element_text(size = 17, face = "bold", color = "#4d4d4d", margin = margin(b = 10)),
-      plot.subtitle = element_text(size = 14, color = "#4d4d4d", margin = margin(b = 20)),
       legend.position = "bottom",
       legend.spacing.y = unit(0.02, 'cm'),
       legend.margin=margin(0,0,0,0),
-      axis.text = element_text(size = 12, color = "#4d4d4d"),
-      axis.title = element_text(size = 14, color = "#4d4d4d"),
-      legend.text = element_text(size = 12, color = "#4d4d4d"),
+      text = element_text(size = .font_size, color = "#4d4d4d"),
       legend.title = element_text(),
       legend.key.size = unit(0.5, 'cm'),
       panel.grid.major.x = element_blank(),

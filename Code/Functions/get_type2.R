@@ -59,7 +59,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     out_raw = data.frame(n = dat$n, 
                          method = dat$method, 
                          t2error = error, 
-                         type = 'Pre-defined best treatment not identified as best',
+                         type = 'Pre-defined best treatment identified as best',
                          scenario = Scenario)
     
     # calculate power per sample size (n), per method, per type using power = (1 - mean(error))
@@ -93,7 +93,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     outA = data.frame(n = dat$n, 
                       method = dat$method, 
                       t2error = errorA, 
-                      type = 'Pre-defined best treatment not identified as best',
+                      type = 'Pre-defined best treatment identified as best',
                       scenario = Scenario)
     
     # (B) when treatment 1 or 2 were not the best treatments
@@ -107,7 +107,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     outB = data.frame(n = dat$n, 
                       method = dat$method, 
                       t2error = error, 
-                      type = 'Either of top 2 pre-defined best treatment not identified as best', 
+                      type = 'Either of top 2 pre-defined best treatment identified as best', 
                       scenario = Scenario)
     
     # (C) when treatment 4 was not the worst treatment 
@@ -119,7 +119,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     outC = data.frame(n = dat$n, 
                       method = dat$method, 
                       t2error = errorC, 
-                      type = 'Pre-defined worst treatment not identified as worst', 
+                      type = 'Pre-defined worst treatment identified as worst', 
                       scenario = Scenario)
     
     # (D) when treatment 3 or 4 were not the worst treatments 
@@ -133,7 +133,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     outD = data.frame(n = dat$n, 
                       method = dat$method, 
                       t2error = error, 
-                      type = 'Either of bottom 2 pre-defined worst treatment not identified as worst', 
+                      type = 'Either of bottom 2 pre-defined worst treatment identified as worst', 
                       scenario = Scenario)
     
     out_raw = rbind(outA, outB, outC, outD)

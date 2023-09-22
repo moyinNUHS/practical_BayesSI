@@ -1,7 +1,9 @@
 # plot bias, coverage and MSE
 
 
-plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_names = all_method_names, .font_size = font_size) {
+plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_names = all_method_names, 
+                         .tx_labs = tx_labs,
+                         .font_size = font_size, .pt_size = pt_size) {
   
   # make a long form data
   n = parse_number(names(d))
@@ -36,11 +38,11 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
   gaps = diff(unique(long$n))[1]
   br_x = seq(min(long$n) + gaps/2, max(long$n) - gaps/2, length.out = length(unique(long$n)) - 1)
   
-  f = ggplot(long, aes(x = n, y = value, color = method, 
+  f = ggplot(long, aes(x = n, y = value, color = treatment, 
                        group = interaction(treatment, method), 
                        shape = method)) +
     facet_wrap(metric ~., scales = "free_y",strip.position = "top", ncol = 1) +
-    geom_point(size=1.4, position = position_dodge(width = 500))+ 
+    geom_point(size = .pt_size, position = position_dodge(width = 500))+ 
     scale_shape_manual(values = shapes) +
     scale_color_manual(values = colors) +
     labs(

@@ -46,15 +46,19 @@ method_labs[endsWith(all_method_names, 'str_ur2')] = paste0(method_labs[endsWith
 method_labs[endsWith(all_method_names, 'wk_ur1')] = paste0(method_labs[endsWith(all_method_names, 'wk_ur1')], 'weakly-informative/UR1 prior)')
 method_labs[endsWith(all_method_names, 'wk_ur2')] = paste0(method_labs[endsWith(all_method_names, 'wk_ur2')], 'weakly-informative/UR2 prior)')
 
-# define colors and shapes 
 n_methods = length(method_labs)
-shapes = 1:n_methods
+shapes = 1:n_methods # methods differentiated by shapes 
+names(shapes) = method_labs
+  
+# get names of treatments
+tx_labs = rownames(outputs[[1]][[1]]$scenario_out[[1]]$est_method_2_str_ur1)
 qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
 colors_list = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals))) 
-colors = sample(colors_list, n_methods)
-names(shapes) = names(colors) = method_labs
+colors = sample(colors_list, length(tx_labs))
+names(colors) = tx_labs
 
 font_size = 24
+pt_size = 3
 ```
 ## Final analysis report {.tabset .tabset-fade .tabset-pills}
 
@@ -507,7 +511,7 @@ if (length(ind1.2) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind1.2]])))
   }
   # plot 
-  f = plot_type2(Scenario = '1.2',plot.d)
+  f = plot_type2(Scenario = '1.2', plot.d)
   f
 } else {
   message('There are no or multiple output files in `output`. Please select one.')
