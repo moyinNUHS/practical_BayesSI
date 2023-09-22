@@ -11,7 +11,7 @@ prep.coeff <- function(i, alldata, model, out) {
     # if there is no error in model fit (there could be warning)
   {
     # extract coefficients for each treatment
-    fit.coeff <- c(0, out[, 1])
+    fit.coeff <- out[, 1]
     #fit.coeff <- append(out[,1], 0, after=(Treat.best-1))
     est.contrasts <- rep(NA, no_treatment)
     est.contrasts[t_label] <- fit.coeff[t_label]

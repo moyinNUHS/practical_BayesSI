@@ -97,16 +97,14 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
                       scenario = Scenario)
     
     # (B) when treatment 1 or 2 were not the best treatments
-    sub_secbest_dat = dat[, grep(paste0('treatment', secbest_tx), colnames(dat))]
+    sub_secbest_dat = dat[, grep(paste0('treatment', c(secbest_tx, best_tx), collapse = '|'), colnames(dat))]
     errorB = apply(sub_secbest_dat, 1, function(row){
-      sum(row != secbest_tx) != 0 
-    })
-    
-    error = errorA & errorB # error is committed when either top 2 predefined treatments were not concluded as the best 
+      sum(row != secbest_tx & row != best_tx) != 0 
+    }) # error is committed when either top 2 predefined treatments were not concluded as the best 
     
     outB = data.frame(n = dat$n, 
                       method = dat$method, 
-                      t2error = error, 
+                      t2error = errorB, 
                       type = 'Either of top 2 pre-defined best treatment identified as best', 
                       scenario = Scenario)
     
@@ -123,16 +121,14 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
                       scenario = Scenario)
     
     # (D) when treatment 3 or 4 were not the worst treatments 
-    sub_secworse_dat = dat[, grep(paste0('treatment', secworse_tx), colnames(dat))]
+    sub_secworse_dat = dat[, grep(paste0('treatment', c(secworse_tx, worst_tx), collapse = '|'), colnames(dat))]
     errorD = apply(sub_secworse_dat, 1, function(row){
-      sum(row %in% c(best_tx, secbest_tx, secworse_tx)) != n_tx 
+      sum(row %in% c(best_tx, secbest_tx)) != ncol(sub_secworse_dat) - 1
     })
-    
-    error = errorC & errorD
     
     outD = data.frame(n = dat$n, 
                       method = dat$method, 
-                      t2error = error, 
+                      t2error = errorD, 
                       type = 'Either of bottom 2 pre-defined worst treatment identified as worst', 
                       scenario = Scenario)
     

@@ -48,7 +48,6 @@ get_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_name
   # (B) Identified 2 better treatments 
   # (C) Identified 3 better treatments 
   # (D) Identified any 1 treatment as better than the other but 1 contiguous group 
-  # (E) All of the above errors 
   
   # (A) Identified 1 best treatment (terminating trial for efficacy)
   errorA = apply(dat.lean, 1, function(row){
@@ -64,7 +63,8 @@ get_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_name
   
   # (B) Identified 2 better treatments 
   errorB = apply(dat.lean, 1, function(row){
-    sum(row == 'overlap') == 2
+    row = row[-which(row == 'overlap')]
+    length(table(as.character(row) == n_tx-1)) == 2
   })
   
   outB = data.frame(n = dat$n, 
@@ -75,49 +75,31 @@ get_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_name
   
   # (C) Identified 3 better treatments 
   errorC = apply(dat.lean, 1, function(row){
-    row = row[-which(row == 'overlap')]
-    length(unique(row)) == n_tx
+    row.uniq = row[-which(row == 'overlap')]
+    length(unique(row.uniq)) == n_tx & sum(row == 'overlap') == n_tx
   })
   
   outC = data.frame(n = dat$n, 
                     method = dat$method, 
                     t1error = errorC, 
-                    type = 'Identified 3 better treatments (dropping a treatment) ',
+                    type = 'Identified 3 better treatments (dropping 1 treatment)',
                     scenario = Scenario)
   
-  # (D) Identified any 1 treatment as better than the other but in 1 contiguous group
+  # (D) Identified any treatments as better than the other but in 1 contiguous group
+  ind_classified = which(errorA | errorB | errorC)
   errorD = apply(dat.lean, 1, function(row){
-    sum(row != 'overlap') == 1
+    sum(row != 'overlap') > 0 
   })
+  errorD[ind_classified] = F # give F for those errors already classified as A, B or C
   
   outD = data.frame(n = dat$n, 
                     method = dat$method, 
                     t1error = errorD, 
-                    type = 'Identified any 1 as better than any other treatment but in 1 contiguous group',
-                    scenario = Scenario)
-  
-  # (E) Any of the above errors 
-  errorE = apply(dat.lean, 1, function(row){
-    any(row != 'overlap')
-  })
-  
-  outE = data.frame(n = dat$n, 
-                    method = dat$method, 
-                    t1error = errorE, 
-                    type = 'Any treament different from other treatment(s)',
-                    scenario = Scenario)
-  
-  # (F) 1 or more better than the other treatment(s)
-  errorF = errorA | errorB | errorC
-  
-  outF = data.frame(n = dat$n, 
-                    method = dat$method, 
-                    t1error = errorF, 
-                    type = '1 or more better than the other treatment(s)',
+                    type = 'Identified any treatment(s) as better than other treatment(s) but in 1 contiguous group',
                     scenario = Scenario)
   
   # calculate type 1 error per sample size (n), per method, per type using power = (1 - mean(error))
-  out_raw = rbind(outA, outB, outC, outD, outE, outF)
+  out_raw = rbind(outA, outB, outC, outD)
   
   out = out_raw %>% 
     group_by(n, method, type) %>% 
@@ -125,10 +107,8 @@ get_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_name
   
   out$type = factor(out$type, levels = c('Identified 1 best treatment (terminating trial for efficacy)',
                                          'Identified 2 better treatments (dropping 2 treatments)',
-                                         'Identified 3 better treatments (dropping a treatment) ',
-                                         'Identified any 1 as better than any other treatment but in 1 contiguous group',
-                                         '1 or more better than the other treatment(s)', 
-                                         'Any treament different from other treatment(s)'))
+                                         'Identified 3 better treatments (dropping 1 treatment)',
+                                         'Identified any treatment(s) as better than other treatment(s) but in 1 contiguous group'))
   
   return(out)
   
