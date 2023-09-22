@@ -22,8 +22,9 @@ scripts = paste0(wd, 'Code/Functions/', list.files(paste0(wd, 'Code/Functions/')
 lapply(scripts, source)
 
 # load data in the output folder 
-files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "2023-09-22.rds")
-files = files[-grep('power_|t1_', files)]
+files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "ter100_2023-09-18.rds")
+power_t1_files = grep('power_|t1_', files)
+if (length(power_t1_files) > 0) {files = files[-grep('power_|t1_', files)]}
 outputs = list()
 for (file in files){
   outputs[[sub('.*/', '', file)]] = readRDS(file)
@@ -522,7 +523,7 @@ $T_A = 30\%$; $T_B = 35\%$; $T_C = 40\%$; $T_D = 45\%$
 
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
-ind1.3 = grep('bigdiff', files)
+ind1.3 = grep('1.3', files)
 if (length(ind1.3) == 1) {
   
   power_filename = paste0('power_', sub('.*/', '', files[[ind1.3]]))
