@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------- #
 
 fit_model_1_NI <- function(nma_data, 
-                           alldata, 
+                           Trial_Treat_lab_vec, 
                            alternative = 'two-sided', 
                            p = 0.05,
                            bonferr = T) {
@@ -51,7 +51,7 @@ fit_model_1_NI <- function(nma_data,
   }
   
   # for each subgroup, prepare the coefficients to identify rankings
-  rank.v = rank.v.mat(no_p, alldata, my.glm, out)
+  rank.v = rank.v.mat(no_p, Trial_Treat_lab_vec, my.glm, out)
   
   return(list(contrast.est = out, ranking = rank.v))
 }
