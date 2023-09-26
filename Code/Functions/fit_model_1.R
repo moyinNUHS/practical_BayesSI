@@ -3,7 +3,7 @@
 # ------------------------------------------------------ #
 
 fit_model_1 <- function(nma_data, 
-                        alldata, 
+                        Trial_Treat_lab_vec, 
                         alt_hypothesis = 'two.sided', 
                         p = 0.05,
                         bonferr = T, 
@@ -38,7 +38,7 @@ fit_model_1 <- function(nma_data,
   # gives a matrix where 
   # 1st row = best treatments 
   # 2nd row indicates 1 if any models did not fit 
-  rank.v = rank.v.mat(no_p, alldata, my.glm, out)
+  rank.v = rank.v.mat(no_p, Trial_Treat_lab_vec, my.glm, out)
   
   return(list(contrast.est = out, 
               ranking = rank.v))

@@ -2,7 +2,7 @@
 # model 2: fit random effects model to all data using hierarchical structure  #
 # --------------------------------------------------------------------------- #
 fit_model_2 <- function(nma_data, 
-                        alldata,
+                        Trial_Treat_lab_vec,
                         alternative = 'two-sided', 
                         p = 0.05,
                         bonferr = T, 
@@ -59,7 +59,7 @@ if (!is.null(my.glm$error)) {
   }
   
   # for each subgroup, prepare the coefficients to identify rankings
-  rank.v = rank.v.mat(no_p, alldata, my.glm, out)
+  rank.v = rank.v.mat(no_p, Trial_Treat_lab_vec, my.glm, out)
   
   return(list(contrast.est = out, ranking = rank.v))
 }

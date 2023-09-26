@@ -10,9 +10,12 @@ find.rankings <- function(t_labelv, treat.coeff) {
     # if all est.contrasts are NA
     out <- sample(t_labelv, 1) # random recommendation
     not_fit <- 1 # record model not fitted
-  } else{
-    out <- which.min(treat.coeff)
-    not_fit <- 0
+  } else {
+    out<-which(treat.coeff == min(treat.coeff, na.rm = TRUE))
+    if (length(out) > 1) {
+      out=sample(out, 1)
+    }
+    not_fit<-0
   }
   
   # if model fitted then give

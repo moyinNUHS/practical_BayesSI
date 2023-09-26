@@ -14,9 +14,17 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
     # estimators
     val <- out_one[, 'Estimate']
     val <- as.numeric(val[complete.cases(val)])
+
+    ################################################################
+    #Yiyun to update here:
+    #'val' the predicted coefficients from the model
+    #'t.diff', (rename to t.target) 
+    #So that predicted coefficents (val) and true 'target' coefficients (phi_v or t.target) have the same units (probability(?))
+    #Due to fact we no longer have a reference treatment
+    #################################################################
     
     # difference between the interested treatment (q) and reference treatment (1)
-    t.diff <- (phi_v[q + 1] - phi_v[1])
+    t.diff <- (phi_v[q] - phi_v[1])
     # phi_v is the pre-defined OR of each treatment effect 
     # phi_v[1] is the reference treatment effect in terms of OR
     
