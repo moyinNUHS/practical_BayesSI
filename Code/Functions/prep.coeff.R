@@ -1,18 +1,17 @@
 # for each subgroup, prepare the coefficients to identify rankings
 
-prep.coeff <- function(i, alldata, model, out) {
+prep.coeff <- function(i, Trial_Treat_lab_vec, model, out) {
   # extract trial data from each pattern
-  sub_data <- alldata[, i]
+  sub_data <- Trial_Treat_lab_vec[[i]]
   
   # treatments in the pattern
-  t_label <- sort(unique(sub_data$treatment_label))
+  t_label <- sort(unique(sub_data))
   
   if (is.null(model$error))
     # if there is no error in model fit (there could be warning)
   {
     # extract coefficients for each treatment
     fit.coeff <- out[, 1]
-    #fit.coeff <- append(out[,1], 0, after=(Treat.best-1))
     est.contrasts <- rep(NA, no_treatment)
     est.contrasts[t_label] <- fit.coeff[t_label]
     
