@@ -121,10 +121,21 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
                       scenario = Scenario)
     
     # (D) when treatment 3 or 4 were not the worst treatments 
-    sub_secworse_dat = dat[, grep(paste0('treatment', c(secworse_tx, worst_tx), collapse = '|'), colnames(dat))]
-    errorD = apply(sub_secworse_dat, 1, function(row){
-      sum(row %in% c(best_tx, secbest_tx)) != ncol(sub_secworse_dat) - 1
+    sub_secworse_dat = dat[, grep(paste0('treatment', secworse_tx), colnames(dat))]
+    error_secworse_isworst = apply(sub_secworse_dat, 1, function(row){
+      sum(row %in% c(best_tx, secbest_tx, worst_tx)) != n_tx 
     })
+    
+    sub_twoworse_dat = dat[, grep(paste0('treatment', c(worst_tx, secworse_tx), collapse = '|'), colnames(dat))]
+    error_twoworse_areworse = apply(sub_twoworse_dat, 1, function(row){
+      row['treatment1-treatment3'] == 1 & 
+        row['treatment1-treatment4'] == 1 & 
+        row['treatment2-treatment3'] == 2 & 
+        row['treatment2-treatment4'] == 2 & 
+        row['treatment3-treatment4'] == 'overlap'  
+    })
+    
+    errorD = errorC & error_secworse_isworst & error_twoworse_areworse
     
     outD = data.frame(n = dat$n, 
                       method = dat$method, 
