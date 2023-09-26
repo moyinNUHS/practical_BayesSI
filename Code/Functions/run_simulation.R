@@ -31,6 +31,12 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
   alpha_ref = find_phi(p = T_vector[1], alpha = 0)   # reference treatment effect 
   phi_vector = find_phi(p = T_vector, alpha = alpha_ref) # specify each treatment effect in terms of OR
   # you may get back T_vector with res_probability(phi_vector, alpha_ref)
+
+    ################################################################
+    #Yiyun unsure if you want to update here:
+    #'phi_vector' such that it is the true 'target' coefficients we want the model to estimate
+    #So that predicted coefficents and true 'target' coefficients have the same units (probability(?))
+    #################################################################
   
   store = list()
   for (N in samplesize_vec) {
