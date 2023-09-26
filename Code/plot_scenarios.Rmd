@@ -22,7 +22,7 @@ scripts = paste0(wd, 'Code/Functions/', list.files(paste0(wd, 'Code/Functions/')
 lapply(scripts, source)
 
 # load data in the output folder 
-files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "iter2_2023-09-22.rds")
+files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "iter100_2023-09-18.rds")
 power_t1_files = grep('power_|t1_', files)
 if (length(power_t1_files) > 0) {files = files[-grep('power_|t1_', files)]}
 outputs = list()
@@ -73,8 +73,7 @@ Tj = 37.5%, j = A, B, C, D
 
 ind1.1 = grep('1.1', files)
 if (length(ind1.1) == 1) {
-  f = plot_biasmse(Scenario = '1.1', d = outputs[[ind1.1]])
-  f
+  plot_biasmse(Scenario = '1.1', d = outputs[[ind1.1]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -93,8 +92,7 @@ $T_j = 45\%$, $j = A, C, D$
 
 ind1.2 = grep('1.2', files)
 if (length(ind1.2) == 1) {
-  f = plot_biasmse(Scenario = '1.2', d = outputs[[ind1.2]])
-  f
+  plot_biasmse(Scenario = '1.2', d = outputs[[ind1.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -113,8 +111,7 @@ $T_A = 30\%$; $T_B = 35\%$; $T_C = 40\%$; $T_D = 45\%$
 
 ind1.3 = grep('1.3', files)
 if (length(ind1.3) == 1) {
-  f = plot_biasmse(Scenario = '1.3', d = outputs[[ind1.3]])
-  f
+  plot_biasmse(Scenario = '1.3', d = outputs[[ind1.3]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -131,8 +128,7 @@ TA = 30%; TB = 40%; TC = 50%; TD = 60%
 
 ind1.4 = grep('1.4', files)
 if (length(ind1.4) == 1) {
-  f = plot_biasmse(Scenario = '1.4', d = outputs[[ind1.4]])
-  f
+  plot_biasmse(Scenario = '1.4', d = outputs[[ind1.4]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -148,8 +144,7 @@ Tj = 17.5%, j = A, B, C, D
 
 ind2.1 = grep('2.1', files)
 if (length(ind2.1) == 1) {
-  f = plot_biasmse(Scenario = '2.1', d = outputs[[ind2.1]])
-  f
+  plot_biasmse(Scenario = '2.1', d = outputs[[ind2.1]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -165,8 +160,7 @@ TA = 10%, TB = 15%, TC = 20%, TD = 25%
 
 ind2.2 = grep('2.2', files)
 if (length(ind2.2) == 1) {
-  f = plot_biasmse(Scenario = '2.2', d = outputs[[ind2.2]])
-  f
+  plot_biasmse(Scenario = '2.2', d = outputs[[ind2.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -182,8 +176,7 @@ Tj = 82.5%, j = A, B, C, D
 
 ind2.3 = grep('2.3', files)
 if (length(ind2.3) == 1) {
-  f = plot_biasmse(Scenario = '2.3', d = outputs[[ind2.3]])
-  f
+  plot_biasmse(Scenario = '2.3', d = outputs[[ind2.3]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -198,8 +191,7 @@ TA = 75%, TB = 80%, TC = 85%, TD = 90%
 
 ind2.4 = grep('2.4', files)
 if (length(ind2.4) == 1) {
-  f = plot_biasmse(Scenario = '2.4', d = outputs[[ind2.4]])
-  f
+  plot_biasmse(Scenario = '2.4', d = outputs[[ind2.4]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -214,8 +206,7 @@ Tj = 37.5%, j = A, B, C, D
 
 ind3.1 = grep('3.1', files)
 if (length(ind3.1) == 1) {
-  f = plot_biasmse(Scenario = '3.1', d = outputs[[ind3.1]])
-  f
+  plot_biasmse(Scenario = '3.1', d = outputs[[ind3.1]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -230,8 +221,7 @@ TA = 30%, TB = 35%, TC = 40%, TD = 45%
 
 ind3.2 = grep('3.2', files)
 if (length(ind3.2) == 1) {
-  f = plot_biasmse(Scenario = '3.2', d = outputs[[ind3.2]])
-  f
+  plot_biasmse(Scenario = '3.2', d = outputs[[ind3.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -250,8 +240,7 @@ Pattern 4: TA = 30% TB = 40% TC = 80% TD = 90%
 
 ind4.1 = grep('4.1', files)
 if (length(ind4.1) == 1) {
-  f = plot_biasmse(Scenario = '4.1', d = outputs[[ind4.1]])
-  f
+  plot_biasmse(Scenario = '4.1', d = outputs[[ind4.1]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -269,8 +258,7 @@ TAq = 20%, TBq = 25%, TCq = 30%, TDq = 35%, q = 1, 2
 
 ind4.2 = grep('4.2', files)
 if (length(ind4.2) == 1) {
-  f = plot_biasmse(Scenario = '4.2', d = outputs[[ind4.2]])
-  f
+  plot_biasmse(Scenario = '4.2', d = outputs[[ind4.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -287,8 +275,7 @@ TAq = 20%, TBq = 25%, TCq = 30%, TDq = 35%, q = 1, …, 4
 
 ind4.3 = grep('4.3', files)
 if (length(ind4.3) == 1) {
-  f = plot_biasmse(Scenario = '4.3', d = outputs[[ind4.3]])
-  f
+  plot_biasmse(Scenario = '4.3', d = outputs[[ind4.3]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -308,8 +295,7 @@ $T_j = 45\%$, $j = A, C, D$
 
 ind1.2 = grep('1.2', files)
 if (length(ind1.2) == 1) {
-  f = plot_mort(Scenario = '1.2', d = outputs[[ind1.2]])
-  f
+  plot_mort(Scenario = '1.2', d = outputs[[ind1.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -326,8 +312,7 @@ $T_A = 30\%$; $T_B = 35\%$; $T_C = 40\%$; $T_D = 45\%$
 
 ind1.3 = grep('1.3', files)
 if (length(ind1.3) == 1) {
-  f = plot_mort(Scenario = '1.3', d = outputs[[ind1.3]])
-  f
+  plot_mort(Scenario = '1.3', d = outputs[[ind1.3]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -344,8 +329,7 @@ TA = 30%; TB = 40%; TC = 50%; TD = 60%
 
 ind1.4 = grep('1.4', files)
 if (length(ind1.4) == 1) {
-  f = plot_mort(Scenario = '1.4', d = outputs[[ind1.4]])
-  f
+  plot_mort(Scenario = '1.4', d = outputs[[ind1.4]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -360,8 +344,7 @@ TA = 10%, TB = 15%, TC = 20%, TD = 25%
 
 ind2.2 = grep('2.2', files)
 if (length(ind2.2) == 1) {
-  f = plot_mort(Scenario = '2.2', d = outputs[[ind2.2]])
-  f
+  plot_mort(Scenario = '2.2', d = outputs[[ind2.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -376,8 +359,7 @@ TA = 75%, TB = 80%, TC = 85%, TD = 90%
 
 ind2.4 = grep('2.4', files)
 if (length(ind2.4) == 1) {
-  f = plot_mort(Scenario = '2.4', d = outputs[[ind2.4]])
-  f
+  plot_mort(Scenario = '2.4', d = outputs[[ind2.4]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -392,8 +374,7 @@ TA = 30%, TB = 35%, TC = 40%, TD = 45%
 
 ind3.2 = grep('3.2', files)
 if (length(ind3.2) == 1) {
-  f = plot_mort(Scenario = '3.2', d = outputs[[ind3.2]])
-  f
+  plot_mort(Scenario = '3.2', d = outputs[[ind3.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -414,8 +395,7 @@ Pattern 4: TA = 30% TB = 40% TC = 80% TD = 90%
 
 ind4.1 = grep('4.1', files)
 if (length(ind4.1) == 1) {
-  f = plot_mort(Scenario = '4.1', d = outputs[[ind4.1]])
-  f
+  plot_mort(Scenario = '4.1', d = outputs[[ind4.1]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -432,8 +412,7 @@ TAq = 20%, TBq = 25%, TCq = 30%, TDq = 35%, q = 1, 2
 
 ind4.2 = grep('4.2', files)
 if (length(ind4.2) == 1) {
-  f = plot_mort(Scenario = '4.2', d = outputs[[ind4.2]])
-  f
+  plot_mort(Scenario = '4.2', d = outputs[[ind4.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -450,8 +429,7 @@ TAq = 20%, TBq = 25%, TCq = 30%, TDq = 35%, q = 1, …, 4
 
 ind4.3 = grep('4.3', files)
 if (length(ind4.3) == 1) {
-  f = plot_mort(Scenario = '4.3', d = outputs[[ind4.3]])
-  f
+  plot_mort(Scenario = '4.3', d = outputs[[ind4.3]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -481,8 +459,7 @@ if (length(ind1.2) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind1.2]])))
   }
   # plot 
-  f = plot_type2(Scenario = '1.2', plot.d)
-  f
+  plot_type2(Scenario = '1.2', plot.d)
 } else {
   message('There are no or multiple output files in `output`. Please select one.')
 }
@@ -510,8 +487,7 @@ if (length(ind1.3) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind1.3]])))
   }
   # plot 
-  f = plot_type2(Scenario = '1.3', plot.d)
-  f
+  plot_type2(Scenario = '1.3', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -539,8 +515,7 @@ if (length(ind1.4) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind1.4]])))
   }
   # plot 
-  f = plot_type2(Scenario = '1.4', plot.d)
-  f
+  plot_type2(Scenario = '1.4', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -567,8 +542,7 @@ if (length(ind2.2) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind2.2]])))
   }
   # plot 
-  f = plot_type2(Scenario = '2.2', plot.d)
-  f
+  plot_type2(Scenario = '2.2', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -594,8 +568,7 @@ if (length(ind2.4) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind2.4]])))
   }
   # plot 
-  f = plot_type2(Scenario = '2.4', plot.d)
-  f
+  plot_type2(Scenario = '2.4', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -622,8 +595,7 @@ if (length(ind3.2) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind3.2]])))
   }
   # plot 
-  f = plot_type2(Scenario = '3.2', plot.d)
-  f
+  plot_type2(Scenario = '3.2', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -653,8 +625,7 @@ if (length(ind4.1) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind4.1]])))
   }
   # plot 
-  f = plot_type2(Scenario = '4.1', plot.d)
-  f
+  plot_type2(Scenario = '4.1', plot.d, pt_size)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -682,8 +653,7 @@ if (length(ind4.2) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind4.2]])))
   }
   # plot 
-  f = plot_type2(Scenario = '4.2', plot.d)
-  f
+  plot_type2(Scenario = '4.2', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -711,8 +681,7 @@ if (length(ind4.3) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind4.3]])))
   }
   # plot 
-  f = plot_type2(Scenario = '4.3', plot.d)
-  f
+  plot_type2(Scenario = '4.3', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -740,8 +709,7 @@ if (length(ind1.1) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind1.1]])))
   }
   # plot 
-  f = plot_type1(plot.d)
-  f
+  plot_type1(plot.d)
 } else {
   message('There are no or multiple output files in `output`. Please select one.')
 }
@@ -766,8 +734,7 @@ if (length(ind2.1) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind2.1]])))
   }
   # plot 
-  f = plot_type1(plot.d)
-  f
+  plot_type1(plot.d)
 } else {
   message('There are no or multiple output files in `output`. Please select one.')
 }
@@ -793,8 +760,7 @@ if (length(ind2.3) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind2.3]])))
   }
   # plot 
-  f = plot_type1(plot.d)
-  f
+  plot_type1(plot.d)
 } else {
   message('There are no or multiple output files in `output`. Please select one.')
 }
@@ -819,8 +785,7 @@ if (length(ind3.1) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind3.1]])))
   }
   # plot 
-  f = plot_type1(plot.d)
-  f
+  plot_type1(plot.d)
 } else {
   message('There are no or multiple output files in `output`. Please select one.')
 }

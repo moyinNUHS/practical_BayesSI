@@ -87,7 +87,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     # (A) when treatment 1 was not the best treatment 
     sub_best_dat = dat[, grep(paste0('treatment', best_tx), colnames(dat))]
     errorA = apply(sub_best_dat, 1, function(row){
-      sum(row != best_tx) != 0 # error is committed when any of the comparisons do not show best_tx as the best 
+      any(row != best_tx) # error is committed when any of the comparisons do not show best_tx as the best 
     })
     
     outA = data.frame(n = dat$n, 
@@ -99,7 +99,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     # (B) when treatment 1 or 2 were not the best treatments
     sub_secbest_dat = dat[, grep(paste0('treatment', c(secbest_tx, best_tx), collapse = '|'), colnames(dat))]
     errorB = apply(sub_secbest_dat, 1, function(row){
-      sum(row != secbest_tx & row != best_tx) != 0 
+      any(row != secbest_tx & row != best_tx) 
     }) # error is committed when either top 2 predefined treatments were not concluded as the best 
     
     outB = data.frame(n = dat$n, 
