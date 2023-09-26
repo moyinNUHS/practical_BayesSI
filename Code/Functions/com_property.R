@@ -20,6 +20,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
     #'val' the predicted coefficients from the model
     #'t.diff', (rename to t.target) 
     #So that predicted coefficents (val) and true 'target' coefficients (phi_v or t.target) have the same units (probability(?))
+    #Due to fact we no longer have a reference treatment
     #################################################################
     
     # difference between the interested treatment (q) and reference treatment (1)
