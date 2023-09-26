@@ -22,7 +22,7 @@ scripts = paste0(wd, 'Code/Functions/', list.files(paste0(wd, 'Code/Functions/')
 lapply(scripts, source)
 
 # load data in the output folder 
-files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "ter100_2023-09-18.rds")
+files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "iter2_2023-09-22.rds")
 power_t1_files = grep('power_|t1_', files)
 if (length(power_t1_files) > 0) {files = files[-grep('power_|t1_', files)]}
 outputs = list()
