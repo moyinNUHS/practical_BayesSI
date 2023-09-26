@@ -97,10 +97,21 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
                       scenario = Scenario)
     
     # (B) when treatment 1 or 2 were not the best treatments
-    sub_secbest_dat = dat[, grep(paste0('treatment', c(secbest_tx, best_tx), collapse = '|'), colnames(dat))]
-    errorB = apply(sub_secbest_dat, 1, function(row){
-      any(row != secbest_tx & row != best_tx) 
+    sub_secbest_dat = dat[, grep(paste0('treatment', secbest_tx), colnames(dat))]
+    error_secbest = apply(sub_secbest_dat, 1, function(row){
+      any(row != secbest_tx) # error is committed when any of the comparisons do not show second best_tx as the best 
+    })
+    
+    sub_twobest_dat = dat[, grep(paste0('treatment', c(secbest_tx, best_tx), collapse = '|'), colnames(dat))]
+    error_twobest = apply(sub_twobest_dat, 1, function(row){
+      row['treatment1-treatment2'] == 'overlap' & 
+        row['treatment1-treatment3'] == '1' & 
+        row['treatment1-treatment4'] == '1' & 
+        row['treatment2-treatment3'] == '2' & 
+        row['treatment2-treatment4'] == '2' 
     }) # error is committed when either top 2 predefined treatments were not concluded as the best 
+    
+    errorB = errorA & error_secbest & !error_twobest
     
     outB = data.frame(n = dat$n, 
                       method = dat$method, 
@@ -128,14 +139,14 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     
     sub_twoworse_dat = dat[, grep(paste0('treatment', c(worst_tx, secworse_tx), collapse = '|'), colnames(dat))]
     error_twoworse_areworse = apply(sub_twoworse_dat, 1, function(row){
-      row['treatment1-treatment3'] == 1 & 
-        row['treatment1-treatment4'] == 1 & 
-        row['treatment2-treatment3'] == 2 & 
-        row['treatment2-treatment4'] == 2 & 
+      row['treatment1-treatment3'] == '1' & 
+        row['treatment1-treatment4'] == '1' & 
+        row['treatment2-treatment3'] == '2' & 
+        row['treatment2-treatment4'] == '2' & 
         row['treatment3-treatment4'] == 'overlap'  
     })
     
-    errorD = errorC & error_secworse_isworst & error_twoworse_areworse
+    errorD = errorC & error_secworse_isworst & !error_twoworse_areworse
     
     outD = data.frame(n = dat$n, 
                       method = dat$method, 
