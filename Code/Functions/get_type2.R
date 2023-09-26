@@ -59,7 +59,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     out_raw = data.frame(n = dat$n, 
                          method = dat$method, 
                          t2error = error, 
-                         type = 'Pre-defined best treatment not identified as best',
+                         type = 'Pre-defined best treatment identified as best',
                          scenario = Scenario)
     
     # calculate power per sample size (n), per method, per type using power = (1 - mean(error))
@@ -87,27 +87,36 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     # (A) when treatment 1 was not the best treatment 
     sub_best_dat = dat[, grep(paste0('treatment', best_tx), colnames(dat))]
     errorA = apply(sub_best_dat, 1, function(row){
-      sum(row != best_tx) != 0 # error is committed when any of the comparisons do not show best_tx as the best 
+      any(row != best_tx) # error is committed when any of the comparisons do not show best_tx as the best 
     })
     
     outA = data.frame(n = dat$n, 
                       method = dat$method, 
                       t2error = errorA, 
-                      type = 'Pre-defined best treatment not identified as best',
+                      type = 'Pre-defined best treatment identified as best',
                       scenario = Scenario)
     
     # (B) when treatment 1 or 2 were not the best treatments
     sub_secbest_dat = dat[, grep(paste0('treatment', secbest_tx), colnames(dat))]
-    errorB = apply(sub_secbest_dat, 1, function(row){
-      sum(row != secbest_tx) != 0 
+    error_secbest = apply(sub_secbest_dat, 1, function(row){
+      any(row != secbest_tx) # error is committed when any of the comparisons do not show second best_tx as the best 
     })
     
-    error = errorA & errorB # error is committed when either top 2 predefined treatments were not concluded as the best 
+    sub_twobest_dat = dat[, grep(paste0('treatment', c(secbest_tx, best_tx), collapse = '|'), colnames(dat))]
+    error_twobest = apply(sub_twobest_dat, 1, function(row){
+      row['treatment1-treatment2'] == 'overlap' & 
+        row['treatment1-treatment3'] == '1' & 
+        row['treatment1-treatment4'] == '1' & 
+        row['treatment2-treatment3'] == '2' & 
+        row['treatment2-treatment4'] == '2' 
+    }) # error is committed when either top 2 predefined treatments were not concluded as the best 
+    
+    errorB = errorA & error_secbest & !error_twobest
     
     outB = data.frame(n = dat$n, 
                       method = dat$method, 
-                      t2error = error, 
-                      type = 'Either of top 2 pre-defined best treatment not identified as best', 
+                      t2error = errorB, 
+                      type = 'Either of top 2 pre-defined best treatment identified as best', 
                       scenario = Scenario)
     
     # (C) when treatment 4 was not the worst treatment 
@@ -119,21 +128,30 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     outC = data.frame(n = dat$n, 
                       method = dat$method, 
                       t2error = errorC, 
-                      type = 'Pre-defined worst treatment not identified as worst', 
+                      type = 'Pre-defined worst treatment identified as worst', 
                       scenario = Scenario)
     
     # (D) when treatment 3 or 4 were not the worst treatments 
     sub_secworse_dat = dat[, grep(paste0('treatment', secworse_tx), colnames(dat))]
-    errorD = apply(sub_secworse_dat, 1, function(row){
-      sum(row %in% c(best_tx, secbest_tx, secworse_tx)) != n_tx 
+    error_secworse_isworst = apply(sub_secworse_dat, 1, function(row){
+      sum(row %in% c(best_tx, secbest_tx, worst_tx)) != n_tx 
     })
     
-    error = errorC & errorD
+    sub_twoworse_dat = dat[, grep(paste0('treatment', c(worst_tx, secworse_tx), collapse = '|'), colnames(dat))]
+    error_twoworse_areworse = apply(sub_twoworse_dat, 1, function(row){
+      row['treatment1-treatment3'] == '1' & 
+        row['treatment1-treatment4'] == '1' & 
+        row['treatment2-treatment3'] == '2' & 
+        row['treatment2-treatment4'] == '2' & 
+        row['treatment3-treatment4'] == 'overlap'  
+    })
+    
+    errorD = errorC & error_secworse_isworst & !error_twoworse_areworse
     
     outD = data.frame(n = dat$n, 
                       method = dat$method, 
-                      t2error = error, 
-                      type = 'Either of bottom 2 pre-defined worst treatment not identified as worst', 
+                      t2error = errorD, 
+                      type = 'Either of bottom 2 pre-defined worst treatment identified as worst', 
                       scenario = Scenario)
     
     out_raw = rbind(outA, outB, outC, outD)

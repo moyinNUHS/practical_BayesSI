@@ -18,7 +18,9 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   
   ### put estimators and variance for each method into a list
   method.names = names(output_replication[[1]])[grep('method', names(output_replication[[1]]))] # get vector of method names 
-  estimator_all = model_var_all = conti_grp = list()
+  estimator_all = 
+    # model_var_all = 
+    list()
   for (m in method.names){
     # list of data frames containing the estimates calculated using method `m`
     df_list = map(output_replication, m)
@@ -30,10 +32,10 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
     estimator_all[[m]] = do.call(rbind, rows)
     
     # variance 
-    rows = lapply(df_list, function(x) {
-      x[,'model_var']
-    })
-    model_var_all[[m]] = do.call(rbind, rows)
+    # rows = lapply(df_list, function(x) {
+    #   x[,'model_var']
+    # })
+    # model_var_all[[m]] = do.call(rbind, rows)
     
     # contiguous groups
     # rows = lapply(df_list, find_contig_grp)
@@ -42,12 +44,12 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   }
     
   ### get properties of estimators 
-  estimator_property = lapply(1:(no_treatment - 1), function(x) {
+  estimator_property = lapply(1:no_treatment, function(x) {
     estimator_prop(x, output_replication, method.names, phi_v, R)
   })
   
   names(estimator_property) <-
-    sapply(2:no_treatment, function(i)
+    sapply(1:no_treatment, function(i)
       paste0("phi", i))
   # estimator_property has length = total number of treatments - 1 (reference treatment)
   # within each treatment contains warnings, and properties for all methods

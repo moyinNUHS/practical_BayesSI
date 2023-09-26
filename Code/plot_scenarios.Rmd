@@ -22,8 +22,9 @@ scripts = paste0(wd, 'Code/Functions/', list.files(paste0(wd, 'Code/Functions/')
 lapply(scripts, source)
 
 # load data in the output folder 
-files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "100_2023-09-18*.rds")
-files = files[-grep('power_|t1_', files)]
+files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "iter100_2023-09-18.rds")
+power_t1_files = grep('power_|t1_', files)
+if (length(power_t1_files) > 0) {files = files[-grep('power_|t1_', files)]}
 outputs = list()
 for (file in files){
   outputs[[sub('.*/', '', file)]] = readRDS(file)
@@ -46,30 +47,33 @@ method_labs[endsWith(all_method_names, 'str_ur2')] = paste0(method_labs[endsWith
 method_labs[endsWith(all_method_names, 'wk_ur1')] = paste0(method_labs[endsWith(all_method_names, 'wk_ur1')], 'weakly-informative/UR1 prior)')
 method_labs[endsWith(all_method_names, 'wk_ur2')] = paste0(method_labs[endsWith(all_method_names, 'wk_ur2')], 'weakly-informative/UR2 prior)')
 
-# define colors and shapes 
 n_methods = length(method_labs)
-shapes = 1:n_methods
+shapes = 1:n_methods # methods differentiated by shapes 
+names(shapes) = method_labs
+  
+# get names of treatments
+tx_labs = rownames(outputs[[1]][[1]]$scenario_out[[1]]$est_method_2_str_ur1)
 qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
 colors_list = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals))) 
-colors = sample(colors_list, n_methods)
-names(shapes) = names(colors) = method_labs
+colors = sample(colors_list, length(tx_labs))
+names(colors) = tx_labs
 
 font_size = 24
+pt_size = 3
 ```
 ## Final analysis report {.tabset .tabset-fade .tabset-pills}
 
 ### Bias, Coverage, MSE
 
-Each point from left to right for each method represents a performance measure of an estimated \ncontrast between treatments 2, 3, and 4 relative to treatment 1.
-
 #### Scenario 1.1
+All treatments have equal effects: 
+Tj = 37.5%, j = A, B, C, D
 
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind1.1 = grep('1.1', files)
 if (length(ind1.1) == 1) {
-  f = plot_biasmse(Scenario = '1.1', d = outputs[[ind1.1]])
-  f
+  plot_biasmse(Scenario = '1.1', d = outputs[[ind1.1]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -88,8 +92,7 @@ $T_j = 45\%$, $j = A, C, D$
 
 ind1.2 = grep('1.2', files)
 if (length(ind1.2) == 1) {
-  f = plot_biasmse(Scenario = '1.2', d = outputs[[ind1.2]])
-  f
+  plot_biasmse(Scenario = '1.2', d = outputs[[ind1.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -108,8 +111,7 @@ $T_A = 30\%$; $T_B = 35\%$; $T_C = 40\%$; $T_D = 45\%$
 
 ind1.3 = grep('1.3', files)
 if (length(ind1.3) == 1) {
-  f = plot_biasmse(Scenario = '1.3', d = outputs[[ind1.3]])
-  f
+  plot_biasmse(Scenario = '1.3', d = outputs[[ind1.3]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -119,13 +121,14 @@ if (length(ind1.3) == 1) {
 ```
 
 #### Scenario 1.4
+All 4 treatments have different effects (large difference):
+TA = 30%; TB = 40%; TC = 50%; TD = 60%
 
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind1.4 = grep('1.4', files)
 if (length(ind1.4) == 1) {
-  f = plot_biasmse(Scenario = '1.4', d = outputs[[ind1.4]])
-  f
+  plot_biasmse(Scenario = '1.4', d = outputs[[ind1.4]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -135,13 +138,13 @@ if (length(ind1.4) == 1) {
 ```
 
 #### Scenario 2.1
+Tj = 17.5%, j = A, B, C, D
 
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind2.1 = grep('2.1', files)
 if (length(ind2.1) == 1) {
-  f = plot_biasmse(Scenario = '2.1', d = outputs[[ind2.1]])
-  f
+  plot_biasmse(Scenario = '2.1', d = outputs[[ind2.1]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -151,13 +154,13 @@ if (length(ind2.1) == 1) {
 ```
 
 #### Scenario 2.2
+TA = 10%, TB = 15%, TC = 20%, TD = 25%
 
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind2.2 = grep('2.2', files)
 if (length(ind2.2) == 1) {
-  f = plot_biasmse(Scenario = '2.2', d = outputs[[ind2.2]])
-  f
+  plot_biasmse(Scenario = '2.2', d = outputs[[ind2.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -167,13 +170,13 @@ if (length(ind2.2) == 1) {
 ```
 
 #### Scenario 2.3
+Tj = 82.5%, j = A, B, C, D
 
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind2.3 = grep('2.3', files)
 if (length(ind2.3) == 1) {
-  f = plot_biasmse(Scenario = '2.3', d = outputs[[ind2.3]])
-  f
+  plot_biasmse(Scenario = '2.3', d = outputs[[ind2.3]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -183,13 +186,12 @@ if (length(ind2.3) == 1) {
 ```
 
 #### Scenario 2.4
-
+TA = 75%, TB = 80%, TC = 85%, TD = 90%
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind2.4 = grep('2.4', files)
 if (length(ind2.4) == 1) {
-  f = plot_biasmse(Scenario = '2.4', d = outputs[[ind2.4]])
-  f
+  plot_biasmse(Scenario = '2.4', d = outputs[[ind2.4]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -199,13 +201,12 @@ if (length(ind2.4) == 1) {
 ```
 
 #### Scenario 3.1
-
+Tj = 37.5%, j = A, B, C, D
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind3.1 = grep('3.1', files)
 if (length(ind3.1) == 1) {
-  f = plot_biasmse(Scenario = '3.1', d = outputs[[ind3.1]])
-  f
+  plot_biasmse(Scenario = '3.1', d = outputs[[ind3.1]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -215,13 +216,12 @@ if (length(ind3.1) == 1) {
 ```
 
 #### Scenario 3.2
-
+TA = 30%, TB = 35%, TC = 40%, TD = 45%
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind3.2 = grep('3.2', files)
 if (length(ind3.2) == 1) {
-  f = plot_biasmse(Scenario = '3.2', d = outputs[[ind3.2]])
-  f
+  plot_biasmse(Scenario = '3.2', d = outputs[[ind3.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -231,13 +231,16 @@ if (length(ind3.2) == 1) {
 ```
 
 #### Scenario 4.1
-
+Different effectiveness across patterns:
+Pattern 1: TA = 20%, TB = 25%, TC = 30%, TD = 35%
+Pattern 2: TA = 20% TB = 30% TC = 40% TD = 50%
+Pattern 3: TA = 40% TB = 60% TC = 75% TD = 95%
+Pattern 4: TA = 30% TB = 40% TC = 80% TD = 90%
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind4.1 = grep('4.1', files)
 if (length(ind4.1) == 1) {
-  f = plot_biasmse(Scenario = '4.1', d = outputs[[ind4.1]])
-  f
+  plot_biasmse(Scenario = '4.1', d = outputs[[ind4.1]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -248,13 +251,14 @@ if (length(ind4.1) == 1) {
 
 
 #### Scenario 4.2
-
+Different treatment effects in 8 sites compares to the other 2 sites: 
+TAq = 30%, TBq = 35% TCq = 40% TDq = 45%, q = 3, …, 10; and 
+TAq = 20%, TBq = 25%, TCq = 30%, TDq = 35%, q = 1, 2
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind4.2 = grep('4.2', files)
 if (length(ind4.2) == 1) {
-  f = plot_biasmse(Scenario = '4.2', d = outputs[[ind4.2]])
-  f
+  plot_biasmse(Scenario = '4.2', d = outputs[[ind4.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -264,13 +268,14 @@ if (length(ind4.2) == 1) {
 ```
 
 #### Scenario 4.3
-
+Different treatment effects in 6 sites compared to the other 4 sites, 
+TAq = 30%. TBq = 35% TCq = 40% TDq = 45%, q = 5, …, 10; and
+TAq = 20%, TBq = 25%, TCq = 30%, TDq = 35%, q = 1, …, 4
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind4.3 = grep('4.3', files)
 if (length(ind4.3) == 1) {
-  f = plot_biasmse(Scenario = '4.3', d = outputs[[ind4.3]])
-  f
+  plot_biasmse(Scenario = '4.3', d = outputs[[ind4.3]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -286,12 +291,11 @@ Treatment B is better than treatments A, C and D:
 $T_B = 35\%$; and 
 $T_j = 45\%$, $j = A, C, D$
 
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
 
 ind1.2 = grep('1.2', files)
 if (length(ind1.2) == 1) {
-  f = plot_mort(Scenario = '1.2', d = outputs[[ind1.2]])
-  f
+  plot_mort(Scenario = '1.2', d = outputs[[ind1.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -304,12 +308,11 @@ if (length(ind1.2) == 1) {
 All 4 treatments have different effects (small difference):
 $T_A = 30\%$; $T_B = 35\%$; $T_C = 40\%$; $T_D = 45\%$
 
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
 
 ind1.3 = grep('1.3', files)
 if (length(ind1.3) == 1) {
-  f = plot_mort(Scenario = '1.3', d = outputs[[ind1.3]])
-  f
+  plot_mort(Scenario = '1.3', d = outputs[[ind1.3]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -320,29 +323,13 @@ if (length(ind1.3) == 1) {
 
 
 #### Scenario 1.4
-
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+All 4 treatments have different effects (large difference):
+TA = 30%; TB = 40%; TC = 50%; TD = 60%
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
 
 ind1.4 = grep('1.4', files)
 if (length(ind1.4) == 1) {
-  f = plot_mort(Scenario = '1.4', d = outputs[[ind1.4]])
-  f
-} else {
-  message('There are multiple output files in `output`. Please select one.')
-}
-
-#ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
-
-```
-
-#### Scenario 2.1
-
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
-
-ind2.1 = grep('2.1', files)
-if (length(ind2.1) == 1) {
-  f = plot_mort(Scenario = '2.1', d = outputs[[ind2.1]])
-  f
+  plot_mort(Scenario = '1.4', d = outputs[[ind1.4]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -352,13 +339,12 @@ if (length(ind2.1) == 1) {
 ```
 
 #### Scenario 2.2
-
+TA = 10%, TB = 15%, TC = 20%, TD = 25%
 ```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
 
 ind2.2 = grep('2.2', files)
 if (length(ind2.2) == 1) {
-  f = plot_mort(Scenario = '2.2', d = outputs[[ind2.2]])
-  f
+  plot_mort(Scenario = '2.2', d = outputs[[ind2.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -366,54 +352,14 @@ if (length(ind2.2) == 1) {
 #ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
-
-#### Scenario 2.3
-
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
-
-ind2.3 = grep('2.3', files)
-if (length(ind2.3) == 1) {
-  f = plot_mort(Scenario = '2.3', d = outputs[[ind2.3]])
-  f
-} else {
-  message('There are multiple output files in `output`. Please select one.')
-}
-
-#ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
-
-```
-
-
-
-
-
-
-
 
 #### Scenario 2.4
-
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+TA = 75%, TB = 80%, TC = 85%, TD = 90%
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
 
 ind2.4 = grep('2.4', files)
 if (length(ind2.4) == 1) {
-  f = plot_mort(Scenario = '2.4', d = outputs[[ind2.4]])
-  f
-} else {
-  message('There are multiple output files in `output`. Please select one.')
-}
-
-#ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
-
-```
-
-#### Scenario 3.1
-
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
-
-ind3.1 = grep('3.1', files)
-if (length(ind3.1) == 1) {
-  f = plot_mort(Scenario = '3.1', d = outputs[[ind3.1]])
-  f
+  plot_mort(Scenario = '2.4', d = outputs[[ind2.4]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -423,13 +369,12 @@ if (length(ind3.1) == 1) {
 ```
 
 #### Scenario 3.2
-
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+TA = 30%, TB = 35%, TC = 40%, TD = 45%
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
 
 ind3.2 = grep('3.2', files)
 if (length(ind3.2) == 1) {
-  f = plot_mort(Scenario = '3.2', d = outputs[[ind3.2]])
-  f
+  plot_mort(Scenario = '3.2', d = outputs[[ind3.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -439,13 +384,18 @@ if (length(ind3.2) == 1) {
 ```
 
 #### Scenario 4.1
+Different effectiveness across patterns:
+Pattern 1: TA = 20%, TB = 25%, TC = 30%, TD = 35%
+Pattern 2: TA = 20% TB = 30% TC = 40% TD = 50%
+Pattern 3: TA = 40% TB = 60% TC = 75% TD = 95%
+Pattern 4: TA = 30% TB = 40% TC = 80% TD = 90%
 
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
 
 ind4.1 = grep('4.1', files)
 if (length(ind4.1) == 1) {
-  f = plot_mort(Scenario = '4.1', d = outputs[[ind4.1]])
-  f
+  plot_mort(Scenario = '4.1', d = outputs[[ind4.1]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -455,13 +405,14 @@ if (length(ind4.1) == 1) {
 ```
 
 #### Scenario 4.2
-
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+Different treatment effects in 8 sites compares to the other 2 sites: 
+TAq = 30%, TBq = 35% TCq = 40% TDq = 45%, q = 3, …, 10; and 
+TAq = 20%, TBq = 25%, TCq = 30%, TDq = 35%, q = 1, 2
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
 
 ind4.2 = grep('4.2', files)
 if (length(ind4.2) == 1) {
-  f = plot_mort(Scenario = '4.2', d = outputs[[ind4.2]])
-  f
+  plot_mort(Scenario = '4.2', d = outputs[[ind4.2]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -471,13 +422,14 @@ if (length(ind4.2) == 1) {
 ```
 
 #### Scenario 4.3
-
-```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 12}
+Different treatment effects in 6 sites compared to the other 4 sites, 
+TAq = 30%. TBq = 35% TCq = 40% TDq = 45%, q = 5, …, 10; and
+TAq = 20%, TBq = 25%, TCq = 30%, TDq = 35%, q = 1, …, 4
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
 
 ind4.3 = grep('4.3', files)
 if (length(ind4.3) == 1) {
-  f = plot_mort(Scenario = '4.3', d = outputs[[ind4.3]])
-  f
+  plot_mort(Scenario = '4.3', d = outputs[[ind4.3]])
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -494,7 +446,7 @@ Treatment B is better than treatments A, C and D:
 $T_B = 35\%$; and 
 $T_j = 45\%$, $j = A, C, D$
 
-```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+```{r, echo = FALSE, fig.align="center",fig.height = 6, fig.width = 12}
 ind1.2 = grep('1.2', files)
 if (length(ind1.2) == 1) {
   
@@ -507,8 +459,7 @@ if (length(ind1.2) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind1.2]])))
   }
   # plot 
-  f = plot_type2(Scenario = '1.2',plot.d)
-  f
+  plot_type2(Scenario = '1.2', plot.d)
 } else {
   message('There are no or multiple output files in `output`. Please select one.')
 }
@@ -536,8 +487,7 @@ if (length(ind1.3) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind1.3]])))
   }
   # plot 
-  f = plot_type2(Scenario = '1.3', plot.d)
-  f
+  plot_type2(Scenario = '1.3', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -549,7 +499,8 @@ if (length(ind1.3) == 1) {
 
 
 #### Scenario 1.4
-
+All 4 treatments have different effects (large difference):
+TA = 30%; TB = 40%; TC = 50%; TD = 60%
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind1.4 = grep('1.4', files)
@@ -564,8 +515,7 @@ if (length(ind1.4) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind1.4]])))
   }
   # plot 
-  f = plot_type2(Scenario = '1.4', plot.d)
-  f
+  plot_type2(Scenario = '1.4', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -577,7 +527,7 @@ if (length(ind1.4) == 1) {
 
 
 #### Scenario 2.2
-
+TA = 10%, TB = 15%, TC = 20%, TD = 25%
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind2.2 = grep('2.2', files)
@@ -592,8 +542,7 @@ if (length(ind2.2) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind2.2]])))
   }
   # plot 
-  f = plot_type2(Scenario = '2.2', plot.d)
-  f
+  plot_type2(Scenario = '2.2', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -604,7 +553,7 @@ if (length(ind2.2) == 1) {
 ```
 
 #### Scenario 2.4
-
+TA = 75%, TB = 80%, TC = 85%, TD = 90%
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind2.4 = grep('2.4', files)
@@ -619,8 +568,7 @@ if (length(ind2.4) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind2.4]])))
   }
   # plot 
-  f = plot_type2(Scenario = '2.4', plot.d)
-  f
+  plot_type2(Scenario = '2.4', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -632,7 +580,7 @@ if (length(ind2.4) == 1) {
 
 
 #### Scenario 3.2
-
+TA = 30%, TB = 35%, TC = 40%, TD = 45%
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind3.2 = grep('3.2', files)
@@ -647,8 +595,7 @@ if (length(ind3.2) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind3.2]])))
   }
   # plot 
-  f = plot_type2(Scenario = '3.2', plot.d)
-  f
+  plot_type2(Scenario = '3.2', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -659,7 +606,11 @@ if (length(ind3.2) == 1) {
 ```
 
 #### Scenario 4.1
-
+Different effectiveness across patterns:
+Pattern 1: TA = 20%, TB = 25%, TC = 30%, TD = 35%
+Pattern 2: TA = 20% TB = 30% TC = 40% TD = 50%
+Pattern 3: TA = 40% TB = 60% TC = 75% TD = 95%
+Pattern 4: TA = 30% TB = 40% TC = 80% TD = 90%
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind4.1 = grep('4.1', files)
@@ -674,8 +625,7 @@ if (length(ind4.1) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind4.1]])))
   }
   # plot 
-  f = plot_type2(Scenario = '4.1', plot.d)
-  f
+  plot_type2(Scenario = '4.1', plot.d, pt_size)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -686,7 +636,9 @@ if (length(ind4.1) == 1) {
 ```
 
 #### Scenario 4.2
-
+Different treatment effects in 8 sites compares to the other 2 sites: 
+TAq = 30%, TBq = 35% TCq = 40% TDq = 45%, q = 3, …, 10; and 
+TAq = 20%, TBq = 25%, TCq = 30%, TDq = 35%, q = 1, 2
 ```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
 
 ind4.2 = grep('4.2', files)
@@ -701,8 +653,7 @@ if (length(ind4.2) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind4.2]])))
   }
   # plot 
-  f = plot_type2(Scenario = '4.2', plot.d)
-  f
+  plot_type2(Scenario = '4.2', plot.d)
 } else {
   message('There are multiple output files in `output`. Please select one.')
 }
@@ -712,6 +663,33 @@ if (length(ind4.2) == 1) {
 
 ```
 
+#### Scenario 4.2
+Different treatment effects in 6 sites compared to the other 4 sites, 
+TAq = 30%. TBq = 35% TCq = 40% TDq = 45%, q = 5, …, 10; and
+TAq = 20%, TBq = 25%, TCq = 30%, TDq = 35%, q = 1, …, 4
+```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
+
+ind4.3 = grep('4.3', files)
+if (length(ind4.3) == 1) {
+  
+  power_filename = paste0('power_', sub('.*/', '', files[[ind4.3]]))
+  if (power_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', power_filename))
+  } else {
+    plot.d = get_type2(Scenario = '4.3', d = outputs[[ind4.3]])
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind4.3]])))
+  }
+  # plot 
+  plot_type2(Scenario = '4.3', plot.d)
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+
+#ggsave(paste0(wd,"Code/Plots/type2_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
 
 ### Type 1 error
 
@@ -731,8 +709,7 @@ if (length(ind1.1) == 1) {
     saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind1.1]])))
   }
   # plot 
-  f = plot_type1(plot.d)
-  f
+  plot_type1(plot.d)
 } else {
   message('There are no or multiple output files in `output`. Please select one.')
 }
@@ -740,6 +717,83 @@ if (length(ind1.1) == 1) {
 #ggsave(paste0(wd,"Code/Plots/type1_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
+
+#### Scenario 2.1
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ind2.1 = grep('2.1', files)
+if (length(ind2.1) == 1) {
+  
+  t1_filename = paste0('t1_', sub('.*/', '', files[[ind2.1]]))
+  if (t1_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', t1_filename))
+  } else {
+    plot.d = get_type1(Scenario = '2.1', d = outputs[[ind2.1]])
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind2.1]])))
+  }
+  # plot 
+  plot_type1(plot.d)
+} else {
+  message('There are no or multiple output files in `output`. Please select one.')
+}
+
+#ggsave(paste0(wd,"Code/Plots/type1_scenario2.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+
+#### Scenario 2.3
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ind2.3 = grep('2.3', files)
+if (length(ind2.3) == 1) {
+  
+  t1_filename = paste0('t1_', sub('.*/', '', files[[ind2.3]]))
+  if (t1_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', t1_filename))
+  } else {
+    plot.d = get_type1(Scenario = '2.3', d = outputs[[ind2.3]])
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind2.3]])))
+  }
+  # plot 
+  plot_type1(plot.d)
+} else {
+  message('There are no or multiple output files in `output`. Please select one.')
+}
+
+#ggsave(paste0(wd,"Code/Plots/type1_scenario2.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+#### Scenario 3.1
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ind3.1 = grep('3.1', files)
+if (length(ind3.1) == 1) {
+  
+  t1_filename = paste0('t1_', sub('.*/', '', files[[ind3.1]]))
+  if (t1_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', t1_filename))
+  } else {
+    plot.d = get_type1(Scenario = '3.1', d = outputs[[ind3.1]])
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind3.1]])))
+  }
+  # plot 
+  plot_type1(plot.d)
+} else {
+  message('There are no or multiple output files in `output`. Please select one.')
+}
+
+#ggsave(paste0(wd,"Code/Plots/type1_scenario3.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
 
 ### Running time
 

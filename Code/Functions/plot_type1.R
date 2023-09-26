@@ -1,17 +1,17 @@
 # plot type 1 error - for NULL scenarios only
 
-plot_type1 <- function (plot.data, .font_size = font_size) {
+plot_type1 <- function (plot.data, .font_size = font_size, .pt_size = pt_size) {
   
-  ggplot(plot.data, aes(x = n, y = type1error, color = method, group = method)) +
-    geom_point(shape=3)+
+  ggplot(plot.data, aes(x = n, y = type1error, shape = method, group = method)) +
+    geom_point(size = .pt_size) +
+    scale_shape_manual(values = shapes, name = '') +
     geom_line(linetype = 2,linewidth=0.5)+ 
-    scale_color_manual(values = colors)+
-    labs(shape = NULL, color=NULL)+
-    scale_x_continuous(breaks = unique(plot.data$n)) +labs(
-      linetype = NULL,
-      color = NULL,
-      x = "Sample Size",
-      y = "Type 1 error"
+    labs(shape = NULL)+
+    scale_x_continuous(breaks = unique(plot.data$n)) +
+    labs(linetype = NULL,
+         shape = NULL,
+         x = "Sample Size",
+         y = "Type 1 error"
     ) +
     scale_y_continuous(limits = c(0, 1), 
                        breaks = seq(0, 1, length.out = 11), 
