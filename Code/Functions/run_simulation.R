@@ -36,6 +36,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     #Yiyun unsure if you want to update here:
     #'phi_vector' such that it is the true 'target' coefficients we want the model to estimate
     #So that predicted coefficents and true 'target' coefficients have the same units (probability(?))
+    #Due to the fact we no longer have a 'reference' treatment
     #################################################################
   
   store = list()
