@@ -24,9 +24,10 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
     #################################################################
     
     # difference between the interested treatment (q) and reference treatment (1)
-    t.diff <- (phi_v[q] - phi_v[1])
+    # t.diff <- (phi_v[q] - phi_v[1])
     # phi_v is the pre-defined OR of each treatment effect 
     # phi_v[1] is the reference treatment effect in terms of OR
+     t.diff <- logit(phi_v) #phi_v here is just T_vector, and we transform the probabilities to coef in logistic regression
     
     # bias is the difference between the estimated OR (val) and the predefined OR (t.diff)
     bias <- mean(val - t.diff)
