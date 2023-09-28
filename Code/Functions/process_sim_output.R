@@ -5,10 +5,10 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   # has length = number of iterations
   # within each iteration = contains list of simulation outputs
   
-  no_comparison <- sapply(1:no_pattern, function(i) {
-      length(pattern[[i]]) - 1
+    no_treat <- sapply(1:no_pattern, function(i) {
+      length(pattern[[i]])
     })
-  # for each pattern, the number of pairwise comparisons fixing a reference treatment
+  # for each pattern, the number treatments
   
   ### summarise failed models - sum of failed models for each iteration
   ### col = patterns, row = methods
@@ -50,7 +50,7 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   names(estimator_property) <-
     sapply(1:no_treatment, function(i)
       paste0("phi", i))
-  # estimator_property has length = total number of treatments - 1 (reference treatment)
+  # estimator_property has length = total number of treatments 
   # within each treatment contains warnings, and properties for all methods
   
   ### get properties for each method 
@@ -115,7 +115,7 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   
   
   # number of participants randomised to each treatment in each pattern
-  size_per_arm <- size_pattern / (no_comparison + 1)
+  size_per_arm <- size_pattern / (no_treat)
 
   each_t <- function(k) { # for treatment k
     com_size_each <- function(i) {
