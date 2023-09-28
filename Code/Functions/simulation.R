@@ -4,7 +4,6 @@
 
 simulation <- function(N,      
                        N_hist,
-                       phi_v,
                        pattern,
                        res_probability_prior,
                        res_probability_prior_ur1,
