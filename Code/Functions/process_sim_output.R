@@ -63,11 +63,11 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   }
   
   # get suggested treatment for each pattern
-  suggested_treatment_each <- lapply(1:no_pattern, suggested_treatment, R, output_replication)
-  
-  names(suggested_treatment_each) <-
-    sapply(1:no_pattern, function(i)
-      paste0("pattern", i))
+  # suggested_treatment_each <- lapply(1:no_pattern, suggested_treatment, R, output_replication)
+  # 
+  # names(suggested_treatment_each) <-
+  #   sapply(1:no_pattern, function(i)
+  #     paste0("pattern", i))
   
   # performance of each method
   indicator.names.all = names(output_replication[[1]]$performance_m)
@@ -79,14 +79,15 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   })
   names(ex_performance_out) <- indicator.names
   
+  # weighted average for all performance measures 
   estimand2 <- do.call(cbind, lapply(ex_performance_out, function(x) {
       apply(x, 1, function(y) {
-        sum(y * lambda)
+        sum(y * lambda) # multiplying performance measures for each method by pattern frequency 
       })
     }))
   
+  # variance
   estimand2_MCSE <- sqrt(estimand2[, 3:5] * (1 - estimand2[, 3:5]) / R)
-  
   
   #all_diff_min <- lapply(1:R, function(z) {
   #    output_replication[[z]]$performance_m$diff_min
@@ -114,13 +115,13 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   }), estimand2_MCSE)
   
   
-  # number of participants randomised to treatment 
+  # number of participants randomised to each treatment in each pattern
   size_per_arm <- size_pattern / (no_comparison + 1)
-  
-  each_t <- function(k) {
+
+  each_t <- function(k) { # for treatment k
     com_size_each <- function(i) {
       v <- pattern[[i]]
-      m <- cbind(v, rep(size_per_arm[i], length(v)))
+      m <- cbind(v, rep(size_per_arm[i], length(v))) # number of patients randomised to each treatment for pattern i
       
       #m<-size_per_gp[[i]]
       
@@ -130,21 +131,22 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
       } else {
         m[tv, 2]
       }
-      
     }
     sum(sapply(1:length(pattern), com_size_each))
   }
   
-  ex_arm_size <- sapply(1:no_treatment, each_t)
+  # number of participants in each treatment across different patterns 
+  ex_arm_size <- sapply(1:no_treatment, each_t) 
   
-  t_freq <- t(sapply(1:R, function(r) output_replication[[r]]$freq_t))
+  # frequency of assigned treatment in each iteration across different patterns
+  t_freq <- t(sapply(1:R, function(r) output_replication[[r]]$freq_t)) 
   
-  freq_treatment <- apply(t_freq, 2, summary)[c(1, 3, 4, 6),]
+  freq_treatment <- apply(t_freq, 2, summary)[c(1, 3, 4, 6),] 
   
   list(
     method.property = method.property,
     ex_performance_out = ex_performance_out,
-    suggested_treatment_each = suggested_treatment_each,
+    #suggested_treatment_each = suggested_treatment_each,
     estimator_all = estimator_all,
     #contiguous_grp = conti_grp,
     #model_var_all=model_var_all,
