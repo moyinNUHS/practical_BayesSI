@@ -1,6 +1,6 @@
 
 
-estimator_prop <- function(q, output_replication, method.names, phi_v, R) { # q being the comparison treatment with reference treatment 
+estimator_prop <- function(q, output_replication, method.names, phi_v, R,scenario_name) { # q being the comparison treatment with reference treatment 
   
   out = list()
   n_method = length(method.names) # n_method for below function was not defined, so I guess it is the number of methods
@@ -9,7 +9,7 @@ estimator_prop <- function(q, output_replication, method.names, phi_v, R) { # q 
     df_list = map(output_replication, m)
     rows = lapply(df_list, function(x) { x[q,] })
     com = do.call(rbind, rows)
-    out[[m]] = com_property(com, q, n_method, phi_v, R)
+    out[[m]] = com_property(com, q, n_method, phi_v, R,scenario_name)
   }
   
   warning = lapply(out, `[[`, 1)

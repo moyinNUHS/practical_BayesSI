@@ -191,7 +191,8 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
                                      R = N_iter, 
                                      no_treatment = length(phi_vector), 
                                      no_pattern = length(prob_pattern),
-                                     lambda = prob_pattern)
+                                     lambda = prob_pattern,
+                                     scenario_name = scenario_name)
     
     message('simulation outputs summarised...')
     
