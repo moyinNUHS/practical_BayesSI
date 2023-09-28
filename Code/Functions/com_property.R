@@ -3,7 +3,7 @@
 com_property <- function(out_one, # matrix of simulation outputs (estimator, model variance, Z score, UL and LL) [rows] against iterations [cols]
                          q, # the treatment compared with the reference
                          n_method, # number of methods
-                         phi_v, R) { # pre-defined OR of each treatment effect 
+                         T_v, R) { # pre-defined OR of each treatment effect 
   
   if (all(is.na(out_one[, 1]))) {
     
@@ -14,22 +14,12 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
     # estimators
     val <- out_one[, 'Estimate']
     val <- as.numeric(val[complete.cases(val)])
-
-    ################################################################
-    #Yiyun to update here:
-    #'val' the predicted coefficients from the model
-    #'t.diff', (rename to t.target) 
-    #So that predicted coefficents (val) and true 'target' coefficients (phi_v or t.target) have the same units (probability(?))
-    #Due to fact we no longer have a reference treatment
-    #################################################################
     
-    # difference between the interested treatment (q) and reference treatment (1)
-    t.diff <- (phi_v[q] - phi_v[1])
-    # phi_v is the pre-defined OR of each treatment effect 
-    # phi_v[1] is the reference treatment effect in terms of OR
+    t.target <- logit(T_v[q]) #transform the probabilities T_v to coef in logistic regression
+    # T_v is the pre-defined mortality of treatment effect 
     
-    # bias is the difference between the estimated OR (val) and the predefined OR (t.diff)
-    bias <- mean(val - t.diff)
+    # bias is the difference between the estimated treatment coefficients (val) and the predefined treatment coefficients (t.target)
+    bias <- mean(val - t.target)
     
     # variance between the estimated ORs obtained from all iterations
     var.s <- var(val)
@@ -48,15 +38,15 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
     
     # if upper bound estimates are more or equal to predefined OR
     # if lower bound estimates are less or equal to predefined OR
-    coverage_ind <- rbind(out_one[, 'UL'] >= t.diff, 
-                          out_one[, 'LL'] <= t.diff)
+    coverage_ind <- rbind(out_one[, 'UL'] >= t.target, 
+                          out_one[, 'LL'] <= t.target)
     coverage_count <- apply(coverage_ind, 2, sum)
     coverage_prob <- length(which(coverage_count == 2)) / length(which(is.na(coverage_count) == F))
     
     # Mean squared error
-    MSE <- mean((val - t.diff) ^ 2)
+    MSE <- mean((val - t.target) ^ 2)
     # Monte Carlo Standard Error
-    MCSE_mse <- sqrt(var((val - t.diff) ^ 2) / R)
+    MCSE_mse <- sqrt(var((val - t.target) ^ 2) / R)
     
     list(
       pw,
