@@ -27,7 +27,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
     # t.diff <- (phi_v[q] - phi_v[1])
     # phi_v is the pre-defined OR of each treatment effect 
     # phi_v[1] is the reference treatment effect in terms of OR
-     t.diff <- logit(phi_v) #phi_v here is just T_vector, and we transform the probabilities to coef in logistic regression
+    t.diff <- logit(phi_v) #phi_v here is just T_vector, and we transform the probabilities to coef in logistic regression
     
     # bias is the difference between the estimated OR (val) and the predefined OR (t.diff)
     bias <- mean(val - t.diff)
@@ -36,16 +36,16 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
     var.s <- var(val)
     
     # means of model variances obtained from all iterations
-    meanv2 <- mean(as.numeric(out_one[, 'model_var']), na.rm = T)
-    
-    v2 <- out_one[, c('model_var', 'LL', 'UL')]
-    #meanv2<-apply(v2, 2, function(x){
-    #  if(all(is.numeric(x))){mean(x)}else{
-    #    indx<-which(is.na(str_extract(x, "[0-9]+")))
-    #    mean(as.numeric(x[-indx])) } }  )
-    
-    # identify upper bound estimate(s) which is/are not a number
-    pw <- v2[which(is.na(str_extract(v2[, 'UL'], "[0-9]+"))), 'UL']
+    # meanv2 <- mean(as.numeric(out_one[, 'model_var']), na.rm = T)
+    # 
+    # v2 <- out_one[, c('model_var', 'LL', 'UL')]
+    # #meanv2<-apply(v2, 2, function(x){
+    # #  if(all(is.numeric(x))){mean(x)}else{
+    # #    indx<-which(is.na(str_extract(x, "[0-9]+")))
+    # #    mean(as.numeric(x[-indx])) } }  )
+    # 
+    # # identify upper bound estimate(s) which is/are not a number
+    # pw <- v2[which(is.na(str_extract(v2[, 'UL'], "[0-9]+"))), 'UL']
     
     # if upper bound estimates are more or equal to predefined OR
     # if lower bound estimates are less or equal to predefined OR
@@ -69,7 +69,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
         MCSE_bias = sqrt(var.s / R),
         MCSE_cov_p = sqrt(coverage_prob * (1 - coverage_prob) / R),
         MCSE_MSE = MCSE_mse,
-        ex_model_var = meanv2,
+        # ex_model_var = meanv2,
         fail.no = length(which(is.na(out_one[, 1])))
       )
     )

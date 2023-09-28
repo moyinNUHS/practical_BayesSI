@@ -168,7 +168,6 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     scenario_out = simulation(
       N = N,
       N_hist = samplesize_hist,
-      phi_v = phi_vector,
       pattern = pattern_list,
       res_probability_prior = res_rate_mat_prior,
       res_probability_prior_ur1 = res_rate_mat_prior_ur1,
