@@ -26,11 +26,6 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
   differsite = 0,
   #  how many sites have different effects,
   scenario_name) {
-  
-  #Specify each treatment risk
-  alpha_ref = find_phi(p = T_vector[1], alpha = 0)   # reference treatment effect 
-  phi_vector = find_phi(p = T_vector, alpha = alpha_ref) # specify each treatment effect in terms of OR
-  # you may get back T_vector with res_probability(phi_vector, alpha_ref)
 
     ################################################################
     #Yiyun unsure if you want to update here:
@@ -167,7 +162,6 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     scenario_out = simulation(
       N = N,
       N_hist = samplesize_hist,
-      phi_v = phi_vector,
       pattern = pattern_list,
       res_probability_prior = res_rate_mat_prior,
       res_probability_prior_ur1 = res_rate_mat_prior_ur1,
@@ -186,7 +180,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     
     # run code to summarise simulated outputs and produce estimands 
     analyse_out = process_sim_output(output_replication = scenario_out, 
-                                     phi_v = phi_vector,
+                                     T_v = T_vector,
                                      pattern = pattern_list,
                                      R = N_iter, 
                                      no_treatment = length(phi_vector), 
