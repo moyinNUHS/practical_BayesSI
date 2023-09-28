@@ -40,8 +40,8 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       # identify upper bound estimate(s) which is/are not a number
       pw <- v2[which(is.na(str_extract(v2[, 'UL'], "[0-9]+"))), 'UL']
       
-      # if upper bound estimates are more or equal to predefined OR
-      # if lower bound estimates are less or equal to predefined OR
+      # if upper bound estimates are more or equal to predefined treatment coefficients
+      # if lower bound estimates are less or equal to predefined treatment coefficients
       coverage_ind <- rbind(out_one[, 'UL'] >= t.target, 
                             out_one[, 'LL'] <= t.target)
       coverage_count <- apply(coverage_ind, 2, sum)
