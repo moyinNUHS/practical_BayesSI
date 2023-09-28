@@ -1,6 +1,6 @@
 
 
-estimator_prop <- function(q, output_replication, method.names, T_v, R) { # q being the comparison treatment with reference treatment 
+estimator_prop <- function(q, output_replication, method.names, T_v, R) { # q being the selected treatment 
   
   out = list()
   n_method = length(method.names) # n_method for below function was not defined, so I guess it is the number of methods
