@@ -1,7 +1,7 @@
 # compute the property of estimator
 
 com_property <- function(out_one, # matrix of simulation outputs (estimator, model variance, Z score, UL and LL) [rows] against iterations [cols]
-                         q, # the treatment compared with the reference
+                         q, # the treatment 
                          n_method, # number of methods
                          T_v, R) { # pre-defined OR of each treatment effect 
   
