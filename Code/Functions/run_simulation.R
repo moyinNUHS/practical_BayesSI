@@ -29,7 +29,8 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
   
   #Specify each treatment risk
   alpha_ref = find_phi(p = T_vector[1], alpha = 0)   # reference treatment effect 
-  phi_vector = find_phi(p = T_vector, alpha = alpha_ref) # specify each treatment effect in terms of OR
+  # phi_vector = find_phi(p = T_vector, alpha = alpha_ref) # specify each treatment effect in terms of OR
+  phi_vector = T_vector
   # you may get back T_vector with res_probability(phi_vector, alpha_ref)
 
     ################################################################
