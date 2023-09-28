@@ -297,7 +297,7 @@ simulation <- function(N,
       est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
       performance_m = estimand2,
       identify_fail = identify_fail,
-      freq_t_subgroup = freq_t_subgroup_list
+      freq_t_subgroup = freq_t_subgroup_list,
       freq_t = freq_t_list
     )
   })

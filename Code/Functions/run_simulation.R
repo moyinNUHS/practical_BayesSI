@@ -26,13 +26,6 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
   differsite = 0,
   #  how many sites have different effects,
   scenario_name) {
-
-    ################################################################
-    #Yiyun unsure if you want to update here:
-    #'phi_vector' such that it is the true 'target' coefficients we want the model to estimate
-    #So that predicted coefficents and true 'target' coefficients have the same units (probability(?))
-    #Due to the fact we no longer have a 'reference' treatment
-    #################################################################
   
   store = list()
   for (N in samplesize_vec) {
@@ -183,9 +176,10 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
                                      T_v = T_vector,
                                      pattern = pattern_list,
                                      R = N_iter, 
-                                     no_treatment = length(phi_vector), 
+                                     no_treatment = length(T_vector), 
                                      no_pattern = length(prob_pattern),
-                                     lambda = prob_pattern)
+                                     lambda = prob_pattern,
+                                     scenario_name = scenario_name)
     
     message('simulation outputs summarised...')
     
