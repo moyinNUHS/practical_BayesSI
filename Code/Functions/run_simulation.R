@@ -27,19 +27,6 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
   #  how many sites have different effects,
   scenario_name) {
   
-  #Specify each treatment risk
-  alpha_ref = find_phi(p = T_vector[1], alpha = 0)   # reference treatment effect 
-  # phi_vector = find_phi(p = T_vector, alpha = alpha_ref) # specify each treatment effect in terms of OR
-  phi_vector = T_vector
-  # you may get back T_vector with res_probability(phi_vector, alpha_ref)
-
-    ################################################################
-    #Yiyun unsure if you want to update here:
-    #'phi_vector' such that it is the true 'target' coefficients we want the model to estimate
-    #So that predicted coefficents and true 'target' coefficients have the same units (probability(?))
-    #Due to the fact we no longer have a 'reference' treatment
-    #################################################################
-  
   store = list()
   for (N in samplesize_vec) {
     message(paste0('Starting simulation for sample size = ', N))
@@ -186,10 +173,10 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     
     # run code to summarise simulated outputs and produce estimands 
     analyse_out = process_sim_output(output_replication = scenario_out, 
-                                     phi_v = phi_vector,
+                                     T_v = T_vector,
                                      pattern = pattern_list,
                                      R = N_iter, 
-                                     no_treatment = length(phi_vector), 
+                                     no_treatment = length(T_vector), 
                                      no_pattern = length(prob_pattern),
                                      lambda = prob_pattern,
                                      scenario_name = scenario_name)

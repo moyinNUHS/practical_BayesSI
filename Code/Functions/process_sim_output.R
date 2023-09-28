@@ -1,6 +1,5 @@
 ### process and summarise simulation output
-
-process_sim_output <- function(output_replication, R, no_treatment, no_pattern, pattern, phi_v, lambda, scenario_name) {
+process_sim_output <- function(output_replication, R, no_treatment, no_pattern, pattern, T_v, lambda, scenario_name) {
   
   ### output_replication 
   # has length = number of iterations
@@ -45,7 +44,7 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
     
   ### get properties of estimators 
   estimator_property = lapply(1:no_treatment, function(x) {
-    estimator_prop(x, output_replication, method.names, phi_v, R,scenario_name)
+    estimator_prop(x, output_replication, method.names, T_v, R,scenario_name)
   })
   
   names(estimator_property) <-
