@@ -12,9 +12,9 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
     
   } else {
     
-    scenario_name <- substr(scenario_name, 9, 11)
+    scenario_name <- str_extract(scenario_name, "scenario\\d+\\.\\d+") 
     
-    if(!(scenario_name %in% c("4.1", "4.2", "4.3"))){
+    if(!(scenario_name %in% c("scenario4.1", "scenario4.2", "scenario4.3"))){
       # estimators
       val <- out_one[, 'Estimate']
       val <- as.numeric(val[complete.cases(val)])
@@ -68,8 +68,18 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       )
     }
     else{
+      v2 <- out_one[, c('model_var', 'LL', 'UL')]
+      #meanv2<-apply(v2, 2, function(x){
+      #  if(all(is.numeric(x))){mean(x)}else{
+      #    indx<-which(is.na(str_extract(x, "[0-9]+")))
+      #    mean(as.numeric(x[-indx])) } }  )
+      
+      # identify upper bound estimate(s) which is/are not a number
+      pw <- v2[which(is.na(str_extract(v2[, 'UL'], "[0-9]+"))), 'UL']
+      
       list(
         c(
+          pw,
           fail.no = length(which(is.na(out_one[, 1])))
         )
       )
