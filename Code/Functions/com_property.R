@@ -78,8 +78,8 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       pw <- v2[which(is.na(str_extract(v2[, 'UL'], "[0-9]+"))), 'UL']
       
       list(
+        pw,
         c(
-          pw,
           fail.no = length(which(is.na(out_one[, 1])))
         )
       )
