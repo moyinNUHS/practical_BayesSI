@@ -30,7 +30,7 @@ if(run_hpc){
   
   parallel::detectCores()
   #n.cores <- parallel::detectCores() - 1
-  n.cores <- 30
+  n.cores <- 50
   my.cluster <- parallel::makeCluster(
     n.cores
     ,
@@ -80,13 +80,14 @@ start_time <- Sys.time()
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - % mortality 
                res_rate_prior = c(0.375, 0.375, 0.375, 0.375), # Priors
-               res_rate_prior_ur1 = c(0.325, 0.325, 0.325, 0.325), # Priors ur1
-               res_rate_prior_ur2 = c(0.3, 0.35, 0.40, 0.45), # Priors ur2
+               res_rate_prior_ur1 = c(0.275, 0.275, 0.275, 0.275), # Priors ur1
+               res_rate_prior_ur2 = c(0.3, 0.35, 0.4, 0.45), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
-               samplesize_hist = N_hist,
+               samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario1.1', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
+
 
 end_time <- Sys.time()
 time_taken <- end_time - start_time

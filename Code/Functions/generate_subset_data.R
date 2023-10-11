@@ -24,7 +24,7 @@ generate_subset_data<-function(k, size_pattern., pattern., res_probability_all.,
   pattern_lab<-rep(k,  sp)#unlist(sapply(1:no_pattern, function(j)rep(j,  sp)) )
   responses<-unlist(responses)
 
-  site_label <- rep(1, sp) ##assumes only site = 1 unless differsite > 0 
+  site_label <- rep(1, sp) ##all sites are the same unless there are different effects specified with differsite 
 
   treat.site.comb<-cbind(responses=responses, 
                        treatment_label=assigned_treatment, 
@@ -36,9 +36,9 @@ generate_subset_data<-function(k, size_pattern., pattern., res_probability_all.,
   
   if (differsite > 0){
     assigned_site<-t(rmultinom(sp, 1, 
-                           rep(1/differsite, differsite)))     #changed so that possible site #s are given by differsite rather than out of 10 
+                           rep(1/10, 10)))     
   
-    site_s = 1:differsite
+    site_s = 1:10
   
     site_label<-apply(assigned_site, 1, 
                   function(x) x[which(x==max(x))]<-site_s [which(x==max(x))] )
