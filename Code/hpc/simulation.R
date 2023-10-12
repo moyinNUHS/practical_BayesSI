@@ -36,6 +36,7 @@ simulation <- function(N,
   
   # generate which pattern each patient in N patients belong to
   # each person has prob_pattern to be allocated to one of the treatment patterns
+  set.seed(1)
   assigned_pattern <- t(rmultinom(N, size = 1, prob_pattern))
   colnames(assigned_pattern) <-
     sapply(1:no_pattern, function(i) {
