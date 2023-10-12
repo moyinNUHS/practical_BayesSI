@@ -17,7 +17,6 @@ glm_output_bonferr <- function(model, p, no_treatment) {
               z = abs(coefficients(mof)[1:no_treatment] / std.err.naive),
               LL = cf[paste0('treatment', 1:no_treatment), 1],
               UL = cf[paste0('treatment', 1:no_treatment), 2])
-  rownames(out) = paste0('treatment', rownames(out))
   
   out[which(abs(out[,1])>12),] <- NA #parameter not converged is set to NA 
   
