@@ -1,0 +1,247 @@
+---
+title: "Plots for simulation scenarios 1.1, 1.4, 4.1"
+author: "Xinru Wang"
+date: "2023-10-12"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+# clean environment 
+rm(list = ls())
+
+# set working directory to the `practical/` folder 
+#wd = '~/Documents/GitHub/practical/'
+wd = "/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/"
+setwd(wd)
+
+# load libraries and functions
+scripts = paste0(wd, 'Code/Functions/', list.files(paste0(wd, 'Code/Functions/')))
+lapply(scripts, source)
+
+# load data in the output folder 
+files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "iter100_2023-10-12.rds")
+power_t1_files = grep('power_|t1_', files)
+if (length(power_t1_files) > 0) {files = files[-grep('power_|t1_', files)]}
+outputs = list()
+for (file in files){
+  outputs[[sub('.*/', '', file)]] = readRDS(file)
+}
+
+# get names of methods
+all_names = names(outputs[[1]][[1]]$scenario_out[[1]])
+all_method_names = all_names[grep('method', all_names)]
+
+method_labs = rep(NA, length(all_method_names))
+method_labs[grep('method_1', all_method_names)] = "Fixed-effect (frequentist)"
+method_labs[grep('method_1_', all_method_names)] = "Fixed-effect (Bayesian, "
+method_labs[grep('method_2', all_method_names)] = "Mixed-effect (frequentist)"
+method_labs[grep('method_2_', all_method_names)] = "Mixed-effect (Bayesian, "
+method_labs[grep('NI', all_method_names)] = paste0(method_labs[grep('NI', all_method_names)], 'non-informative prior)')
+method_labs[endsWith(all_method_names, 'str')] = paste0(method_labs[endsWith(all_method_names, 'str')], 'strongly-informative prior)')
+method_labs[endsWith(all_method_names, 'wk')] = paste0(method_labs[endsWith(all_method_names, 'wk')], 'weakly-informative prior)')
+method_labs[endsWith(all_method_names, 'str_ur1')] = paste0(method_labs[endsWith(all_method_names, 'str_ur1')], 'strongly-informative/UR1 prior)')
+method_labs[endsWith(all_method_names, 'str_ur2')] = paste0(method_labs[endsWith(all_method_names, 'str_ur2')], 'strongly-informative/UR2 prior)')
+method_labs[endsWith(all_method_names, 'wk_ur1')] = paste0(method_labs[endsWith(all_method_names, 'wk_ur1')], 'weakly-informative/UR1 prior)')
+method_labs[endsWith(all_method_names, 'wk_ur2')] = paste0(method_labs[endsWith(all_method_names, 'wk_ur2')], 'weakly-informative/UR2 prior)')
+
+n_methods = length(method_labs)
+shapes = 1:n_methods # methods differentiated by shapes 
+names(shapes) = method_labs
+
+# get names of treatments
+tx_labs = rownames(outputs[[1]][[1]]$scenario_out[[1]]$est_method_2_str_ur1)
+qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
+colors_list = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals))) 
+colors = sample(colors_list, length(tx_labs))
+names(colors) = tx_labs
+
+font_size = 24
+pt_size = 3
+```
+## Final analysis report {.tabset .tabset-fade .tabset-pills}
+
+### Bias, Coverage, MSE
+
+#### Scenario 1.1
+All treatments have equal effects: 
+  Tj = 37.5%, j = A, B, C, D
+
+```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
+
+ind1.1 = grep('1.1', files)
+if (length(ind1.1) == 1) {
+  plot_biasmse(Scenario = '1.1', d = outputs[[ind1.1]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+#ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+#### Scenario 1.4
+All 4 treatments have different effects (large difference):
+  TA = 30%; TB = 40%; TC = 50%; TD = 60%
+  
+```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
+
+ind1.4 = grep('1.4', files)
+if (length(ind1.4) == 1) {
+  plot_biasmse(Scenario = '1.4', d = outputs[[ind1.4]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+#ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+### Mortality gain
+
+#### Scenario 1.4
+All 4 treatments have different effects (large difference):
+  TA = 30%; TB = 40%; TC = 50%; TD = 60%
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
+
+ind1.4 = grep('1.4', files)
+if (length(ind1.4) == 1) {
+  plot_mort(Scenario = '1.4', d = outputs[[ind1.4]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+#ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+#### Scenario 4.1
+Different effectiveness across patterns:
+  Pattern 1: TA = 20%, TB = 25%, TC = 30%, TD = 35%
+  Pattern 2: TA = 20% TB = 30% TC = 40% TD = 50%
+  Pattern 3: TA = 40% TB = 60% TC = 75% TD = 95%
+  Pattern 4: TA = 30% TB = 40% TC = 80% TD = 90%
+  
+  
+```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
+
+ind4.1 = grep('4.1', files)
+if (length(ind4.1) == 1) {
+  plot_mort(Scenario = '4.1', d = outputs[[ind4.1]])
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+#ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+
+### Power
+
+#### Scenario 1.4
+All 4 treatments have different effects (large difference):
+  TA = 30%; TB = 40%; TC = 50%; TD = 60%
+```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
+
+ind1.4 = grep('1.4', files)
+if (length(ind1.4) == 1) {
+  
+  power_filename = paste0('power_', sub('.*/', '', files[[ind1.4]]))
+  if (power_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', power_filename))
+  } else {
+    plot.d = get_type2(Scenario = '1.4', d = outputs[[ind1.4]])
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind1.4]])))
+  }
+  # plot 
+  plot_type2(Scenario = '1.4', plot.d)
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+
+#ggsave(paste0(wd,"Code/Plots/type2_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+
+#### Scenario 4.1
+Different effectiveness across patterns:
+  Pattern 1: TA = 20%, TB = 25%, TC = 30%, TD = 35%
+  Pattern 2: TA = 20% TB = 30% TC = 40% TD = 50%
+  Pattern 3: TA = 40% TB = 60% TC = 75% TD = 95%
+  Pattern 4: TA = 30% TB = 40% TC = 80% TD = 90%
+```{r, echo = FALSE, fig.align="center", fig.height = 14, fig.width = 18}
+
+ind4.1 = grep('4.1', files)
+if (length(ind4.1) == 1) {
+  
+  power_filename = paste0('power_', sub('.*/', '', files[[ind4.1]]))
+  if (power_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', power_filename))
+  } else {
+    plot.d = get_type2(Scenario = '4.1', d = outputs[[ind4.1]])
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/power_", sub('.*/', '', files[[ind4.1]])))
+  }
+  # plot 
+  plot_type2(Scenario = '4.1', plot.d, pt_size)
+} else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+
+#ggsave(paste0(wd,"Code/Plots/type2_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+
+### Type 1 error
+
+#### Scenario 1.1
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ind1.1 = grep('1.1', files)
+if (length(ind1.1) == 1) {
+  
+  t1_filename = paste0('t1_', sub('.*/', '', files[[ind1.1]]))
+  if (t1_filename %in% list.files('Code/Run_output/')) {
+    # retrieve data if file already present 
+    plot.d = readRDS(paste0(wd, 'Code/Run_output/', t1_filename))
+  } else {
+    plot.d = get_type1(Scenario = '1.1', d = outputs[[ind1.1]])
+    saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind1.1]])))
+  }
+  # plot 
+  plot_type1(plot.d)
+} else {
+  message('There are no or multiple output files in `output`. Please select one.')
+}
+
+#ggsave(paste0(wd,"Code/Plots/type1_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+
+### Running time
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+# plot running time
+files_timing = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "^timing_")
+#scenario = str_extract(files_timing, "\\d+\\.\\d+") 
+scenario = c("1.1","1.4","4.1")
+  
+outputs_timing = rep(NA,length(scenario))
+
+for (i in 1:length(scenario)){
+  outputs_timing[i] = readRDS(files_timing[i])
+}
+
+plot_timing(Scenario = scenario, Timing=outputs_timing)
+```

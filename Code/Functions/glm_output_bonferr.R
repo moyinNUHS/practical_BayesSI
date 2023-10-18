@@ -9,7 +9,7 @@ glm_output_bonferr <- function(model, p, no_treatment) {
   adjusted.p = p / ncol(combn(no_treatment, 2))
   
   # get confidence intervals with adjusted p 
-  cf = confint(model, level = 1 - adjusted.p)
+  cf = confint(model, level = 1 - adjusted.p,devtol = 1e-07)
   
   # output 
   out = cbind(Estimate = coef(mof)[1:no_treatment, 'Estimate'],
