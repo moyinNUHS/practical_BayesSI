@@ -23,7 +23,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       # T_v is the pre-defined mortality of treatment effect 
     
       # bias is the difference between the estimated treatment coefficients (val) and the predefined treatment coefficients (t.target)
-      bias <- mean(val - t.target)
+      bias <- mean(abs(val - t.target))
       
       # variance between the estimated ORs obtained from all iterations
       var.s <- var(val)
