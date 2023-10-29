@@ -51,7 +51,7 @@ get_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_name
   
   # (A) Identified 1 best treatment (terminating trial for efficacy)
   errorA = apply(dat.lean, 1, function(row){
-    row = row[-which(row == 'overlap')]
+    row = row[!(row == 'overlap')]
     any(table(as.character(row)) == n_tx)
   })
   
@@ -63,8 +63,8 @@ get_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_name
   
   # (B) Identified 2 better treatments 
   errorB = apply(dat.lean, 1, function(row){
-    row = row[-which(row == 'overlap')]
-    length(table(as.character(row) == n_tx-1)) == 2
+    row = row[!(row == 'overlap')]
+    sum(table(as.character(row)) == n_tx-1) == 2
   })
   
   outB = data.frame(n = dat$n, 
@@ -75,7 +75,7 @@ get_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_name
   
   # (C) Identified 3 better treatments 
   errorC = apply(dat.lean, 1, function(row){
-    row.uniq = row[-which(row == 'overlap')]
+    row.uniq = row[!(row == 'overlap')]
     length(unique(row.uniq)) == n_tx & sum(row == 'overlap') == n_tx
   })
   
