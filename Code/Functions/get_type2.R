@@ -105,11 +105,11 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     
     sub_twobest_dat = dat[, grep(paste0('treatment', c(secbest_tx, best_tx), collapse = '|'), colnames(dat))]
     error_twobest = apply(sub_twobest_dat, 1, function(row){
-      row['treatmenttreatment1-treatmenttreatment2'] == 'overlap' & 
-        row['treatmenttreatment1-treatmenttreatment3'] == '1' & 
-        row['treatmenttreatment1-treatmenttreatment4'] == '1' & 
-        row['treatmenttreatment2-treatmenttreatment3'] == '2' & 
-        row['treatmenttreatment2-treatmenttreatment4'] == '2' 
+      row['treatment1-treatment2'] == 'overlap' & 
+        row['treatment1-treatment3'] == '1' & 
+        row['treatment1-treatment4'] == '1' & 
+        row['treatment2-treatment3'] == '2' & 
+        row['treatment2-treatment4'] == '2' 
     }) # error is committed when either top 2 predefined treatments were not concluded as the best 
     
     errorB = errorA & error_secbest & !error_twobest
@@ -140,11 +140,11 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     
     sub_twoworse_dat = dat[, grep(paste0('treatment', c(worst_tx, secworse_tx), collapse = '|'), colnames(dat))]
     error_twoworse_areworse = apply(sub_twoworse_dat, 1, function(row){
-      row['treatmenttreatment1-treatmenttreatment3'] == '1' & 
-        row['treatmenttreatment1-treatmenttreatment4'] == '1' & 
-        row['treatmenttreatment2-treatmenttreatment3'] == '2' & 
-        row['treatmenttreatment2-treatmenttreatment4'] == '2' & 
-        row['treatmenttreatment3-treatmenttreatment4'] == 'overlap'  
+      row['treatment1-treatment3'] == '1' & 
+        row['treatment1-treatment4'] == '1' & 
+        row['treatment2-treatment3'] == '2' & 
+        row['treatment2-treatment4'] == '2' & 
+        row['treatment3-treatment4'] == 'overlap'  
     })
     
     errorD = errorC & error_secworse_isworst & !error_twoworse_areworse
