@@ -20,6 +20,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
       
       # list of all data.frames with estimates, each refers to a method
       df_list = iter[grep('est_method', names(iter))]
+      df_list = lapply(df_list, function(x){rownames(x)=rownames(df_list$est_method_1_NI); return(x)})
       rows = lapply(df_list, find_contig_grp)
       conti_grp = as.data.frame(do.call(rbind, rows))
       conti_grp$n = i 

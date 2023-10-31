@@ -21,12 +21,16 @@ plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names
                        levels = mort_all_method_names, 
                        labels = .method_labs)
   long = reshape2::melt(wide, id.var = c('method', 'n'))
+   method_type <- rep(NA,length(long$method))
+  method_type[grep('Fixed-effect', long$method)] <- "Fixed"
+  method_type[grep('Mixed-effect', long$method)] <- "Mixed"
+  long <- data.frame(long, method_type=as.factor(method_type))
   
   # plot 
-  f = ggplot(long, aes(x = n, y = value, shape = method, group = method)) +
+  f = ggplot(long, aes(x = n, y = value, shape = method, linetype = method_type,group = method)) +
     geom_point(size = .pt_size) +
     scale_shape_manual(values = shapes, name = '') +
-    geom_line(linetype = 2,linewidth=0.5, color = "#4d4d4d") + 
+    geom_line(linewidth=0.5, color = "#4d4d4d") +
     guides(shape=guide_legend(ncol=2, byrow=TRUE), name = '') +
     scale_x_continuous(breaks = unique(long$n))+
     labs(
