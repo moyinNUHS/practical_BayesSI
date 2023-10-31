@@ -184,24 +184,24 @@ simulation <- function(N,
     rm(sim_data)
     
     # Fixed effects models
-    est_method_1 <- fit_model_1(nma_data, Trial_Treat_lab_vec) # use current trial data
-    est_method_1_NI <- fit_model_1_NI(nma_data, Trial_Treat_lab_vec) # use current trial data, Bayesian
-    est_method_1_wk <- fit_model_1_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data, Bayesian
-    est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data, Bayesian
-    est_method_1_wk_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
-    est_method_1_str_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
-    est_method_1_wk_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
-    est_method_1_str_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
+    est_method_1 <- fit_model_1(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data
+    est_method_1_NI <- fit_model_1_NI(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data, Bayesian
+    est_method_1_wk <- fit_model_1_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk,bonferr = F) # use current trial data + prior data, Bayesian
+    est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str,bonferr = F) # use current trial data + prior data, Bayesian
+    #est_method_1_wk_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
+    #est_method_1_str_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
+    #est_method_1_wk_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
+    #est_method_1_str_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
     
     # Use a hierarchical structure
-    est_method_2 <-fit_model_2(nma_data, Trial_Treat_lab_vec) # use current trial data
-    est_method_2_NI <-fit_model_2_NI(nma_data, Trial_Treat_lab_vec) # use current trial data, Bayesian
-    est_method_2_wk <-fit_model_2_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data, Bayesian
-    est_method_2_str <-fit_model_2_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data, Bayesian
-    est_method_2_wk_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
-    est_method_2_str_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
-    est_method_2_wk_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
-    est_method_2_str_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
+    est_method_2 <-fit_model_2(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data
+    est_method_2_NI <-fit_model_2_NI(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data, Bayesian
+    est_method_2_wk <-fit_model_2_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk,bonferr = F) # use current trial data + prior data, Bayesian
+    est_method_2_str <-fit_model_2_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str,bonferr = F) # use current trial data + prior data, Bayesian
+    #est_method_2_wk_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
+    #est_method_2_str_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
+    #est_method_2_wk_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
+    #est_method_2_str_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
     
     ##############################################################
     ## Ranking of treatments
@@ -213,18 +213,18 @@ simulation <- function(N,
       method_1_NI = est_method_1_NI$ranking[1, ],
       method_1_wk = est_method_1_wk$ranking[1, ],
       method_1_str = est_method_1_str$ranking[1, ],
-      method_1_wk_ur1 = est_method_1_wk_ur1$ranking[1, ],
-      method_1_str_ur1 = est_method_1_str_ur1$ranking[1, ],
-      method_1_wk_ur2 = est_method_1_wk_ur2$ranking[1, ],
-      method_1_str_ur2 = est_method_1_str_ur2$ranking[1, ],
+      #method_1_wk_ur1 = est_method_1_wk_ur1$ranking[1, ],
+      #method_1_str_ur1 = est_method_1_str_ur1$ranking[1, ],
+      #method_1_wk_ur2 = est_method_1_wk_ur2$ranking[1, ],
+      #method_1_str_ur2 = est_method_1_str_ur2$ranking[1, ],
       method_2 = est_method_2$ranking[1, ],
       method_2_NI = est_method_2_NI$ranking[1, ],
       method_2_wk = est_method_2_wk$ranking[1, ],
-      method_2_str = est_method_2_str$ranking[1, ],
-      method_2_wk_ur1 = est_method_2_wk_ur1$ranking[1, ],
-      method_2_str_ur1 = est_method_2_str_ur1$ranking[1, ],
-      method_2_wk_ur2 = est_method_2_wk_ur2$ranking[1, ],
-      method_2_str_ur2 = est_method_2_str_ur2$ranking[1, ]
+      method_2_str = est_method_2_str$ranking[1, ]
+      #method_2_wk_ur1 = est_method_2_wk_ur1$ranking[1, ],
+      #method_2_str_ur1 = est_method_2_str_ur1$ranking[1, ],
+      #method_2_wk_ur2 = est_method_2_wk_ur2$ranking[1, ],
+      #method_2_str_ur2 = est_method_2_str_ur2$ranking[1, ]
     )
     
     n_method <- dim(identified_best_t)[1] # how many methods compared 
@@ -281,18 +281,18 @@ simulation <- function(N,
       method_1_NI = est_method_1_NI$ranking[2, ],
       method_1_wk = est_method_1_wk$ranking[2, ],
       method_1_str = est_method_1_str$ranking[2, ],
-      method_1_wk_ur1 = est_method_1_wk_ur1$ranking[2, ],
-      method_1_str_ur1 = est_method_1_str_ur1$ranking[2, ],
-      method_1_wk_ur2 = est_method_1_wk_ur2$ranking[2, ],
-      method_1_str_ur2 = est_method_1_str_ur2$ranking[2, ],
+      #method_1_wk_ur1 = est_method_1_wk_ur1$ranking[2, ],
+      #method_1_str_ur1 = est_method_1_str_ur1$ranking[2, ],
+      #method_1_wk_ur2 = est_method_1_wk_ur2$ranking[2, ],
+      #method_1_str_ur2 = est_method_1_str_ur2$ranking[2, ],
       method_2 = est_method_2$ranking[2, ],
       method_2_NI = est_method_2_NI$ranking[2, ],
       method_2_wk = est_method_2_wk$ranking[2, ],
-      method_2_str = est_method_2_str$ranking[2, ],
-      method_2_wk_ur1 = est_method_2_wk_ur1$ranking[2, ],
-      method_2_str_ur1 = est_method_2_str_ur1$ranking[2, ],
-      method_2_wk_ur2 = est_method_2_wk_ur2$ranking[2, ],
-      method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
+      method_2_str = est_method_2_str$ranking[2, ]
+      #method_2_wk_ur1 = est_method_2_wk_ur1$ranking[2, ],
+      #method_2_str_ur1 = est_method_2_str_ur1$ranking[2, ],
+      #method_2_wk_ur2 = est_method_2_wk_ur2$ranking[2, ],
+      #method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
     )
     
     # print errors if a model did not fit 
@@ -313,19 +313,19 @@ simulation <- function(N,
       est_method_1_NI = est_method_1_NI$contrast.est,
       est_method_1_wk = est_method_1_wk$contrast.est,
       est_method_1_str = est_method_1_str$contrast.est,
-      est_method_1_wk_ur1 = est_method_1_wk_ur1$contrast.est,
-      est_method_1_str_ur1 = est_method_1_str_ur1$contrast.est,
-      est_method_1_wk_ur2 = est_method_1_wk_ur2$contrast.est,
-      est_method_1_str_ur2 = est_method_1_str_ur2$contrast.est,
+      #est_method_1_wk_ur1 = est_method_1_wk_ur1$contrast.est,
+      #est_method_1_str_ur1 = est_method_1_str_ur1$contrast.est,
+      #est_method_1_wk_ur2 = est_method_1_wk_ur2$contrast.est,
+      #est_method_1_str_ur2 = est_method_1_str_ur2$contrast.est,
       
       est_method_2 = est_method_2$contrast.est,
       est_method_2_NI = est_method_2_NI$contrast.est,
       est_method_2_wk = est_method_2_wk$contrast.est,
       est_method_2_str = est_method_2_str$contrast.est,
-      est_method_2_wk_ur1 = est_method_2_wk_ur1$contrast.est,
-      est_method_2_str_ur1 = est_method_2_str_ur1$contrast.est,
-      est_method_2_wk_ur2 = est_method_2_wk_ur2$contrast.est,
-      est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
+      #est_method_2_wk_ur1 = est_method_2_wk_ur1$contrast.est,
+      #est_method_2_str_ur1 = est_method_2_str_ur1$contrast.est,
+      #est_method_2_wk_ur2 = est_method_2_wk_ur2$contrast.est,
+      #est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
       performance_m = estimand2,
       identify_fail = identify_fail,
       freq_t_subgroup = freq_t_subgroup_list,
