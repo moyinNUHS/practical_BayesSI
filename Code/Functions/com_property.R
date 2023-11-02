@@ -18,12 +18,13 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       # estimators
       val <- out_one[, 'Estimate']
       val <- as.numeric(val[complete.cases(val)])
+      val.prob<-invlogit(val)       #transform the coefficents to probabilities
       
       t.target <- logit(T_v[q]) #transform the probabilities T_v to coef in logistic regression
       # T_v is the pre-defined mortality of treatment effect 
     
       # bias is the difference between the estimated treatment coefficients (val) and the predefined treatment coefficients (t.target)
-      bias <- mean(abs(val - t.target))
+      bias <- mean(val.prob - T_v[q])
       
       # variance between the estimated ORs obtained from all iterations
       var.s <- var(val)
@@ -48,7 +49,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       coverage_prob <- length(which(coverage_count == 2)) / length(which(is.na(coverage_count) == F))
       
       # Mean squared error
-      MSE <- mean((val - t.target) ^ 2)
+      MSE <- mean((val.prob - T_v[q]) ^ 2)
       # Monte Carlo Standard Error
       MCSE_mse <- sqrt(var((val - t.target) ^ 2) / R)
       
