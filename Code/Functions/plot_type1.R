@@ -1,8 +1,12 @@
 # plot type 1 error - for NULL scenarios only
 
 plot_type1 <- function (plot.data, .font_size = font_size, .pt_size = pt_size) {
+  method_type <- rep(NA,length(plot.data$method))
+  method_type[grep('Fixed-effect', plot.data$method)] <- "Fixed"
+  method_type[grep('Mixed-effect', plot.data$method)] <- "Mixed"
+  plot.data <- data.frame(plot.data, method_type=as.factor(method_type))
   
-  ggplot(plot.data, aes(x = n, y = type1error, shape = method, group = method)) +
+  ggplot(plot.data, aes(x = n, y = type1error, shape = method, linetype = method_type,group = method)) +
     geom_point(size = .pt_size) +
     scale_shape_manual(values = shapes, name = '') +
     geom_line(linetype = 2,linewidth=0.5)+ 
