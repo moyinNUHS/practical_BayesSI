@@ -97,7 +97,7 @@ simulation <- function(N,
     ##############################################################
     
     # For Bayesian Framework, we must choose weight we wish to assign to prior distribution.
-    # We explore both a very weakly & strongly informative prior distribution
+    # We explore both a very weakly (not based on HD) & strongly informative prior distribution
     Scale_str <- 1    #Smaller scale assigns more importance to prior distribution
     
     # generate prior historical data 
