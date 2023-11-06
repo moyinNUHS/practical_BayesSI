@@ -7,7 +7,7 @@ estimator_prop <- function(q, output_replication, method.names, T_v, R,scenario_
     df_list = map(output_replication, m)
     rows = lapply(df_list, function(x) { x[q,] })
     com = do.call(rbind, rows)
-    out[[m]] = com_property(com, q, n_method, T_v, R,scenario_name)
+    out[[m]] = com_property(com, q, n_method, T_v, R,scenario_name, m)
   }
   
   warning = lapply(out, `[[`, 1)
