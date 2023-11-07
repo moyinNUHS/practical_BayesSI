@@ -74,7 +74,12 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       val.prob<-invlogit(val)       #transform the coefficents to probabilities
 
       if (grepl(value, m)) {
-        T_v<-invlogit(c(-0.01628043, 0.2749548, 0.5248289, 0.7546663))
+        T_v<-invlogit(c(-0.01628043, 0.2749548, 0.5248289, 0.7546663))  
+        #For probabilities: 
+        #S1: [0.199, 0.250, 0.299, 0.350]
+        #S2: [0.291, 0.354, 0.413, 0.470]
+        #S3: [0.648, 0.711, 0.760, 0.799]
+        #S4: [0.833, 0.870, 0.896, 0.915]
       }
 
       t.target <- logit(T_v[q]) #transform the probabilities T_v to coef in logistic regression
