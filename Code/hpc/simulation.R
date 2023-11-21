@@ -15,7 +15,8 @@ simulation <- function(N,
                        res_probability_all_site,
                        prob_pattern,
                        differsite = 0,
-                       R) {
+                       R,
+                       scenario_name) {
   
   ##############################################################
   ## Generate simulated trial data and priors for Bayesian analysis
@@ -57,11 +58,6 @@ simulation <- function(N,
   # number of patients in each subgroup that is defined by the pattern
   size_pattern_hist <- apply(assigned_pattern_hist, 2, sum)
   
-  .GlobalEnv$no_pattern <- no_pattern
-  .GlobalEnv$no_treatment <- no_treatment
-  .GlobalEnv$size_pattern <- size_pattern
-  .GlobalEnv$size_pattern_hist <- size_pattern_hist
-  
   true.response.r <-
     lapply(1:no_pattern, function(i)
       res_probability_all[i, pattern[[i]]])
@@ -75,6 +71,11 @@ simulation <- function(N,
   true.mean.min <- do.call(cbind, true.mean.min)
   # matrix of mean and min values of the treatment effects in each pattern
   # will be used for the performance measures about the treatment decisions
+  
+  .GlobalEnv$no_pattern <- no_pattern
+  .GlobalEnv$no_treatment <- no_treatment
+  .GlobalEnv$size_pattern <- size_pattern
+  .GlobalEnv$size_pattern_hist <- size_pattern_hist
   
   # run simulation and analysis over R iterations
   output_replication <- foreach(k = 1:R) %dopar% {
@@ -127,8 +128,7 @@ simulation <- function(N,
     ##############################################################
     
     # For Bayesian Framework, we must choose weight we wish to assign to prior distribution.
-    # We explore both a weakly & strongly informative prior distribution
-    Scale_wk <- 5     #Larger scale assigns less importance to prior distribution
+    # We explore both a very weakly (not based on HD) & strongly informative prior distribution
     Scale_str <- 1    #Smaller scale assigns more importance to prior distribution
     
     # generate prior historical data 
@@ -183,50 +183,94 @@ simulation <- function(N,
     #Delete sim_data
     rm(sim_data)
     
-    # Fixed effects models
-    est_method_1 <- fit_model_1(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data
-    est_method_1_NI <- fit_model_1_NI(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data, Bayesian
-    est_method_1_wk <- fit_model_1_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk,bonferr = F) # use current trial data + prior data, Bayesian
-    est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str,bonferr = F) # use current trial data + prior data, Bayesian
-    #est_method_1_wk_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
-    #est_method_1_str_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
-    #est_method_1_wk_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
-    #est_method_1_str_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
-    
-    # Use a hierarchical structure
-    est_method_2 <-fit_model_2(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data
-    est_method_2_NI <-fit_model_2_NI(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data, Bayesian
-    est_method_2_wk <-fit_model_2_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk,bonferr = F) # use current trial data + prior data, Bayesian
-    est_method_2_str <-fit_model_2_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str,bonferr = F) # use current trial data + prior data, Bayesian
-    #est_method_2_wk_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
-    #est_method_2_str_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
-    #est_method_2_wk_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
-    #est_method_2_str_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
-    
-    ##############################################################
-    ## Ranking of treatments
-    ##############################################################
-    
-    # combine estimated best treatments from all methods, row = methods, column = pattern
-    identified_best_t <- rbind(
-      method_1 = est_method_1$ranking[1, ],
-      method_1_NI = est_method_1_NI$ranking[1, ],
-      method_1_wk = est_method_1_wk$ranking[1, ],
-      method_1_str = est_method_1_str$ranking[1, ],
-      #method_1_wk_ur1 = est_method_1_wk_ur1$ranking[1, ],
-      #method_1_str_ur1 = est_method_1_str_ur1$ranking[1, ],
-      #method_1_wk_ur2 = est_method_1_wk_ur2$ranking[1, ],
-      #method_1_str_ur2 = est_method_1_str_ur2$ranking[1, ],
-      method_2 = est_method_2$ranking[1, ],
-      method_2_NI = est_method_2_NI$ranking[1, ],
-      method_2_wk = est_method_2_wk$ranking[1, ],
-      method_2_str = est_method_2_str$ranking[1, ]
-      #method_2_wk_ur1 = est_method_2_wk_ur1$ranking[1, ],
-      #method_2_str_ur1 = est_method_2_str_ur1$ranking[1, ],
-      #method_2_wk_ur2 = est_method_2_wk_ur2$ranking[1, ],
-      #method_2_str_ur2 = est_method_2_str_ur2$ranking[1, ]
-    )
-    
+    if(grepl("scenario4",scenario_name)){
+      # Fixed effects models
+      est_method_1 <- fit_model_1(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data
+      est_method_1_wk <- fit_model_1_weakly(nma_data_prior, nma_data, Trial_Treat_lab_vec, bonferr = F) # use current trial data + prior data, Bayesian
+      est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str,bonferr = F) # use current trial data + prior data, Bayesian
+      #est_method_1_wk_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
+      #est_method_1_str_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
+      #est_method_1_wk_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
+      #est_method_1_str_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
+      
+      # Use a hierarchical structure
+      est_method_2 <-fit_model_2(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data
+      est_method_2_wk <-fit_model_2_weakly(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data + prior data, Bayesian
+      est_method_2_str <-fit_model_2_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str,bonferr = F) # use current trial data + prior data, Bayesian
+      #est_method_2_wk_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
+      #est_method_2_str_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
+      #est_method_2_wk_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
+      #est_method_2_str_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
+      
+      ##############################################################
+      ## Ranking of treatments
+      ##############################################################
+      
+      # combine estimated best treatments from all methods, row = methods, column = pattern
+      identified_best_t <- rbind(
+        method_1 = est_method_1$ranking[1, ],
+        #method_1_NI = est_method_1_NI$ranking[1, ],
+        method_1_wk = est_method_1_wk$ranking[1, ],
+        method_1_str = est_method_1_str$ranking[1, ],
+        #method_1_wk_ur1 = est_method_1_wk_ur1$ranking[1, ],
+        #method_1_str_ur1 = est_method_1_str_ur1$ranking[1, ],
+        #method_1_wk_ur2 = est_method_1_wk_ur2$ranking[1, ],
+        #method_1_str_ur2 = est_method_1_str_ur2$ranking[1, ],
+        method_2 = est_method_2$ranking[1, ],
+        #method_2_NI = est_method_2_NI$ranking[1, ],
+        method_2_wk = est_method_2_wk$ranking[1, ],
+        method_2_str = est_method_2_str$ranking[1, ]
+        #method_2_wk_ur1 = est_method_2_wk_ur1$ranking[1, ],
+        #method_2_str_ur1 = est_method_2_str_ur1$ranking[1, ],
+        #method_2_wk_ur2 = est_method_2_wk_ur2$ranking[1, ],
+        #method_2_str_ur2 = est_method_2_str_ur2$ranking[1, ]
+      )
+      
+    }
+    else{
+      # Fixed effects models
+      est_method_1 <- fit_model_1(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data
+      est_method_1_wk <- fit_model_1_weakly(nma_data_prior, nma_data, Trial_Treat_lab_vec, bonferr = F) # use current trial data + prior data, Bayesian
+      est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str,bonferr = F) # use current trial data + prior data, Bayesian
+      #est_method_1_wk_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
+      #est_method_1_str_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
+      #est_method_1_wk_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
+      #est_method_1_str_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
+      
+      # Use a hierarchical structure
+      #est_method_2 <-fit_model_2(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data
+      #est_method_2_wk <-fit_model_2_weakly(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data + prior data, Bayesian
+      #est_method_2_str <-fit_model_2_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str,bonferr = F) # use current trial data + prior data, Bayesian
+      #est_method_2_wk_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
+      #est_method_2_str_ur1 <- fit_model_2_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
+      #est_method_2_wk_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur2, Bayesian
+      #est_method_2_str_ur2 <- fit_model_2_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
+      
+      ##############################################################
+      ## Ranking of treatments
+      ##############################################################
+      
+      # combine estimated best treatments from all methods, row = methods, column = pattern
+      identified_best_t <- rbind(
+        method_1 = est_method_1$ranking[1, ],
+        #method_1_NI = est_method_1_NI$ranking[1, ],
+        method_1_wk = est_method_1_wk$ranking[1, ],
+        method_1_str = est_method_1_str$ranking[1, ]
+        #method_1_wk_ur1 = est_method_1_wk_ur1$ranking[1, ],
+        #method_1_str_ur1 = est_method_1_str_ur1$ranking[1, ],
+        #method_1_wk_ur2 = est_method_1_wk_ur2$ranking[1, ],
+        #method_1_str_ur2 = est_method_1_str_ur2$ranking[1, ],
+        #method_2 = est_method_2$ranking[1, ],
+        #method_2_NI = est_method_2_NI$ranking[1, ],
+        #method_2_wk = est_method_2_wk$ranking[1, ],
+        #method_2_str = est_method_2_str$ranking[1, ]
+        #method_2_wk_ur1 = est_method_2_wk_ur1$ranking[1, ],
+        #method_2_str_ur1 = est_method_2_str_ur1$ranking[1, ],
+        #method_2_wk_ur2 = est_method_2_wk_ur2$ranking[1, ],
+        #method_2_str_ur2 = est_method_2_str_ur2$ranking[1, ]
+      )
+      
+    }
     n_method <- dim(identified_best_t)[1] # how many methods compared 
     
     # true treatment effect for each pattern(column) from each method (row)
@@ -275,62 +319,111 @@ simulation <- function(N,
       diff_min = diff_min
     )
     
-    # identify which models did not fit 
-    identify_fail <- rbind(
-      method_1 = est_method_1$ranking[2, ],
-      method_1_NI = est_method_1_NI$ranking[2, ],
-      method_1_wk = est_method_1_wk$ranking[2, ],
-      method_1_str = est_method_1_str$ranking[2, ],
-      #method_1_wk_ur1 = est_method_1_wk_ur1$ranking[2, ],
-      #method_1_str_ur1 = est_method_1_str_ur1$ranking[2, ],
-      #method_1_wk_ur2 = est_method_1_wk_ur2$ranking[2, ],
-      #method_1_str_ur2 = est_method_1_str_ur2$ranking[2, ],
-      method_2 = est_method_2$ranking[2, ],
-      method_2_NI = est_method_2_NI$ranking[2, ],
-      method_2_wk = est_method_2_wk$ranking[2, ],
-      method_2_str = est_method_2_str$ranking[2, ]
-      #method_2_wk_ur1 = est_method_2_wk_ur1$ranking[2, ],
-      #method_2_str_ur1 = est_method_2_str_ur1$ranking[2, ],
-      #method_2_wk_ur2 = est_method_2_wk_ur2$ranking[2, ],
-      #method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
-    )
-    
-    # print errors if a model did not fit 
-    # if (any(identify_fail > 0)) {
-    #   row.fail = which(identify_fail == 1, arr.ind = TRUE)[,1]
-    #   col.fail = which(identify_fail == 1, arr.ind = TRUE)[,2]
-    #   message('The following models did not fit: ', 
-    #           paste('|', rownames(identify_fail)[row.fail],
-    #                 colnames(identify_fail)[col.fail], '|'))
-    # } else {
-    #   message('All models fitted..')
-    # }
-    
-    # output of all results 
-    list(
-      identified_best_t = identified_best_t,
-      est_method_1 = est_method_1$contrast.est,
-      est_method_1_NI = est_method_1_NI$contrast.est,
-      est_method_1_wk = est_method_1_wk$contrast.est,
-      est_method_1_str = est_method_1_str$contrast.est,
-      #est_method_1_wk_ur1 = est_method_1_wk_ur1$contrast.est,
-      #est_method_1_str_ur1 = est_method_1_str_ur1$contrast.est,
-      #est_method_1_wk_ur2 = est_method_1_wk_ur2$contrast.est,
-      #est_method_1_str_ur2 = est_method_1_str_ur2$contrast.est,
+    if(grepl("scenario4",scenario_name)){
+      # identify which models did not fit 
+      identify_fail <- rbind(
+        method_1 = est_method_1$ranking[2, ],
+        #method_1_NI = est_method_1_NI$ranking[2, ],
+        method_1_wk = est_method_1_wk$ranking[2, ],
+        method_1_str = est_method_1_str$ranking[2, ],
+        #method_1_wk_ur1 = est_method_1_wk_ur1$ranking[2, ],
+        #method_1_str_ur1 = est_method_1_str_ur1$ranking[2, ],
+        #method_1_wk_ur2 = est_method_1_wk_ur2$ranking[2, ],
+        #method_1_str_ur2 = est_method_1_str_ur2$ranking[2, ],
+        method_2 = est_method_2$ranking[2, ],
+        #method_2_NI = est_method_2_NI$ranking[2, ],
+        method_2_wk = est_method_2_wk$ranking[2, ],
+        method_2_str = est_method_2_str$ranking[2, ]
+        #method_2_wk_ur1 = est_method_2_wk_ur1$ranking[2, ],
+        #method_2_str_ur1 = est_method_2_str_ur1$ranking[2, ],
+        #method_2_wk_ur2 = est_method_2_wk_ur2$ranking[2, ],
+        #method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
+      )
       
-      est_method_2 = est_method_2$contrast.est,
-      est_method_2_NI = est_method_2_NI$contrast.est,
-      est_method_2_wk = est_method_2_wk$contrast.est,
-      est_method_2_str = est_method_2_str$contrast.est,
-      #est_method_2_wk_ur1 = est_method_2_wk_ur1$contrast.est,
-      #est_method_2_str_ur1 = est_method_2_str_ur1$contrast.est,
-      #est_method_2_wk_ur2 = est_method_2_wk_ur2$contrast.est,
-      #est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
-      performance_m = estimand2,
-      identify_fail = identify_fail,
-      freq_t_subgroup = freq_t_subgroup_list,
-      freq_t = freq_t_list
-    )
+      # output of all results 
+      list(
+        identified_best_t = identified_best_t,
+        est_method_1 = est_method_1$contrast.est,
+        #est_method_1_NI = est_method_1_NI$contrast.est,
+        est_method_1_wk = est_method_1_wk$contrast.est,
+        est_method_1_str = est_method_1_str$contrast.est,
+        #est_method_1_wk_ur1 = est_method_1_wk_ur1$contrast.est,
+        #est_method_1_str_ur1 = est_method_1_str_ur1$contrast.est,
+        #est_method_1_wk_ur2 = est_method_1_wk_ur2$contrast.est,
+        #est_method_1_str_ur2 = est_method_1_str_ur2$contrast.est,
+        
+        est_method_2 = est_method_2$contrast.est,
+        #est_method_2_NI = est_method_2_NI$contrast.est,
+        est_method_2_wk = est_method_2_wk$contrast.est,
+        est_method_2_str = est_method_2_str$contrast.est,
+        #est_method_2_wk_ur1 = est_method_2_wk_ur1$contrast.est,
+        #est_method_2_str_ur1 = est_method_2_str_ur1$contrast.est,
+        #est_method_2_wk_ur2 = est_method_2_wk_ur2$contrast.est,
+        #est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
+        performance_m = estimand2,
+        identify_fail = identify_fail,
+        freq_t_subgroup = freq_t_subgroup_list,
+        freq_t = freq_t_list
+      )
+    }
+    else{
+      # identify which models did not fit 
+      identify_fail <- rbind(
+        method_1 = est_method_1$ranking[2, ],
+        #method_1_NI = est_method_1_NI$ranking[2, ],
+        method_1_wk = est_method_1_wk$ranking[2, ],
+        method_1_str = est_method_1_str$ranking[2, ]
+        #method_1_wk_ur1 = est_method_1_wk_ur1$ranking[2, ],
+        #method_1_str_ur1 = est_method_1_str_ur1$ranking[2, ],
+        #method_1_wk_ur2 = est_method_1_wk_ur2$ranking[2, ],
+        #method_1_str_ur2 = est_method_1_str_ur2$ranking[2, ],
+        #method_2 = est_method_2$ranking[2, ],
+        #method_2_NI = est_method_2_NI$ranking[2, ],
+        #method_2_wk = est_method_2_wk$ranking[2, ],
+        #method_2_str = est_method_2_str$ranking[2, ]
+        #method_2_wk_ur1 = est_method_2_wk_ur1$ranking[2, ],
+        #method_2_str_ur1 = est_method_2_str_ur1$ranking[2, ],
+        #method_2_wk_ur2 = est_method_2_wk_ur2$ranking[2, ],
+        #method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
+      )
+      
+      # print errors if a model did not fit 
+      # if (any(identify_fail > 0)) {
+      #   row.fail = which(identify_fail == 1, arr.ind = TRUE)[,1]
+      #   col.fail = which(identify_fail == 1, arr.ind = TRUE)[,2]
+      #   message('The following models did not fit: ', 
+      #           paste('|', rownames(identify_fail)[row.fail],
+      #                 colnames(identify_fail)[col.fail], '|'))
+      # } else {
+      #   message('All models fitted..')
+      # }
+      
+      # output of all results 
+      list(
+        identified_best_t = identified_best_t,
+        est_method_1 = est_method_1$contrast.est,
+        #est_method_1_NI = est_method_1_NI$contrast.est,
+        est_method_1_wk = est_method_1_wk$contrast.est,
+        est_method_1_str = est_method_1_str$contrast.est,
+        #est_method_1_wk_ur1 = est_method_1_wk_ur1$contrast.est,
+        #est_method_1_str_ur1 = est_method_1_str_ur1$contrast.est,
+        #est_method_1_wk_ur2 = est_method_1_wk_ur2$contrast.est,
+        #est_method_1_str_ur2 = est_method_1_str_ur2$contrast.est,
+        
+        #est_method_2 = est_method_2$contrast.est,
+        #est_method_2_NI = est_method_2_NI$contrast.est,
+        #est_method_2_wk = est_method_2_wk$contrast.est,
+        #est_method_2_str = est_method_2_str$contrast.est,
+        #est_method_2_wk_ur1 = est_method_2_wk_ur1$contrast.est,
+        #est_method_2_str_ur1 = est_method_2_str_ur1$contrast.est,
+        #est_method_2_wk_ur2 = est_method_2_wk_ur2$contrast.est,
+        #est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
+        performance_m = estimand2,
+        identify_fail = identify_fail,
+        freq_t_subgroup = freq_t_subgroup_list,
+        freq_t = freq_t_list
+      )
+    }
   }
   
   return(output_replication)

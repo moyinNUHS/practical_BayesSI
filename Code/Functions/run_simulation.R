@@ -69,11 +69,11 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       res_rate_mat = rbind(
         c(0.2, 0.25, 0.3, 0.35),
         # pattern 1
-        c(0.2, 0.3, 0.4, 0.5),
+        c(0.3, 0.354, 0.41, 0.47),
         # pattern 2
-        c(0.4, 0.6, 0.75, 0.95),
+        c(0.648, 0.711, 0.76, 0.80),
         # pattern 3
-        c(0.3, 0.4, 0.8, 0.9)     
+        c(0.83, 0.87, 0.9, 0.92)     
         # pattern 4
       )
       
@@ -81,11 +81,11 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       res_rate_mat_prior = rbind(
         c(0.2, 0.25, 0.3, 0.35),
         # pattern 1
-        c(0.2, 0.3, 0.4, 0.5),
+        c(0.3, 0.354, 0.41, 0.47),
         # pattern 2
-        c(0.4, 0.6, 0.75, 0.95),
+        c(0.648, 0.711, 0.76, 0.80),
         # pattern 3
-        c(0.3, 0.4, 0.8, 0.9)     
+        c(0.83, 0.87, 0.9, 0.92)    
         # pattern 4
       )
       
@@ -150,7 +150,6 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       res_rate_mat_prior_ur1_site = res_rate_mat_prior_ur1
       res_rate_mat_prior_ur2_site = res_rate_mat_prior_ur2
     }
-    
     # run code to simulate data and do analysis
     scenario_out = simulation(
       N = N,
@@ -166,7 +165,8 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       res_probability_all_site = res_rate_mat_site,
       prob_pattern = prob_pattern,
       differsite = differsite,
-      R = N_iter
+      R = N_iter,
+      scenario_name = scenario_name
     ) # run N_iter iterations
     
     message('simulation and models done...')

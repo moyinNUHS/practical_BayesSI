@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------------------------------------------- #
 # model 2 extension non-informative prior: fit random effects model to all data using hierarchical structure  #
 # ----------------------------------------------------------------------------------------------------------- #
-fit_model_2_NI <- function(nma_data, 
+fit_model_2_weakly <- function(nma_data, 
                            Trial_Treat_lab_vec, 
                            alternative = 'two-sided', 
                            p = 0.05,

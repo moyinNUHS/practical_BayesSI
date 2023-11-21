@@ -67,7 +67,8 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
           fail.no = length(which(is.na(out_one[, 1])))
         )
       )
-    } else if ( scenario_name %in% c("scenario4.1") {
+    } 
+    else if ( scenario_name %in% c("scenario4.1")) {
       # estimators
       val <- out_one[, 'Estimate']
       val <- as.numeric(val[complete.cases(val)])
@@ -129,7 +130,8 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
           fail.no = length(which(is.na(out_one[, 1])))
         )
       )
-    } else if ( scenario_name %in% c("scenario4.2") {
+    } 
+    else if ( scenario_name %in% c("scenario4.2")) {
 # estimators
       val <- out_one[, 'Estimate']
       val <- as.numeric(val[complete.cases(val)])
@@ -184,7 +186,8 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
           fail.no = length(which(is.na(out_one[, 1])))
         )
       )
-    } else if ( scenario_name %in% c("scenario4.3") {
+    } 
+    else if ( scenario_name %in% c("scenario4.3")) {
       # estimators
       val <- out_one[, 'Estimate']
       val <- as.numeric(val[complete.cases(val)])
@@ -239,7 +242,8 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
           fail.no = length(which(is.na(out_one[, 1])))
         )
       )
-    } else{
+    } 
+    else{
       v2 <- out_one[, c('model_var', 'LL', 'UL')]
       #meanv2<-apply(v2, 2, function(x){
       #  if(all(is.numeric(x))){mean(x)}else{

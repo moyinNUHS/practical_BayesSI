@@ -49,8 +49,8 @@ set.seed(3127)
 timings <- list()
 
 #Specify sample size(s) for each run
-N_patients_max = 2000 # Max number of patients
-N_patients_min = 500 # Min number of patients
+N_patients_max = 2300 # Max number of patients
+N_patients_min = 300 # Min number of patients
 N_patients_brk = 500 # Breaks within max and min number of patients
 
 #Specify sample size of historical clinical trial

@@ -2,7 +2,7 @@
 # model 1 extension non-informative prior: fit fixed effect model to all data  #
 # ---------------------------------------------------------------------------- #
 
-fit_model_1_NI <- function(nma_data, 
+fit_model_1_weakly <- function(nma_data, 
                            Trial_Treat_lab_vec, 
                            alternative = 'two-sided', 
                            p = 0.05,

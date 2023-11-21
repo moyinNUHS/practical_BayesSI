@@ -15,7 +15,8 @@ simulation <- function(N,
                        res_probability_all_site,
                        prob_pattern,
                        differsite = 0,
-                       R) {
+                       R,
+                       scenario_name) {
   
   ##############################################################
   ## Generate simulated trial data and priors for Bayesian analysis
