@@ -186,7 +186,7 @@ simulation <- function(N,
     if(grepl("scenario4",scenario_name)){
       # Fixed effects models
       est_method_1 <- fit_model_1(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data
-      est_method_1_wk <- fit_model_1_weakly(nma_data_prior, nma_data, Trial_Treat_lab_vec, bonferr = F) # use current trial data + prior data, Bayesian
+      est_method_1_wk <- fit_model_1_weakly(nma_data, Trial_Treat_lab_vec, bonferr = F) # use current trial data + prior data, Bayesian
       est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str,bonferr = F) # use current trial data + prior data, Bayesian
       #est_method_1_wk_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
       #est_method_1_str_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
@@ -230,7 +230,7 @@ simulation <- function(N,
     else{
       # Fixed effects models
       est_method_1 <- fit_model_1(nma_data, Trial_Treat_lab_vec,bonferr = F) # use current trial data
-      est_method_1_wk <- fit_model_1_weakly(nma_data_prior, nma_data, Trial_Treat_lab_vec, bonferr = F) # use current trial data + prior data, Bayesian
+      est_method_1_wk <- fit_model_1_weakly(nma_data, Trial_Treat_lab_vec, bonferr = F) # use current trial data + prior data, Bayesian
       est_method_1_str <- fit_model_1_prior(nma_data_prior, nma_data, Trial_Treat_lab_vec, Scale = Scale_str,bonferr = F) # use current trial data + prior data, Bayesian
       #est_method_1_wk_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_wk) # use current trial data + prior data ur1, Bayesian
       #est_method_1_str_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
