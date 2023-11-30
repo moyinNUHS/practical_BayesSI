@@ -76,6 +76,22 @@ simulation <- function(N,
   output_replication <- lapply(1:R, function(k) {
     set.seed(k)
     print(paste0('running iteration..', k))
+
+    sim_data = gen.data(
+      no_pattern,
+      size_pattern,
+      size_pattern_hist,
+      pattern,
+      res_probability_prior,
+      res_probability_prior_ur1,
+      res_probability_prior_ur2,
+      res_probability_all,
+      res_probability_prior_site,
+      res_probability_prior_ur1_site,
+      res_probability_prior_ur2_site,
+      res_probability_all_site,
+      differsite
+    )
     
     ##############################################################
     ## Frequentist and Bayesian analysis
