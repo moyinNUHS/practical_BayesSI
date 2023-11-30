@@ -56,7 +56,8 @@ names(shapes) = method_labs
 tx_labs = rownames(outputs[[1]][[1]]$scenario_out[[1]]$est_method_1_wk)
 qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
 colors_list = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals))) 
-colors = sample(colors_list, length(tx_labs))
+colors = c("#7FC97F", "#BEAED4", "#FDC086", "#386CB0") 
+#sample(colors_list, length(tx_labs))
 names(colors) = tx_labs
 
 font_size = 24

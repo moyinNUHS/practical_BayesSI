@@ -4,7 +4,7 @@
 fit_model_2 <- function(nma_data, 
                         Trial_Treat_lab_vec,
                         alternative = 'two-sided', 
-                        p = 0.05,
+                        p = 0.2,
                         bonferr = T, 
                         dunnett = F) {
   # number of patterns
