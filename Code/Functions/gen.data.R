@@ -49,7 +49,7 @@ gen.data <- function(no_pattern,
     generate_subset_data(i, size_pattern. = size_pattern, 
                          pattern. = pattern, 
                          res_probability_all. = res_probability_all,
-                         res_probability_all_site. = res_probability_all_prior_site,
+                         res_probability_all_site. = res_probability_all_site,
                          differsite = differsite)})
   
   # show how many have been randomized to a treatment arm within a pattern

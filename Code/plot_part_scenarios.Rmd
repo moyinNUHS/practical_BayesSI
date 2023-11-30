@@ -23,7 +23,7 @@ scripts = paste0(wd, 'Code/Functions/', list.files(paste0(wd, 'Code/Functions/')
 lapply(scripts, source)
 
 # load data in the output folder 
-files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "iter100_2023-10-24.rds")
+files = list.files(path = paste0(wd, 'Code/Run_output'), full.names = TRUE, pattern = "iter100_2023-11-17.rds")
 power_t1_files = grep('power_|t1_', files)
 if (length(power_t1_files) > 0) {files = files[-grep('power_|t1_', files)]}
 outputs = list()
@@ -32,7 +32,7 @@ for (file in files){
 }
 
 # get names of methods
-all_names = names(outputs[[1]][[1]]$scenario_out[[1]])
+all_names = names(outputs[[11]][[1]]$scenario_out[[1]])
 all_method_names = all_names[grep('method', all_names)]
 
 method_labs = rep(NA, length(all_method_names))
@@ -53,7 +53,7 @@ shapes = 1:n_methods # methods differentiated by shapes
 names(shapes) = method_labs
 
 # get names of treatments
-tx_labs = rownames(outputs[[1]][[1]]$scenario_out[[1]]$est_method_1_NI)
+tx_labs = rownames(outputs[[1]][[1]]$scenario_out[[1]]$est_method_1_wk)
 qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
 colors_list = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals))) 
 colors = sample(colors_list, length(tx_labs))
