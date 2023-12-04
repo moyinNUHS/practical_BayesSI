@@ -6,7 +6,7 @@ fit_model_2_prior <- function(nma_data_prior,
                               Trial_Treat_lab_vec,
                               Scale, 
                               alternative = 'two-sided', 
-                              p = 0.2,
+                              p = 0.05,
                               bonferr = T) {
   # number of patterns
   no_p <- no_pattern

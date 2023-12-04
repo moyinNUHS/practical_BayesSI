@@ -4,7 +4,7 @@
 fit_model_2_weakly <- function(nma_data, 
                            Trial_Treat_lab_vec, 
                            alternative = 'two-sided', 
-                           p = 0.2,
+                           p = 0.05,
                            bonferr = T) {
   # number of patterns
   no_p <- no_pattern
