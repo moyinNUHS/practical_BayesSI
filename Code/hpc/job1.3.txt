@@ -6,7 +6,7 @@
 #PBS -l select=1:ncpus=50:mem=200GB 
 #PBS -l walltime=20:00:00
 #PBS -l place=pack
-#PBS -q long
+#PBS -q super
 
 
 cd /data/chakraborty/home/e0859927
