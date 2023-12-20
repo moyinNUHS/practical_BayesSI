@@ -26,7 +26,7 @@ fit_model_1 <- function(nma_data,
     } else if (bonferr == T) {
       out = glm_output_bonferr(model = my.glmm, p, no_treatment)
     } else {
-      out = glm_output_nocorrection(my.glmm)
+      out = glm_output_nocorrection(my.glmm, p)
     }
     
   } else { 
