@@ -6,7 +6,7 @@ plot_timing <- function(Scenario, Timing){
     geom_line(linetype = 2,linewidth=0.5)+ 
     labs(
       x = "Scenario",
-      y = "Running time (h)",
+      y = "Running time (min)",
       subtitle = "The running time for 100 iterations"
     ) +
     theme_minimal()+

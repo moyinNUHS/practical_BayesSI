@@ -5,7 +5,7 @@
 fit_model_1 <- function(nma_data, 
                         Trial_Treat_lab_vec, 
                         alt_hypothesis = 'two.sided', 
-                        p = 0.05,
+                        p = 0.2,
                         bonferr = T, 
                         dunnett = F){
   

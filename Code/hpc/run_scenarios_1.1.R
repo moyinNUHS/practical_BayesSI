@@ -33,8 +33,8 @@ if(run_hpc){
   n.cores <- 50
   my.cluster <- parallel::makeCluster(
     n.cores
-    ,
-    type = "SOCK"
+    #,
+    #type = "SOCK"
   )
   doParallel::registerDoParallel(cl = my.cluster)
   
@@ -49,12 +49,12 @@ set.seed(3127)
 timings <- list()
 
 #Specify sample size(s) for each run
-N_patients_max = 2300 # Max number of patients
-N_patients_min = 300 # Min number of patients
-N_patients_brk = 500 # Breaks within max and min number of patients
+N_patients_max = 6000 # Max number of patients
+N_patients_min = 3000 # Min number of patients
+N_patients_brk = 1000 # Breaks within max and min number of patients
 
 #Specify sample size of historical clinical trial
-N_hist=500
+N_hist=3000
 
 #Specify number of iterations for each scenario
 No_iter = 100
@@ -90,8 +90,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
 
 
 end_time <- Sys.time()
-time_taken <- end_time - start_time
-timings <- append(timings, as.numeric(time_taken))
+time_taken <- as.numeric(difftime(end_time,start_time,units = "mins"))
 
 saveRDS(time_taken,paste0("./Code/Run_output/timing_1.1.rds"))
 parallel::stopCluster(my.cluster)

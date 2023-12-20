@@ -14,7 +14,6 @@ setwd(wd)
 
 # load libraries and functions
 run_hpc <- TRUE
-
 scripts = paste0(wd, 'Code/Functions/', list.files('Code/Functions/'))
 lapply(scripts, source)
 
@@ -48,13 +47,12 @@ set.seed(3127)
 timings <- list()
 
 #Specify sample size(s) for each run
-N_patients_max = 2300 # Max number of patients
-N_patients_min = 300 # Min number of patients
-N_patients_brk = 500 # Breaks within max and min number of patients
+N_patients_max = 6000 # Max number of patients
+N_patients_min = 3000 # Min number of patients
+N_patients_brk = 1000 # Breaks within max and min number of patients
 
 #Specify sample size of historical clinical trial
-N_hist=500
-
+N_hist=3000
 
 #Specify number of iterations for each scenario
 No_iter = 100
@@ -80,8 +78,8 @@ start_time <- Sys.time()
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.45, 0.35, 0.45, 0.45),  # Treatment effects - % mortality 
                res_rate_prior = c(0.45, 0.35, 0.45, 0.45), # Priors
-               res_rate_prior_ur1 = c(0.4, 0.3, 0.4, 0.4), # Priors ur1
-               res_rate_prior_ur2 = c(0.3, 0.35, 0.40, 0.45), # Priors ur2
+               res_rate_prior_ur1 = c(0.35, 0.25, 0.35, 0.35), # Priors ur1
+               res_rate_prior_ur2 = c(0.45, 0.4, 0.35, 0.3), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                samplesize_hist = N_hist,
                N_iter = No_iter,          # Number of iterations
@@ -89,8 +87,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
 )
 
 end_time <- Sys.time()
-time_taken <- end_time - start_time
-timings <- append(timings, as.numeric(time_taken))
+time_taken <- as.numeric(difftime(end_time,start_time,units = "mins"))
 
 saveRDS(time_taken,paste0("./Code/Run_output/timing_1.2.rds"))
 parallel::stopCluster(my.cluster)

@@ -47,12 +47,13 @@ set.seed(3127)
 timings <- list()
 
 #Specify sample size(s) for each run
-N_patients_max = 2300 # Max number of patients
-N_patients_min = 300 # Min number of patients
-N_patients_brk = 500 # Breaks within max and min number of patients
+N_patients_max = 6000 # Max number of patients
+N_patients_min = 3000 # Min number of patients
+N_patients_brk = 1000 # Breaks within max and min number of patients
 
 #Specify sample size of historical clinical trial
-N_hist=500
+N_hist=3000
+
 #Specify number of iterations for each scenario
 No_iter = 100
 
@@ -77,7 +78,7 @@ start_time <- Sys.time()
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
                T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.30, 0.35, 0.40, 0.45), # Priors
-               res_rate_prior_ur1 = c(0.25, 0.30, 0.35, 0.40), # Priors ur1
+               res_rate_prior_ur1 = c(0.20, 0.25, 0.30, 0.35), # Priors ur1
                res_rate_prior_ur2 = c(0.375, 0.375, 0.375, 0.375), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                samplesize_hist = N_hist,
@@ -85,7 +86,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = paste0(c('scenario1.3', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
 end_time <- Sys.time()
-time_taken <- end_time - start_time
+time_taken <- as.numeric(difftime(end_time,start_time,units = "mins"))
 
 saveRDS(time_taken,paste0("./Code/Run_output/timing_1.3.rds"))
 parallel::stopCluster(my.cluster)
