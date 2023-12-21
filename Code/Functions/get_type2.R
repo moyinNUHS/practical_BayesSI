@@ -69,12 +69,20 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
       summarise(type2error = mean(t2error))
     out$power = 1 - out$type2error
     
-  } else if (Scenario %in% c('1.3', '1.4', '2.2', '2.4', '3.2', '4.1', '4.2', '4.3')){
+  } 
+  else if (Scenario %in% c('1.3', '1.4', '1.5','2.2', '2.4', '3.2', '4.1', '4.2', '4.3')){
+    if(Scenario == '1.5'){
+      best_tx = '2'
+      secbest_tx = '1'
+      worst_tx = '3'
+      secworse_tx = '4'
+    }else{
+      best_tx = '1'
+      secbest_tx = '2'
+      worst_tx = '4'
+      secworse_tx = '3'
+    }
     
-    best_tx = '1'
-    secbest_tx = '2'
-    worst_tx = '4'
-    secworse_tx = '3'
     
     # here, type 2 error - 
     # Failure to identify best treatments (terminating trial for efficacy)
