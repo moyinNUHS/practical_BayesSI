@@ -81,7 +81,8 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                samplesize_hist = N_hist,
                N_iter = No_iter,          # Number of iterations
-               differsite = 2, 
+               pattsame = TRUE,    # If effects are the same across patterns
+               differsite = 2,      # How many sites have different effects
                scenario_name = paste0(c('scenario4.2', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
 end_time <- Sys.time()

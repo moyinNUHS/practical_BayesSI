@@ -76,8 +76,8 @@ start_time <- Sys.time()
 run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # Prevalence of each pattern
                T_vector = c(0.375, 0.375, 0.375, 0.375),  # Treatment effects - first one being reference 
                res_rate_prior = c(0.375, 0.375, 0.375, 0.375), # Priors
-               res_rate_prior_ur1 = c(0.325, 0.325, 0.325, 0.325), # Priors ur1
-               res_rate_prior_ur2 = c(0.3,0.35,0.4,0.45), # Priors ur2
+               res_rate_prior_ur1 = c(0.275, 0.275, 0.275, 0.275), # Priors ur1
+               res_rate_prior_ur2 = c(0.30, 0.35, 0.40, 0.45), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                samplesize_hist = N_hist,
                N_iter = No_iter,          # Number of iterations

@@ -48,14 +48,14 @@ timings <- list()
 
 #Specify sample size(s) for each run
 N_patients_max = 6000 # Max number of patients
-N_patients_min = 3000 # Min number of patients
+N_patients_min = 2000 # Min number of patients
 N_patients_brk = 1000 # Breaks within max and min number of patients
 
 #Specify sample size of historical clinical trial
-N_hist=3000
+N_hist=1000
 
 #Specify number of iterations for each scenario
-No_iter = 100
+No_iter = 500
 
 #########
 # Note
