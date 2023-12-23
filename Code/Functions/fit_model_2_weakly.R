@@ -2,16 +2,8 @@
 # model 2 extension non-informative prior: fit random effects model to all data using hierarchical structure  #
 # ----------------------------------------------------------------------------------------------------------- #
 fit_model_2_weakly <- function(nma_data, 
-                               Trial_Treat_lab_vec, 
-                               alt_hypothesis = 'two.sided', 
-                               p = 0.2) {
-  #Specify p depending on alt_hyp
-  if (alt_hypothesis == "two.sided") {
-    p.val=p
-  } else if (alt_hypothesis == "one.sided") {
-    p.val=p/2
-  }
-  
+                               Trial_Treat_lab_vec) {
+ 
   # number of patterns
   no_p <- no_pattern
   
@@ -41,7 +33,7 @@ fit_model_2_weakly <- function(nma_data,
     my.glmm <- my.glm[[1]]
     
     # Find Type 1 error no correction 
-    out = glm_output_stan_nocorrection(model =  my.glmm, p.val, no_treatment)
+    out = glm_output_stan_nocorrection(model =  my.glmm, no_treatment)
     
   } else {
     # if there is error, do not fit model
