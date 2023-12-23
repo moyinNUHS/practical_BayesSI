@@ -7,8 +7,10 @@
                                alt_hypothesis = 'two.sided', 
                                p = 0.2) {
   #Specify p depending on alt_hyp
-  if (alt_hypothesis == "two.sided") {p.val=p
-  } else if (alt_hypothesis == "one.sided") {p.val=p/2
+  if (alt_hypothesis == "two.sided") {
+   p.val=p
+  } else if (alt_hypothesis == "one.sided") {
+   p.val=p/2
   }
 
   # number of patterns
