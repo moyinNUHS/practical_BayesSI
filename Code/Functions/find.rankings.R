@@ -11,15 +11,15 @@ find.rankings <- function(t_labelv, treat.coeff) {
     out <- sample(t_labelv, 1) # random recommendation
     not_fit <- 1 # record model not fitted
   } else {
+    #Find predicted "best" treatment (treatment with smallest coefficient)
     out<-which(treat.coeff == min(treat.coeff, na.rm = TRUE))
     if (length(out) > 1) {
+      #if multiple treatments are "best" randomly pick between them
       out=sample(out, 1)
     }
-    not_fit<-0
+    not_fit<-0 #record model is fitted
   }
   
-  # if model fitted then give
-  # out = treatment with the lowest coefficient
-  # not fit = 0 means model has fitted
+  #Return either "best" or random treatment, if model is fitted or not
   return(c(out, not_fit))
 }
