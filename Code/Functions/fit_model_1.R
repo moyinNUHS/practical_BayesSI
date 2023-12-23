@@ -6,6 +6,10 @@ fit_model_1 <- function(nma_data,
                         Trial_Treat_lab_vec, 
                         alt_hypothesis = 'two.sided', 
                         p = 0.2){
+#Specify p depending on alt_hyp
+  if (alt_hypothesis == "two.sided") {p.val=p
+  } elseif (alt_hypothesis == "one.sided") {p.val=p/2
+  }
   
   # number of patterns
   no_p <- no_pattern
@@ -19,7 +23,7 @@ fit_model_1 <- function(nma_data,
     my.glmm <- my.glm[[1]]
     
     # Find Type 1 error no correction 
-    out = glm_output_nocorrection(my.glmm, p)
+    out = glm_output_nocorrection(my.glmm, p.val)
     
   } else { 
     # if there is error, do not fit model
