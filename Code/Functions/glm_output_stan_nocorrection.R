@@ -1,6 +1,6 @@
 ### generate glm output (Bayes) with no correction 
 
-glm_output_stan_nocorrection <- function (model, p, no_treatment) {
+glm_output_stan_nocorrection <- function (model, no_treatment, p=0.2) {
   
   # get posterior intervals with unadjusted p 
   mof.naive <- posterior_interval(model, prob = 1 - p)
@@ -13,11 +13,10 @@ glm_output_stan_nocorrection <- function (model, p, no_treatment) {
     #get_estimates(my.glmm, centrality = "mean")[2:no_treatment, 2], #for mean instead of median
     model_var = std.err.naive ^ 2,
     z = abs(model$coefficients[1:no_treatment] / std.err.naive),
-    #get_estimates(my.glmm, centrality = "mean")[2:no_treatment, 2]/std.err,
     LL = mof.naive[1:no_treatment, 1],
     UL = mof.naive[1:no_treatment, 2]
   )
-  out[which(abs(out[, 1]) > 12),] <- NA #parameter not converged is set to NA
+#  out[which(abs(out[, 1]) > 12),] <- NA #parameter not converged is set to NA
   
   return(out)
 }

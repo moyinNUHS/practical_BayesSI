@@ -4,8 +4,10 @@
 fit_model_2_prior <- function(nma_data_prior, 
                               nma_data,
                               Trial_Treat_lab_vec,
-                              Scale) {
-  
+                              Scale, 
+                              alternative = 'two-sided', 
+                              p = 0.2,
+                              bonferr = T) {
   # number of patterns
   no_p <- no_pattern
   
@@ -28,9 +30,8 @@ fit_model_2_prior <- function(nma_data_prior,
       ))
   }
   
-  #if (!is.null(my.glm_prior$error) | !is.null(my.glm_prior$warning)){
-  if (!is.null(my.glm_prior$error)){
-      # if there is still error/warning, change to fixed effect model 
+  if (!is.null(my.glm_prior$error) | !is.null(my.glm_prior$warning)){
+    # if there is still error/warning, change to fixed effect model 
     my.glm_prior <-
       myTryCatch(glm(
         y ~ -1 + treatment + subgroup,
@@ -89,12 +90,13 @@ fit_model_2_prior <- function(nma_data_prior,
   if (is.null(my.glm$error))
     #if do not have an error, model is fitted
   {
-    # extract model output 
     my.glmm <- my.glm[[1]]
     
-    # Find Type 1 error no correction 
-    
-    out = glm_output_stan_nocorrection(model = my.glmm, no_treatment)
+    if (bonferr == T) {
+      out = glm_output_stan_bonferr(model = my.glmm, p, no_treatment)
+    } else {
+      out = glm_output_stan_nocorrection(model = my.glmm, p, no_treatment)
+    }
     
   } else {
     # if there is error, do not fit model
@@ -108,4 +110,3 @@ fit_model_2_prior <- function(nma_data_prior,
   
   return(list(contrast.est = out, ranking = rank.v))
 }
-

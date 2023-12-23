@@ -2,8 +2,14 @@
 # model 1: fit fixed effect model to current trial data  # 
 # ------------------------------------------------------ #
 
+#Includes Bonferroni and Dunnett correction options
+
 fit_model_1 <- function(nma_data, 
-                        Trial_Treat_lab_vec){
+                        Trial_Treat_lab_vec, 
+                        alt_hypothesis = 'two.sided', 
+                        p = 0.2,
+                        bonferr = T, 
+                        dunnett = F){
   
   # number of patterns
   no_p <- no_pattern
@@ -16,8 +22,14 @@ fit_model_1 <- function(nma_data,
     # extract model output 
     my.glmm <- my.glm[[1]]
     
-    # Find Type 1 error no correction 
-    out = glm_output_nocorrection(my.glmm)
+    # Type 1 error correction 
+    if (dunnett == T) {
+      out = glm_output_dunnett(my.glmm)
+    } else if (bonferr == T) {
+      out = glm_output_bonferr(model = my.glmm, p, no_treatment)
+    } else {
+      out = glm_output_nocorrection(my.glmm, p)
+    }
     
   } else { 
     # if there is error, do not fit model
@@ -30,7 +42,6 @@ fit_model_1 <- function(nma_data,
   # 2nd row indicates 1 if any models did not fit 
   rank.v = rank.v.mat(no_p, Trial_Treat_lab_vec, my.glm, out)
   
-  #Return model coefficients and predicted best treatments per pattern
   return(list(contrast.est = out, 
               ranking = rank.v))
 }
