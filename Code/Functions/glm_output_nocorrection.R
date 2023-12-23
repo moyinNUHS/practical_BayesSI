@@ -1,11 +1,11 @@
 ### generate glm output table without any type 1 error correction
 
-glm_output_nocorrection <- function(model, t1_error, alt_hypothesis = 'two.sided') { # unadjusted type 1 error
-  
-  mof <- summary(model)
-  std.err.naive <- mof$coefficients[1:no_treatment, "Std. Error"]
+glm_output_nocorrection <- function(model, t1_error=0.2) { # unadjusted type 1 error
 
-  if (alt_hypothesis != 'two.sided') {t1_error = 0.1}
+  #summary of model
+  mof <- summary(model)
+  #Get standard errors
+  std.err.naive <- mof$coefficients[1:no_treatment, "Std. Error"]
   
   q.val.naive <- qnorm(1 - t1_error/2)
   
