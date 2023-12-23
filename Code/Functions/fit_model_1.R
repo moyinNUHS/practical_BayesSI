@@ -8,7 +8,7 @@ fit_model_1 <- function(nma_data,
                         p = 0.2){
 #Specify p depending on alt_hyp
   if (alt_hypothesis == "two.sided") {p.val=p
-  } elseif (alt_hypothesis == "one.sided") {p.val=p/2
+  } else if (alt_hypothesis == "one.sided") {p.val=p/2
   }
   
   # number of patterns
