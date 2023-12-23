@@ -41,7 +41,7 @@ fit_model_1_prior <- function(nma_data_prior,
     my.glmm <- my.glm[[1]]
     
     # Find Type 1 error no correction 
-    out = glm_output_stan_nocorrection(model = my.glmm, p, no_treatment)
+    out = glm_output_stan_nocorrection(model = my.glmm, no_treatment)
     
   } else {
     # if there is error, do not fit model
