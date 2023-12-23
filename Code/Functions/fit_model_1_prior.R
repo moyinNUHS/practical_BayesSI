@@ -6,7 +6,7 @@ fit_model_1_prior <- function(nma_data_prior,
                               nma_data, 
                               Trial_Treat_lab_vec, 
                               Scale, 
-                              alt_hypothesis = 'two-sided', 
+                              alt_hypothesis = 'two.sided', 
                               p = 0.2) {
   #Specify p depending on alt_hyp
   if (alt_hypothesis == "two.sided") {
