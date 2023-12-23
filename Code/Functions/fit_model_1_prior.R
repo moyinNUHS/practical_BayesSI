@@ -6,9 +6,15 @@ fit_model_1_prior <- function(nma_data_prior,
                               nma_data, 
                               Trial_Treat_lab_vec, 
                               Scale, 
-                              alternative = 'two-sided', 
-                              p = 0.2,
-                              bonferr = T) {
+                              alt_hypothesis = 'two-sided', 
+                              p = 0.2) {
+  #Specify p depending on alt_hyp
+  if (alt_hypothesis == "two.sided") {
+    p.val=p
+  } else if (alt_hypothesis == "one.sided") {
+    p.val=p/2
+  }
+
   # number of patterns
   no_p <- no_pattern
   
@@ -23,29 +29,27 @@ fit_model_1_prior <- function(nma_data_prior,
   
   # logistic regression
   my.glm <- 
-  myTryCatch(
-    stan_glm(
-    y ~ -1 + treatment + subgroup,
-    data = nma_data,
-    prior = prior,
-    # prior_intercept = prior_int,
-    family = binomial(link = "logit"),
-    chains = 8,  
-    iter = 2000, 
-    cores = 1,
-    refresh = 0
-  )) 
+    myTryCatch(
+      stan_glm(
+        y ~ -1 + treatment + subgroup,
+        data = nma_data,
+        prior = prior,
+        # prior_intercept = prior_int,
+        family = binomial(link = "logit"),
+        chains = 8,  
+        iter = 2000, 
+        cores = 1,
+        refresh = 0
+      )) 
   
   if (is.null(my.glm$error))
     #if do not have an error, model is fitted
   {
+    # extract model output 
     my.glmm <- my.glm[[1]]
     
-    if (bonferr == T) {
-      out = glm_output_stan_bonferr(model = my.glmm, p, no_treatment)
-    } else {
-      out = glm_output_stan_nocorrection(model = my.glmm, p, no_treatment)
-    }
+    # Find Type 1 error no correction 
+    out = glm_output_stan_nocorrection(model = my.glmm, p.val, no_treatment)
     
   } else {
     # if there is error, do not fit model
