@@ -7,7 +7,6 @@ myTryCatch <- function(expr) {
    value <- withCallingHandlers(
     tryCatch(expr, error=function(e) {
       err <<- conditionMessage(e)
-      NULL
     }, warning=function(w) {
       warn <<- append(warn, conditionMessage(w))
     })
