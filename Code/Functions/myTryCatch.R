@@ -30,13 +30,11 @@ myTryCatch <- function(expr) {
     if ("glmerMod" %in% class(value$value)){
       if(!is.null(value$value@optinfo$cov$lme4$message)){
         if(!isSingular(value$value)){
-          warn <- conditionMessage(w)
-          value$warn <- warn 
+          value$warn <- append(warn, value$value@optinfo$cov$lme4$message) 
         }
       }
       if (length(value$value@optinfo$warnings) > 0){
-        warn <- append(warn, unlist(value$value@optinfo$warnings))
-        value$warn <- warn 
+        value$warn <- append(warn, unlist(value$value@optinfo$warnings)) 
       }
     }
   }
