@@ -35,7 +35,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       # make a matrix of pre-defined treatment effect per pattern for current trial
       res_rate_mat = matrix(
         T_vector,
-        byrow = T,
+        byrow = TRUE,
         nrow = length(pattern_list),
         # number of patterns
         ncol = length(T_vector)
@@ -44,7 +44,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       # make a matrix of prior treatment effect per pattern for representative historical trial
       res_rate_mat_prior = matrix(
         res_rate_prior,
-        byrow = T,
+        byrow = TRUE,
         nrow = length(pattern_list),
         ncol = length(res_rate_prior)
       )
@@ -52,7 +52,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       # make a matrix of prior treatment effect per pattern for unrepresentative historical trial 1
       res_rate_mat_prior_ur1 = matrix(
         res_rate_prior_ur1,
-        byrow = T,
+        byrow = TRUE,
         nrow = length(pattern_list),
         ncol = length(res_rate_prior_ur1)
       )
@@ -60,7 +60,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       # make a matrix of prior treatment effect per pattern for unrepresentative historical trial 2
       res_rate_mat_prior_ur2 = matrix(
         res_rate_prior_ur2,
-        byrow = T,
+        byrow = TRUE,
         nrow = length(pattern_list),
         ncol = length(res_rate_prior_ur2)
       )
@@ -92,7 +92,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       # for scenario where treatment effects differ across patterns for unrepresentative historical trial 1
       res_rate_mat_prior_ur1 = matrix(
         c(0.20, 0.3, 0.40, 0.5),
-        byrow = T,
+        byrow = TRUE,
         nrow = length(pattern_list),
         ncol = length(res_rate_prior_ur1)
       )
@@ -114,7 +114,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       # make a matrix of pre-defined treatment effect per pattern for current trial for different sites
       res_rate_mat_site = matrix(
         T_vector-0.1,
-        byrow = T,
+        byrow = TRUE,
         nrow = length(pattern_list),
         # number of patterns
         ncol = length(T_vector)
@@ -123,7 +123,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       # make a matrix of pre-defined treatment effect per pattern for representative historical trial for different sites
       res_rate_mat_prior_site = matrix(
         res_rate_prior-0.1,
-        byrow = T,
+        byrow = TRUE,
         nrow = length(pattern_list),
         ncol = length(res_rate_prior)
       )
@@ -131,7 +131,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       # make a matrix of pre-defined treatment effect per pattern for unrepresentative historical trial 1 for different sites
       res_rate_mat_prior_ur1_site = matrix(
         res_rate_prior_ur1-0.1,
-        byrow = T,
+        byrow = TRUE,
         nrow = length(pattern_list),
         ncol = length(res_rate_prior_ur1)
       )
@@ -139,7 +139,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       # make a matrix of pre-defined treatment effect per pattern for unrepresentative historical trial 2 for different sites
       res_rate_mat_prior_ur2_site = matrix(
         res_rate_prior_ur2-0.1,
-        byrow = T,
+        byrow = TRUE,
         nrow = length(pattern_list),
         ncol = length(res_rate_prior_ur2)
       )

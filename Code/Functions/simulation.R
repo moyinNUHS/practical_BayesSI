@@ -28,7 +28,6 @@ simulation <- function(N,
   no_treatment <<- length(unique(unlist(pattern)))
   # number of unique treatments in the overall trial
   
-  #res_probability_all<-matrix(rep(response_prob_V, no_pattern), ncol = no_treatment, byrow = T)
   colnames(res_probability_all) <-
     sapply(1:no_treatment, function(i) {
       paste0("treatment_", i)
@@ -37,7 +36,9 @@ simulation <- function(N,
   
   # generate which pattern each patient in N patients belong to
   # each person has prob_pattern to be allocated to one of the treatment patterns
-  set.seed(1)
+  
+  set.seed(1) ###check with HPC 
+  
   assigned_pattern <- t(rmultinom(N, size = 1, prob_pattern))
   colnames(assigned_pattern) <-
     sapply(1:no_pattern, function(i) {
@@ -150,7 +151,7 @@ simulation <- function(N,
     freq_t_subgroup_list<-sim_data[['freq_t_subgroup']]
     freq_t_list<-sim_data[['freq_t']]
     
-    #Delete sim_data
+    #Delete sim_data to save space 
     rm(sim_data)
     
     if(grepl("scenario4",scenario_name)){
@@ -246,10 +247,10 @@ simulation <- function(N,
         identify_best_rate[m, ] - true.mean.min[2, ]
       }))
     
-    #   best_treatment_I <- diff_min == 0
+    #   best_treatment_I <- diff_min == 0 ####KEEP OR OMIT?
     
     nearbest_treatment_5 <- diff_min - 0.05 <= 0
-    #  nearbest_treatment_10 <- diff_min - 0.1 <= 0
+    #  nearbest_treatment_10 <- diff_min - 0.1 <= 0 ####KEEP OR OMIT?
     
     rownames(mortality_gain) <-
       rownames(mortality_gain_ratio) <-
@@ -320,16 +321,6 @@ simulation <- function(N,
         #method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
       )
       
-      # print errors if a model did not fit 
-      # if (any(identify_fail > 0)) {
-      #   row.fail = which(identify_fail == 1, arr.ind = TRUE)[,1]
-      #   col.fail = which(identify_fail == 1, arr.ind = TRUE)[,2]
-      #   message('The following models did not fit: ', 
-      #           paste('|', rownames(identify_fail)[row.fail],
-      #                 colnames(identify_fail)[col.fail], '|'))
-      # } else {
-      #   message('All models fitted..')
-      # }
       
       # output of all results 
       list(
