@@ -86,14 +86,14 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     
     # here, type 2 error - 
     # Failure to identify best treatments (terminating trial for efficacy)
-    # (A) when treatment 1 was not the best treatment 
-    # (B) when treatment 1 or 2 were not the best treatments
+    # (A) when best_tx was not the best treatment 
+    # (B) when best_tx or secbest_tx were not the best treatments
     # Failure to identify worst treatments (drop treatment for safety)
-    # (C) when treatment 4 was not the worst treatment 
-    # (D) when treatment 3 or 4 were not the worst treatments 
+    # (C) when worst_tx was not the worst treatment 
+    # (D) when worst_tx or secworse_tx were not the worst treatments 
     
     
-    # (A) when treatment 1 was not the best treatment 
+    # (A) when best_tx was not the best treatment 
     sub_best_dat = dat[, grep(paste0('treatment', best_tx), colnames(dat))]
     errorA = apply(sub_best_dat, 1, function(row){
       any(row != best_tx) # error is committed when any of the comparisons do not show best_tx as the best 
@@ -105,7 +105,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
                       type = 'Pre-defined best treatment identified as best',
                       scenario = Scenario)
     
-    # (B) when treatment 1 or 2 were not the best treatments
+    # (B) when best_tx or secbest_tx were not the best treatments
     sub_secbest_dat = dat[, grep(paste0('treatment', secbest_tx), colnames(dat))]
     error_secbest = apply(sub_secbest_dat, 1, function(row){
       any(row != secbest_tx) # error is committed when any of the comparisons do not show second best_tx as the best 
@@ -128,7 +128,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
                       type = 'Either of top 2 pre-defined best treatment identified as best', 
                       scenario = Scenario)
     
-    # (C) when treatment 4 was not the worst treatment 
+    # (C) when worst_tx was not the worst treatment 
     sub_worst_dat = dat[, grep(paste0('treatment', worst_tx), colnames(dat))]
     errorC = apply(sub_worst_dat, 1, function(row){
       sum(row %in% c(best_tx, secbest_tx, secworse_tx)) != n_tx 
@@ -140,7 +140,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
                       type = 'Pre-defined worst treatment identified as worst', 
                       scenario = Scenario)
     
-    # (D) when treatment 3 or 4 were not the worst treatments 
+    # (D) when worst_tx or secworse_tx were not the worst treatments 
     sub_secworse_dat = dat[, grep(paste0('treatment', secworse_tx), colnames(dat))]
     error_secworse_isworst = apply(sub_secworse_dat, 1, function(row){
       sum(row %in% c(best_tx, secbest_tx, worst_tx)) != n_tx 
