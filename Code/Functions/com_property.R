@@ -3,12 +3,15 @@
 com_property <- function(out_one, # matrix of simulation outputs (estimator, model variance, Z score, UL and LL) [rows] against iterations [cols]
                          q, # the treatment 
                          n_method, # number of methods
-                         T_v, R, scenario_name, m) { # pre-defined coefficient for each treatment
+                         T_v, # pre-defined coefficient for each treatment
+                         R, # Total number of simulations
+                         scenario_name, # Scenario label
+                         m) { # Method for Model prediction
 
   value<-"method_2"
   if (all(is.na(out_one[, 1]))) {
     
-    rep(NA, n_method) ##### what is this line doing?
+    rep(NA, n_method) #Output a vector of 'NA's if all R simulations produce 'NA' for the prediction of treatment q's coefficient for method m
     
   } else {
     
@@ -75,7 +78,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       val.prob<-invlogit(val)       #transform the coefficents to probabilities
 
       if (grepl(value, m)) {
-        T_v<-invlogit(c(-0.01628043, 0.2749548, 0.5248289, 0.7546663))  
+        T_v<-invlogit(c(-0.01626211, 0.2749764, 0.5248481, 0.7546862))  
         #For probabilities: 
         #S1: [0.199, 0.250, 0.299, 0.350]
         #S2: [0.291, 0.354, 0.413, 0.470]
