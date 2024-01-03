@@ -78,7 +78,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       val.prob<-invlogit(val)       #transform the coefficents to probabilities
 
       if (grepl(value, m)) {
-        T_v<-invlogit(c(-0.01628043, 0.2749548, 0.5248289, 0.7546663))  
+        T_v<-invlogit(c(-0.01626211, 0.2749764, 0.5248481, 0.7546862))  
         #For probabilities: 
         #S1: [0.199, 0.250, 0.299, 0.350]
         #S2: [0.291, 0.354, 0.413, 0.470]
