@@ -3,12 +3,15 @@
 com_property <- function(out_one, # matrix of simulation outputs (estimator, model variance, Z score, UL and LL) [rows] against iterations [cols]
                          q, # the treatment 
                          n_method, # number of methods
-                         T_v, R, scenario_name, m) { # pre-defined coefficient for each treatment
+                         T_v, # pre-defined coefficient for each treatment
+                         R, # Total number of simulations
+                         scenario_name, # Scenario label
+                         m) { # Method for Model prediction
 
   value<-"method_2"
   if (all(is.na(out_one[, 1]))) {
     
-    rep(NA, n_method) ##### what is this line doing?
+    rep(NA, n_method) #Output a vector of 'NA's if all R simulations produce 'NA' for the prediction of treatment q's coefficient for method m
     
   } else {
     
