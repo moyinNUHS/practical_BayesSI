@@ -7,7 +7,7 @@ get_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_name
   ##################
   # collate data for contiguous groups 
   ##################
-  n = parse_number(names(d))
+  n = parse_number(names(d)) ## output all the sample sizes
   contig = list()
   
   for (i in n) { # for each sample size 
@@ -62,7 +62,9 @@ get_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_name
                     type = 'Identified 1 best treatment (terminating trial for efficacy)',
                     scenario = Scenario)
   
-  # (B) Identified 2 better treatments 
+  # (B) Identified 2 better treatments (top two treatments overlap, but the second better treatment is better than the third treatment. 
+  # The worst two treatments overlap)
+  
   errorB = apply(dat.lean, 1, function(row){
     row = row[!(row == 'overlap')]
     sum(table(as.character(row)) == n_tx-1) == 2
@@ -77,8 +79,11 @@ get_type1 <- function (Scenario, d, .method_labs = method_labs, .all_method_name
   # (C) Identified 3 better treatments 
   errorC = apply(dat.lean, 1, function(row){
     row.uniq = row[!(row == 'overlap')]
-    length(unique(row.uniq)) == n_tx & sum(row == 'overlap') == n_tx
+    #length(unique(row.uniq)) == n_tx & sum(row == 'overlap') == n_tx
+    length(unique(row.uniq)) == n_tx
   })
+  
+  errorC[which(errorC==TRUE & errorA==TRUE)] = FALSE
   
   outC = data.frame(n = dat$n, 
                     method = dat$method, 
