@@ -136,14 +136,34 @@ timings <- append(timings, as.numeric(time_taken))
 start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
-               T_vector = c(0.10, 0.30, 0.70, 0.90),  # Treatment effects 
-               res_rate_prior = c(0.10, 0.30, 0.70, 0.90), # Priors
+               T_vector = c(0.30, 0.40, 0.50, 0.60),  # Treatment effects 
+               res_rate_prior = c(0.30, 0.40, 0.50, 0.60), # Priors
                res_rate_prior_ur1 = c(0.20, 0.30, 0.40, 0.50), # Priors ur1
                res_rate_prior_ur2 = c(0.45, 0.45, 0.45, 0.45), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                scenario_name = paste0(c('scenario1.4', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
+)
+
+end_time <- Sys.time()
+time_taken <- end_time - start_time
+timings <- append(timings, as.numeric(time_taken))
+
+###################################################### 
+## Run scenario 1.5
+######################################################
+start_time <- Sys.time()
+
+run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
+               T_vector = c(0.35, 0.30, 0.45, 0.40),  # Treatment effects 
+               res_rate_prior = c(0.35, 0.30, 0.45, 0.40), # Priors
+               res_rate_prior_ur1 = c(0.25, 0.20, 0.35, 0.30), # Priors ur1
+               res_rate_prior_ur2 = c(0.375, 0.375, 0.375, 0.375), # Priors ur2
+               samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               samplesize_hist = N_hist, #Sample size of historical trial
+               N_iter = No_iter,          # Number of iterations
+               scenario_name = paste0(c('scenario1.5', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
 
 end_time <- Sys.time()
@@ -285,10 +305,10 @@ timings <- append(timings, as.numeric(time_taken))
 start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
-               T_vector = c(0.20, 0.25, 0.30, 0.35),  # Treatment effects 
-               res_rate_prior = c(0.20, 0.25, 0.30, 0.35), # Priors
-               res_rate_prior_ur1 = c(0.20, 0.30, 0.40, 0.50), # Priors ur1
-               res_rate_prior_ur2 = c(0.275, 0.275, 0.275, 0.275), # Priors ur2
+               T_vector = c(0.30, 0.30, 0.30, 0.30),  # Treatment effects 
+               res_rate_prior = c(0.30, 0.30, 0.30, 0.30), # Priors
+               res_rate_prior_ur1 = c(0.20, 0.20, 0.20, 0.20), # Priors ur1
+               res_rate_prior_ur2 = c(0.30, 0.35, 0.40, 0.45), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
@@ -307,15 +327,15 @@ timings <- append(timings, as.numeric(time_taken))
 start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
-               T_vector = c(0.30, 0.35, 0.40, 0.45),  # Treatment effects 
-               res_rate_prior = c(0.30, 0.35, 0.40, 0.45), # Priors
-               res_rate_prior_ur1 = c(0.20, 0.25, 0.30, 0.35), # Priors ur1
-               res_rate_prior_ur2 = c(0.375, 0.375, 0.375, 0.375), # Priors ur2
+               T_vector = c(0.199, 0.25, 0.299, 0.35),  # Treatment effects 
+               res_rate_prior = c(0.199, 0.25, 0.299, 0.35), # Priors
+               res_rate_prior_ur1 = c(0.20, 0.20, 0.20, 0.20), # Priors ur1
+               res_rate_prior_ur2 = c(0.275, 0.275, 0.275, 0.275), # Priors ur2
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
-               pattsame = TRUE,    # If effects are the same across patterns
-               differsite = 2,      # How many sites have different effects
+               pattsame = FALSE,    # If effects are the same across patterns
+               differsite = 0,      # How many sites have different effects
                scenario_name = paste0(c('scenario4.2', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
 
@@ -336,8 +356,8 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
                samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
-               pattsame = TRUE,    # if effects are the same across patterns
-               differsite = 4,      # how many sites have different effects
+               pattsame = TRUE,    # If effects are the same across patterns
+               differsite = 2,      # How many sites have different effects
                scenario_name = paste0(c('scenario4.3', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
 
@@ -349,7 +369,7 @@ timings <- append(timings, as.numeric(time_taken))
 # Print timings for all scenarios
 ######################################################
 
-names(timings) <- c("S1.1", 'S1.2', 'S1.3', 'S1,4', 
+names(timings) <- c("S1.1", 'S1.2', 'S1.3', 'S1,4', 'S1,5', 
                     'S2.1', 'S2.2', 'S2.3', 'S2.4',
                     'S3.1', 'S3.2',
                     'S4.1', 'S4.2', 'S4.3')
@@ -359,6 +379,7 @@ cat("Scenario 1.1 takes", timings$S1.1, "minutes\n")
 cat("Scenario 1.2 takes", timings$S1.2, "minutes\n")
 cat("Scenario 1.3 takes", timings$S1.3, "minutes\n")
 cat("Scenario 1.4 takes", timings$S1.4, "minutes\n")
+cat("Scenario 1.5 takes", timings$S1.5, "minutes\n")
 cat("Scenario 2.1 takes", timings$S2.1, "minutes\n")
 cat("Scenario 2.2 takes", timings$S2.2, "minutes\n")
 cat("Scenario 2.3 takes", timings$S2.3, "minutes\n")

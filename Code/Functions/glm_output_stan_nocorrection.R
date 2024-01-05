@@ -16,7 +16,6 @@ glm_output_stan_nocorrection <- function (model, no_treatment, p=0.2) {
     LL = mof.naive[1:no_treatment, 1],
     UL = mof.naive[1:no_treatment, 2]
   )
-#  out[which(abs(out[, 1]) > 12),] <- NA #parameter not converged is set to NA
   
   return(out)
 }

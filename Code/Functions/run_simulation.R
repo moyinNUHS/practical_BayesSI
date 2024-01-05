@@ -65,33 +65,79 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
         ncol = length(res_rate_prior_ur2)
       )
     } else {
+     scenario_name <- str_extract(scenario_name, "scenario\\d+\\.\\d+") 
+     if ( scenario_name %in% c("scenario4.1")) {
+      # for scenario where treatments have equal effects but differ across patterns for current trial
+      res_rate_mat = rbind(
+        c(0.3, 0.3, 0.3, 0.3),
+        # pattern 1
+        c(0.35, 0.35, 0.35, 0.35),
+        # pattern 2
+        c(0.40, 0.40, 0.40, 0.40),
+        # pattern 3
+        c(0.45, 0.45, 0.45, 0.45)     
+        # pattern 4
+      )
+      
+      # for scenario where treatments have equal effects but differ across patterns for representative historical trial
+      res_rate_mat_prior = rbind(
+        c(0.3, 0.3, 0.3, 0.3),
+        # pattern 1
+        c(0.35, 0.35, 0.35, 0.35),
+        # pattern 2
+        c(0.40, 0.40, 0.40, 0.40),
+        # pattern 3
+        c(0.45, 0.45, 0.45, 0.45)    
+        # pattern 4
+      )
+      
+      # for scenario where treatments have equal effects but differ across patterns for unrepresentative historical trial 1
+      res_rate_mat_prior_ur2 = rbind(
+        c(0.2, 0.2, 0.2, 0.2),
+        # pattern 1
+        c(0.25, 0.25, 0.25, 0.25),
+        # pattern 2
+        c(0.3, 0.3, 0.3, 0.3),
+        # pattern 3
+        c(0.35, 0.35, 0.35, 0.35)     
+        # pattern 4
+      )
+        
+      # for scenario where treatments have equal effects but differ across patterns for unrepresentative historical trial 2 
+      res_rate_mat_prior_ur1 = matrix(
+        c(0.30, 0.35, 0.40, 0.45),
+        byrow = TRUE,
+        nrow = length(pattern_list),
+        ncol = length(res_rate_prior_ur1)
+      )
+     } else if ( scenario_name %in% c("scenario4.2")) {
       # for scenario where treatment effects differ across patterns for current trial
       res_rate_mat = rbind(
-        c(0.2, 0.25, 0.3, 0.35),
+        c(0.199, 0.250, 0.299, 0.350),
         # pattern 1
-        c(0.3, 0.354, 0.41, 0.47),
+        c(0.291, 0.354, 0.413, 0.470),
         # pattern 2
-        c(0.648, 0.711, 0.76, 0.80),
+        c(0.648, 0.711, 0.760, 0.799),
         # pattern 3
-        c(0.83, 0.87, 0.9, 0.92)     
+        c(0.833, 0.870, 0.896, 0.915)     
         # pattern 4
       )
       
       # for scenario where treatment effects differ across patterns for representative historical trial
       res_rate_mat_prior = rbind(
-        c(0.2, 0.25, 0.3, 0.35),
+        c(0.199, 0.250, 0.299, 0.350),
         # pattern 1
-        c(0.3, 0.354, 0.41, 0.47),
+        c(0.291, 0.354, 0.413, 0.470),
         # pattern 2
-        c(0.648, 0.711, 0.76, 0.80),
+        c(0.648, 0.711, 0.760, 0.799),
         # pattern 3
-        c(0.83, 0.87, 0.9, 0.92)    
+        c(0.833, 0.870, 0.896, 0.915)    
         # pattern 4
       )
       
       # for scenario where treatment effects differ across patterns for unrepresentative historical trial 1
       res_rate_mat_prior_ur1 = matrix(
-        c(0.20, 0.3, 0.40, 0.5),
+        c(0.20, 0.25, 0.30, 0.35),
         byrow = TRUE,
         nrow = length(pattern_list),
         ncol = length(res_rate_prior_ur1)
@@ -99,15 +145,16 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       
       # for scenario where treatment effects differ across patterns for unrepresentative historical trial 2
       res_rate_mat_prior_ur2 = rbind(
-        c(0.275,0.275,0.275,0.275),
+        c(0.275, 0.275, 0.275, 0.275),
         # pattern 1
-        c(0.35,0.35,0.35,0.35),
+        c(0.383, 0.383, 0.383, 0.383),
         # pattern 2
-        c(0.675,0.675,0.675,0.675),
+        c(0.73, 0.73, 0.73, 0.73),
         # pattern 3
-        c(0.6,0.6,0.6,0.6)     
+        c(0.879, 0.879, 0.879, 0.879)     
         # pattern 4
       )
+     }
     }
     
     if (differsite > 0) { # in the scenarios where there are site effects 
