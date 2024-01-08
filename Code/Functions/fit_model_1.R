@@ -19,11 +19,17 @@ fit_model_1 <- function(nma_data,
     # Find Type 1 error no correction 
     out = glm_output_nocorrection(my.glmm)
     
+    if (!is.null(my.glm$warning)){
+      warning <- my.glm$warning
+    }
+    
   } else { 
     # if there is error, do not fit model
     out <- matrix(rep(NA,(no_treatment)*5), nrow = no_treatment, ncol = 5 )
-    out[1,5] <- my.glm$error[1]$message
+    out[1,5] <- my.glm$error
+    warning <- my.glm$error
   } 
+  
   
   # gives a matrix where 
   # 1st row = best treatments 
@@ -32,5 +38,6 @@ fit_model_1 <- function(nma_data,
   
   #Return model coefficients and predicted best treatments per pattern
   return(list(contrast.est = out, 
-              ranking = rank.v))
+              ranking = rank.v,
+              warning = warning))
 }
