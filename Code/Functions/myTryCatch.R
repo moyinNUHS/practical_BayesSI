@@ -40,6 +40,6 @@ myTryCatch <- function(expr) {
   }
   
   list(value=value$value, 
-       warning=value$warn, 
+       warn=value$warn, 
        error=value$err)
 }

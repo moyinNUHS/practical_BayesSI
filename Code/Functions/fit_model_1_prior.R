@@ -9,6 +9,7 @@ fit_model_1_prior <- function(nma_data_prior,
 
   # number of patterns
   no_p <- no_pattern
+  warn <- NULL 
   
   my.glm_prior <-
     glm(y ~ -1 + treatment + subgroup, family = "binomial", data =
@@ -43,15 +44,15 @@ fit_model_1_prior <- function(nma_data_prior,
     # Find Type 1 error no correction 
     out = glm_output_stan_nocorrection(model = my.glmm, no_treatment)
   
-    if (!is.null(my.glm$warning)){
-      warning <- my.glm$warning
+    if (!is.null(my.glm$warn)){
+      warn <- my.glm$warn
     }
   } else {
     # if there is error, do not fit model
     out <-
       matrix(rep(NA, (no_treatment - 1) * 5), nrow = no_treatment - 1, ncol = 5)
     out[1,5] <- my.glm$error
-    warning <- my.glm$error
+    warn <- my.glm$error
   }
   
   # for each subgroup, prepare the coefficients to identify rankings
@@ -59,5 +60,5 @@ fit_model_1_prior <- function(nma_data_prior,
   
   return(list(contrast.est = out, 
               ranking = rank.v,
-              warning = warning))
+              warn = warn))
 }
