@@ -247,17 +247,14 @@ simulation <- function(N,
         identify_best_rate[m, ] - true.mean.min[2, ]
       }))
     
-    #   best_treatment_I <- diff_min == 0 ####KEEP OR OMIT?
-    
+  
     nearbest_treatment_5 <- diff_min - 0.05 <= 0
-    #  nearbest_treatment_10 <- diff_min - 0.1 <= 0 ####KEEP OR OMIT?
-    
+ 
     rownames(mortality_gain) <-
       rownames(mortality_gain_ratio) <-
       rownames(better_treatment_I) <- 
       rownames(diff_min) <- 
-      #    rownames(best_treatment_I) <- 
-      #  rownames(nearbest_treatment_10) <- 
+
       rownames(nearbest_treatment_5) <- rownames(identified_best_t)
     
     estimand2 <- list(
