@@ -37,14 +37,19 @@
     
     # Find Type 1 error no correction 
     out = glm_output_stan_nocorrection(model =  my.glmm, no_treatment)
-    
+   if (!is.null(my.glm$warning)){
+      warning <- my.glm$warning
+    }
   } else { # if there is error, do not fit model 
     out <- matrix(rep(NA, (no_treatment) * 5), nrow = no_treatment, ncol = 5)
-    out[1, 5] <- my.glm$error[1]$message
+     out[1,5] <- my.glm$error
+    warning <- my.glm$error
   }
   
   # for each subgroup, prepare the coefficients to identify rankings
   rank.v = rank.v.mat(no_p, Trial_Treat_lab_vec, my.glm, out)
   
-  return(list(contrast.est = out, ranking = rank.v))
+  return(list(contrast.est = out, 
+              ranking = rank.v,
+              warning = warning))
 }
