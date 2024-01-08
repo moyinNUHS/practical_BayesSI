@@ -284,7 +284,14 @@ simulation <- function(N,
         #method_2_str_ur1 = est_method_2_str_ur1$ranking[2, ],
         #method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
       )
-      
+      messages <- rbind(
+        method_1 = est_method_1$warning,
+        method_1_wk = est_method_1_wk$warning,
+        method_1_str = est_method_1_str$warning,
+        method_2 = est_method_2$warning,
+        method_2_wk = est_method_2_wk$warning,
+        method_2_str = est_method_2_str$warning
+      )
       # output of all results 
       list(
         identified_best_t = identified_best_t,
@@ -321,7 +328,11 @@ simulation <- function(N,
         #method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
       )
       
-      
+     messages <- rbind(
+        method_1 = est_method_1$warning,
+        method_1_wk = est_method_1_wk$warning,
+        method_1_str = est_method_1_str$warning
+      )
       # output of all results 
       list(
         identified_best_t = identified_best_t,
