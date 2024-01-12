@@ -210,21 +210,29 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       res_probability_prior_ur1_site = res_rate_mat_prior_ur1_site,
       res_probability_prior_ur2_site = res_rate_mat_prior_ur2_site,
       res_probability_all_site = res_rate_mat_site,
-      prob_pattern = prob_pattern,
+      prob_pattern =  prob_pattern,
       differsite = differsite,
       R = N_iter,
       scenario_name = scenario_name
     ) # run N_iter iterations
     
     warning_data <- as.data.frame(rbind(scenario_out[[1]]$warn, scenario_out[[2]]$warn))
-
+    
     message('simulation and models done...')
     
-    message(paste0(scenario_name, " warning data", " for sample_size = ", N, " saved in /Run_output"))
     save(warning_data, file = paste0(wd, "/Run_output/", scenario_name, "sample_size=", N, "_warnings.Rdata"))
     
+    message(paste0(scenario_name, " warning data", " for sample_size = ", N, " saved in /Run_output"))
+    
+    error_reports <- as.data.frame(rbind(scenario_out[[1]]$errors, scenario_out[[2]]$errors))
+    
+    message(paste0(scenario_name, " error reports (if any)", " for sample_size = ", N, " saved in /Run_output"))
+    
+  
     # run code to summarise simulated outputs and produce estimands 
-    analyse_out = process_sim_output(output_replication = scenario_out, warning_data = warning_data,
+    analyse_out = process_sim_output(output_replication = scenario_out, 
+                                     warning_data = warning_data, 
+                                     error_reports = error_reports,
                                      T_v = T_vector,
                                      pattern = pattern_list,
                                      R = N_iter, 

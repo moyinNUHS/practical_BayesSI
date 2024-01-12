@@ -77,6 +77,10 @@ simulation <- function(N,
   messages <- as.data.frame(matrix(NA, 1, 3))
   colnames(messages) <- c("V1", "k", "N")
   
+  ##matrix to store error messages per iteration 
+  errors <- as.data.frame(matrix(NA, 1, 3))
+  colnames(errors) <- c("V1", "k", "N")
+  
   # run simulation and analysis over R iterations
   output_replication <- lapply(1:R, function(k) {
     set.seed(k)
@@ -147,7 +151,9 @@ simulation <- function(N,
       subgroup = factor(unlist(sim_data[['trial_data']][3,])),
       site=factor(unlist(sim_data[['trial_data']][4,]))
     )
+  
     
+    ###################
     #Extract treatment labels
     Trial_Treat_lab_vec<-apply(sim_data[['trial_data']], 2, function(x) x$treatment_label)
     
@@ -191,8 +197,7 @@ simulation <- function(N,
         method_2_str_ur2 = est_method_2_str_ur2$ranking[1, ]
       )
       
-    }
-    else{
+    }else{
       # Fixed effects models
       est_method_1 <- fit_model_1(nma_data, Trial_Treat_lab_vec) # use current trial data
       est_method_1_wk <- fit_model_1_weakly(nma_data, Trial_Treat_lab_vec) # use current trial data + prior data, Bayesian
@@ -284,6 +289,7 @@ simulation <- function(N,
         method_2_str_ur1 = est_method_2_str_ur1$ranking[2, ],
         method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
       )
+      
       messages_per_iter <- rbind(
         method_1 = est_method_1$warn,
         method_1_wk = est_method_1_wk$warn,
@@ -297,15 +303,43 @@ simulation <- function(N,
         method_2_str_ur2 = est_method_2_str_ur2$warn
       )
       
-      if(!is.null(messages_per_iter)){
+      if(!is_empty(messages_per_iter)){
         messages_per_iter2 <- as.data.frame(cbind(messages_per_iter, k, N))
-        messages <- rbind(messages, messages_per_iter2)
+        
+        
+        
       }
       
-      if(is.null(messages_per_iter)){
-        messages <- messages_per_iter
+      if (is_empty(messages_per_iter)){
+        messages_per_iter2 <- as.data.frame(matrix(NA, 1, ncol(messages)))
+        colnames(messages_per_iter2) <- colnames(messages)
       }
       
+      messages <- rbind(messages, messages_per_iter2)
+      
+      errors_per_iter <- rbind(
+        method_1 = est_method_1$error,
+        method_1_wk = est_method_1_wk$error,
+        method_1_str = est_method_1_str$error,
+        method_1_str_ur1= est_method_1_str_ur1$error,
+        method_1_str_ur2 = est_method_1_str_ur2$error,
+        method_2 = est_method_2$error,
+        method_2_wk = est_method_2_wk$error,
+        method_2_str = est_method_2_str$error,
+        method_2_str_ur1= est_method_2_str_ur1$error,
+        method_2_str_ur2 = est_method_2_str_ur2$error
+      )
+      
+      if(!is_empty(errors_per_iter)){
+        errors_per_iter2 <- as.data.frame(cbind(errors_per_iter, k, N))
+      }
+      
+      if (is_empty(errors_per_iter)){
+        errors_per_iter2 <- as.data.frame(matrix(NA, 1, ncol(errors)))
+        colnames(errors_per_iter2) <- colnames(errors)
+      }
+      
+      errors <- rbind(errors, errors_per_iter2)
       
       # output of all results 
       list(
@@ -325,6 +359,7 @@ simulation <- function(N,
         performance_m = estimand2,
         identify_fail = identify_fail,
         warn = messages,
+        errors = errors,
         freq_t_subgroup = freq_t_subgroup_list,
         freq_t = freq_t_list
       )
@@ -374,6 +409,33 @@ simulation <- function(N,
         
         messages <- rbind(messages, messages_per_iter2)
         
+  errors_per_iter <- as.data.frame(rbind(
+          method_1 = est_method_1$error,
+          method_1_wk = est_method_1_wk$error,
+          method_1_str = est_method_1_str$error,
+          method_1_str_ur1 = est_method_1_str_ur1$error,
+          method_1_str_ur2 = est_method_1_str_ur2$error
+          
+          #method_2 = est_method_2$error,
+          #method_2_wk = est_method_2_wk$error,
+          #method_2_str = est_method_2_str$error,
+          #method_2_str_ur1= est_method_2_str_ur1$error,
+          #method_2_str_ur2 = est_method_2_str_ur2$error
+          
+        ))
+        
+        if(!is_empty(errors_per_iter)){
+          errors_per_iter2 <- as.data.frame(cbind(errors_per_iter, k, N))
+          
+        }
+        
+        if (is_empty(errors_per_iter)){
+          errors_per_iter2 <- as.data.frame(matrix(NA, 1, ncol(errors)))
+          colnames(errors_per_iter2) <- colnames(errors)
+        }
+        
+        errors <- rbind(errors, errors_per_iter2)
+        
       # output of all results 
    list(
         identified_best_t = identified_best_t,
@@ -383,15 +445,16 @@ simulation <- function(N,
         est_method_1_str_ur1 = est_method_1_str_ur1$contrast.est,
         est_method_1_str_ur2 = est_method_1_str_ur2$contrast.est,
         
-        est_method_2 = est_method_2$contrast.est,
-        est_method_2_wk = est_method_2_wk$contrast.est,
-        est_method_2_str = est_method_2_str$contrast.est,
-        est_method_2_str_ur1 = est_method_2_str_ur1$contrast.est,
-        est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
+        #est_method_2 = est_method_2$contrast.est,
+        #est_method_2_wk = est_method_2_wk$contrast.est,
+        #est_method_2_str = est_method_2_str$contrast.est,
+        #est_method_2_str_ur1 = est_method_2_str_ur1$contrast.est,
+        #est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
         
         performance_m = estimand2,
         identify_fail = identify_fail,
         warn = messages,
+        errors = errors,
         freq_t_subgroup = freq_t_subgroup_list,
         freq_t = freq_t_list
       )

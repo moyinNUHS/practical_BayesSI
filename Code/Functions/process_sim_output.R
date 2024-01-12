@@ -1,5 +1,5 @@
 ### process and summarise simulation output
-process_sim_output <- function(output_replication, warning_data, R, no_treatment, no_pattern, pattern, T_v, lambda, scenario_name) {
+process_sim_output <- function(output_replication, warning_data, error_reports, R, no_treatment, no_pattern, pattern, T_v, lambda, scenario_name) {
   
   ### output_replication 
   # has length = number of iterations
@@ -142,10 +142,11 @@ process_sim_output <- function(output_replication, warning_data, R, no_treatment
   
   freq_treatment <- apply(t_freq, 2, summary)[c(1, 3, 4, 6),] 
   
-  if(sum(is.na(warning_data)) >0)
-  {display_warn <- "No warnings were recorded"}
-  
-  else{
+  if(sum(!is.na(warning_data)) == 0){
+    
+    display_warn <- "No warnings were recorded"
+    
+    } else{
     colnames(warning_data) <- c("Message", "iteration", "sample_size")
   
   warning_data$method <- rownames(warning_data)
@@ -175,6 +176,18 @@ process_sim_output <- function(output_replication, warning_data, R, no_treatment
   }
  
   
+  if(sum(!is.na(error_reports)) == 0){
+   display_error <-  "no errors reported"
+  } 
+  
+  if(sum(!is.na(error_reports)) != 0) {
+     
+    display_error <- as.data.frame(error_reports)
+    colnames(display_error) <- c("Error", "Iteration", "Sample_size")
+    display_error$method <- rownames(display_error)
+    display_error <- display_error[!is.na(display_error$Error),]
+   }
+  
   list(
     method.property = method.property,
     ex_performance_out = ex_performance_out,
@@ -189,7 +202,8 @@ process_sim_output <- function(output_replication, warning_data, R, no_treatment
     ex_arm_size = ex_arm_size,
     overall_size = freq_treatment,
     Pattern = pattern, 
-    display_warn = display_warn
+    display_warn = display_warn, 
+    display_error = display_error
   )
   
 }
