@@ -217,8 +217,6 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     ) # run N_iter iterations
     
     warning_data <- as.data.frame(rbind(scenario_out[[1]]$warn, scenario_out[[2]]$warn))
-    save(warning_data, file = paste0("./Code/Run_output/", scenario_name,"_warnings.Rdata"))
-
 
     message('simulation and models done...')
     
@@ -243,6 +241,8 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
   
   saveRDS(store,
           paste0("./Code/Run_output/scenario", scenario_name, '.rds'))
+  
+  save(warning_data, file = paste0(wd, "/Run_output/", scenario_name,"_warnings.Rdata"))
   
   message('simulation complete. output in `Run_output folder.`')
 }
