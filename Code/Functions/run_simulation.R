@@ -220,7 +220,8 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
 
     message('simulation and models done...')
     
-    message(paste0(scenario_name, " warning data", " saved"))
+    message(paste0(scenario_name, " warning data", "sample_size = ", N, " saved"))
+    save(warning_data, file = paste0(wd, "/Run_output/", scenario_name, "sample_size=", N "_warnings.Rdata"))
     
     # run code to summarise simulated outputs and produce estimands 
     analyse_out = process_sim_output(output_replication = scenario_out, warning_data = warning_data,
@@ -241,8 +242,6 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
   
   saveRDS(store,
           paste0("./Code/Run_output/scenario", scenario_name, '.rds'))
-  
-  save(warning_data, file = paste0(wd, "/Run_output/", scenario_name,"_warnings.Rdata"))
   
   message('simulation complete. output in `Run_output folder.`')
 }
