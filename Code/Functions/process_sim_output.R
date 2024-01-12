@@ -1,5 +1,5 @@
 ### process and summarise simulation output
-process_sim_output <- function(output_replication, R, no_treatment, no_pattern, pattern, T_v, lambda, scenario_name) {
+process_sim_output <- function(output_replication, warning_data, R, no_treatment, no_pattern, pattern, T_v, lambda, scenario_name) {
   
   ### output_replication 
   # has length = number of iterations
@@ -69,9 +69,9 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   #     paste0("pattern", i))
   
   # performance of each method
-  indicator.names = names(output_replication[[1]]$performance_m)
+  indicator.names.all = names(output_replication[[1]]$performance_m)
   #indicator.names = indicator.names.all[-which(indicator.names.all == 'nearbest_treatment_10')]
-  #indicator.names = indicator.names.all
+  indicator.names = indicator.names.all
   ex_performance_out <- lapply(indicator.names, function(j) {
     sapply(1:no_pattern, function(i)
       ex_performance(j, i, output_replication, R))
@@ -86,7 +86,7 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
     }))
   
   # variance
-  estimand2_MCSE <- sqrt(estimand2[, c("better_treatment_I", "nearbest_treatment_5", "diff_min")] * (1 - estimand2[, c("better_treatment_I", "nearbest_treatment_5", "diff_min")]) / R)
+  estimand2_MCSE <- sqrt(estimand2[, 3:5] * (1 - estimand2[, 3:5]) / R)
   
   #all_diff_min <- lapply(1:R, function(z) {
   #    output_replication[[z]]$performance_m$diff_min
@@ -142,6 +142,39 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
   
   freq_treatment <- apply(t_freq, 2, summary)[c(1, 3, 4, 6),] 
   
+  if(sum(is.na(warning_data)) >0)
+  {display_warn <- "No warnings were recorded"}
+  
+  else{
+    colnames(warning_data) <- c("Message", "iteration", "sample_size")
+  
+  warning_data$method <- rownames(warning_data)
+  
+  warning_data <- warning_data[!is.na(warning_data$Message),]
+ 
+  display_warn <- warning_data
+  
+  
+  for (e in 1:nrow(warning_data)){
+    
+    if(grepl("divergent", warning_data[e,1])){
+      
+      display_warn[e, 1] <- "Divergence" }
+      
+      else {
+        display_warn[e,1] <- "Other"
+      }
+      
+    
+    if(grepl("singular", warning_data[e,1])){
+      display_warn[e,1] <- "Singularity"
+    }
+    
+  }
+  
+  }
+ 
+  
   list(
     method.property = method.property,
     ex_performance_out = ex_performance_out,
@@ -155,7 +188,8 @@ process_sim_output <- function(output_replication, R, no_treatment, no_pattern, 
     estimand2_MCSE = estimand2_MCSE,
     ex_arm_size = ex_arm_size,
     overall_size = freq_treatment,
-    Pattern = pattern
+    Pattern = pattern, 
+    display_warn = display_warn
   )
   
 }

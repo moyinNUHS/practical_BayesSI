@@ -73,6 +73,10 @@ simulation <- function(N,
   # matrix of mean and min values of the treatment effects in each pattern
   # will be used for the performance measures about the treatment decisions
   
+  ###matrix to store warning messages per iteration:
+  messages <- as.data.frame(matrix(NA, 1, 3))
+  colnames(messages) <- c("V1", "k", "N")
+  
   # run simulation and analysis over R iterations
   output_replication <- lapply(1:R, function(k) {
     set.seed(k)
@@ -196,6 +200,7 @@ simulation <- function(N,
       est_method_1_str_ur1 <- fit_model_1_prior(nma_data_prior_ur1, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur1, Bayesian
       est_method_1_str_ur2 <- fit_model_1_prior(nma_data_prior_ur2, nma_data, Trial_Treat_lab_vec, Scale = Scale_str) # use current trial data + prior data ur2, Bayesian
       
+      
       # Use a hierarchical structure
       #est_method_2 <-fit_model_2(nma_data, Trial_Treat_lab_vec) # use current trial data
       #est_method_2_wk <-fit_model_2_weakly(nma_data, Trial_Treat_lab_vec) # use current trial data + prior data, Bayesian
@@ -213,10 +218,10 @@ simulation <- function(N,
         method_1_wk = est_method_1_wk$ranking[1, ],
         method_1_str = est_method_1_str$ranking[1, ],
         method_1_str_ur1 = est_method_1_str_ur1$ranking[1, ],
-        method_1_str_ur2 = est_method_1_str_ur2$ranking[1, ],
+        method_1_str_ur2 = est_method_1_str_ur2$ranking[1, ]
         #method_2 = est_method_2$ranking[1, ],
         #method_2_wk = est_method_2_wk$ranking[1, ],
-        #method_2_str = est_method_2_str$ranking[1, ]
+        #method_2_str = est_method_2_str$ranking[1, ],
         #method_2_str_ur1 = est_method_2_str_ur1$ranking[1, ],
         #method_2_str_ur2 = est_method_2_str_ur2$ranking[1, ]
       )
@@ -279,18 +284,29 @@ simulation <- function(N,
         method_2_str_ur1 = est_method_2_str_ur1$ranking[2, ],
         method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
       )
-      messages <- rbind(
-        method_1 = est_method_1$warning,
-        method_1_wk = est_method_1_wk$warning,
-        method_1_str = est_method_1_str$warning,
-        method_1_str_ur1= est_method_1_str_ur1$warning,
-        method_1_str_ur2 = est_method_1_str_ur2$warning,
-        method_2 = est_method_2$warning,
-        method_2_wk = est_method_2_wk$warning,
-        method_2_str = est_method_2_str$warning,
-        method_2_str_ur1= est_method_2_str_ur1$warning,
-        method_2_str_ur2 = est_method_2_str_ur2$warning
+      messages_per_iter <- rbind(
+        method_1 = est_method_1$warn,
+        method_1_wk = est_method_1_wk$warn,
+        method_1_str = est_method_1_str$warn,
+        method_1_str_ur1= est_method_1_str_ur1$warn,
+        method_1_str_ur2 = est_method_1_str_ur2$warn,
+        method_2 = est_method_2$warn,
+        method_2_wk = est_method_2_wk$warn,
+        method_2_str = est_method_2_str$warn,
+        method_2_str_ur1= est_method_2_str_ur1$warn,
+        method_2_str_ur2 = est_method_2_str_ur2$warn
       )
+      
+      if(!is.null(messages_per_iter)){
+        messages_per_iter2 <- as.data.frame(cbind(messages_per_iter, k, N))
+        messages <- rbind(messages, messages_per_iter2)
+      }
+      
+      if(is.null(messages_per_iter)){
+        messages <- messages_per_iter
+      }
+      
+      
       # output of all results 
       list(
         identified_best_t = identified_best_t,
@@ -313,6 +329,7 @@ simulation <- function(N,
         freq_t = freq_t_list
       )
     }
+    
     else{
       # identify which models did not fit 
       identify_fail <- rbind(
@@ -323,20 +340,42 @@ simulation <- function(N,
         method_1_str_ur2 = est_method_1_str_ur2$ranking[2, ]
         #method_2 = est_method_2$ranking[2, ],
         #method_2_wk = est_method_2_wk$ranking[2, ],
-        #method_2_str = est_method_2_str$ranking[2, ]
+        #method_2_str = est_method_2_str$ranking[2, ],
         #method_2_str_ur1 = est_method_2_str_ur1$ranking[2, ],
         #method_2_str_ur2 = est_method_2_str_ur2$ranking[2, ]
       )
       
-     messages <- rbind(
-        method_1 = est_method_1$warning,
-        method_1_wk = est_method_1_wk$warning,
-        method_1_str = est_method_1_str$warning,
-        method_1_str_ur1 = est_method_1_str_ur1$warning,
-        method_1_str_ur2 = est_method_1_str_ur2$warning
-      )
+        messages_per_iter <- as.data.frame(rbind(
+        method_1 = est_method_1$warn,
+        method_1_wk = est_method_1_wk$warn,
+        method_1_str = est_method_1_str$warn,
+        method_1_str_ur1 = est_method_1_str_ur1$warn,
+        method_1_str_ur2 = est_method_1_str_ur2$warn
+        
+        #method_2 = est_method_2$warn,
+        #method_2_wk = est_method_2_wk$warn,
+        #method_2_str = est_method_2_str$warn,
+        #method_2_str_ur1= est_method_2_str_ur1$warn,
+        #method_2_str_ur2 = est_method_2_str_ur2$warn
+        
+      ))
+     
+     if(!is_empty(messages_per_iter)){
+       messages_per_iter2 <- as.data.frame(cbind(messages_per_iter, k, N))
+       
+       
+      
+     }
+      
+    if (is_empty(messages_per_iter)){
+     messages_per_iter2 <- as.data.frame(matrix(NA, 1, ncol(messages)))
+     colnames(messages_per_iter2) <- colnames(messages)
+    }
+        
+        messages <- rbind(messages, messages_per_iter2)
+        
       # output of all results 
-      list(
+   list(
         identified_best_t = identified_best_t,
         est_method_1 = est_method_1$contrast.est,
         est_method_1_wk = est_method_1_wk$contrast.est,
@@ -344,11 +383,11 @@ simulation <- function(N,
         est_method_1_str_ur1 = est_method_1_str_ur1$contrast.est,
         est_method_1_str_ur2 = est_method_1_str_ur2$contrast.est,
         
-        #est_method_2 = est_method_2$contrast.est,
-        #est_method_2_wk = est_method_2_wk$contrast.est,
-        #est_method_2_str = est_method_2_str$contrast.est,
-        #est_method_2_str_ur1 = est_method_2_str_ur1$contrast.est,
-        #est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
+        est_method_2 = est_method_2$contrast.est,
+        est_method_2_wk = est_method_2_wk$contrast.est,
+        est_method_2_str = est_method_2_str$contrast.est,
+        est_method_2_str_ur1 = est_method_2_str_ur1$contrast.est,
+        est_method_2_str_ur2 = est_method_2_str_ur2$contrast.est,
         
         performance_m = estimand2,
         identify_fail = identify_fail,
@@ -359,5 +398,5 @@ simulation <- function(N,
     }
   })
   
-  return(output_replication)
+ return(output_replication)
 }

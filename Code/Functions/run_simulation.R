@@ -216,10 +216,15 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
       scenario_name = scenario_name
     ) # run N_iter iterations
     
+    warning_data <- as.data.frame(rbind(scenario_out[[1]]$warn, scenario_out[[2]]$warn))
+    save(warning_data, file = paste0(scenario_name,"warnings.Rdata"))
+
     message('simulation and models done...')
     
+    message(paste0(scenario_name, " warning data", " saved"))
+    
     # run code to summarise simulated outputs and produce estimands 
-    analyse_out = process_sim_output(output_replication = scenario_out, 
+    analyse_out = process_sim_output(output_replication = scenario_out, warning_data = warning_data,
                                      T_v = T_vector,
                                      pattern = pattern_list,
                                      R = N_iter, 
