@@ -47,14 +47,15 @@ set.seed(3127)
 timings <- list()
 
 #Specify sample size(s) for each run
-N_patients_max = 2300 # Max number of patients
-N_patients_min = 300 # Min number of patients
-N_patients_brk = 500 # Breaks within max and min number of patients
+N_patients_max = 5000 # Max number of patients
+N_patients_min = 2000 # Min number of patients
+N_patients_brk = 1000 # Breaks within max and min number of patients
 
 #Specify sample size of historical clinical trial
 N_hist=500
+
 #Specify number of iterations for each scenario
-No_iter = 100
+No_iter = 1000
 #########
 # Note
 #########
@@ -74,11 +75,11 @@ No_iter = 100
 start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
-               T_vector = c(0.20, 0.25, 0.30, 0.35),  # Treatment effects 
-               res_rate_prior = c(0.20, 0.25, 0.30, 0.35), # Priors
-               res_rate_prior_ur1 = c(0.20, 0.30, 0.40, 0.50), # Priors ur1
-               res_rate_prior_ur2 = c(0.275, 0.275, 0.275, 0.275), # Priors ur2
-               samplesize_vec = seq(N_patients_min, N_patients_max, by = N_patients_brk), #Sample size for each simulation
+               T_vector = c(0.30, 0.30, 0.30, 0.30),  # Treatment effects 
+               res_rate_prior = c(0.30, 0.30, 0.30, 0.30), # Priors
+               res_rate_prior_ur1 = c(0.20, 0.20, 0.20, 0.20), # Priors ur1
+               res_rate_prior_ur2 =  c(0.30, 0.35, 0.40, 0.45), # Priors ur2
+               samplesize_vec = c(500, 1000, 1500,seq(N_patients_min, N_patients_max, by = N_patients_brk)), #Sample size for each simulation
                samplesize_hist = N_hist, #Sample size of historical trial
                N_iter = No_iter,          # Number of iterations
                pattsame = FALSE,    # If effects are the same across patterns

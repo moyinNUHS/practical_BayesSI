@@ -64,9 +64,10 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
         nrow = length(pattern_list),
         ncol = length(res_rate_prior_ur2)
       )
-    } else {
-     scenario_name <- str_extract(scenario_name, "scenario\\d+\\.\\d+") 
-     if ( scenario_name %in% c("scenario4.1")) {
+    } 
+    else {
+     scenario_name. <- str_extract(scenario_name, "scenario\\d+\\.\\d+") 
+     if ( scenario_name. %in% c("scenario4.1")) {
       # for scenario where treatments have equal effects but differ across patterns for current trial
       res_rate_mat = rbind(
         c(0.3, 0.3, 0.3, 0.3),
@@ -110,7 +111,8 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
         nrow = length(pattern_list),
         ncol = length(res_rate_prior_ur1)
       )
-     } else if ( scenario_name %in% c("scenario4.2")) {
+     } 
+     else if ( scenario_name. %in% c("scenario4.2")) {
       # for scenario where treatment effects differ across patterns for current trial
       res_rate_mat = rbind(
         c(0.199, 0.250, 0.299, 0.350),
@@ -190,7 +192,8 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
         nrow = length(pattern_list),
         ncol = length(res_rate_prior_ur2)
       )
-    } else {
+    } 
+    else {
       # make a matrix of pre-defined treatment effect per pattern which is equal for all sites
       res_rate_mat_site = res_rate_mat
       res_rate_mat_prior_site = res_rate_mat_prior
@@ -220,7 +223,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     
     message('simulation and models done...')
     
-    save(warning_data, file = paste0(wd, "/Run_output/", scenario_name, "sample_size=", N, "_warnings.Rdata"))
+    save(warning_data, file = paste0("./Codes/Run_output/", scenario_name, "sample_size=", N, "_warnings.Rdata"))
     
     message(paste0(scenario_name, " warning data", " for sample_size = ", N, " saved in /Run_output"))
     
