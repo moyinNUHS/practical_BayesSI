@@ -35,8 +35,9 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
                                   "Mean squared error (%)"))
   
   # plot 
-  gaps = diff(unique(long$n))[1]
-  br_x = seq(min(long$n) + gaps/2, max(long$n) - gaps/2, length.out = length(unique(long$n)) - 1)
+  ##gaps = diff(unique(long$n))[1]
+  #br_x = seq(min(long$n) + gaps/2, max(long$n) - gaps/2, length.out = length(unique(long$n)) - 1)
+  br_x <- (head(unique(long$n), -1) + tail(unique(long$n), -1)) / 2
   
   f = ggplot(long, aes(x = n, y = value, color = treatment, 
                        group = interaction(treatment, method), 
