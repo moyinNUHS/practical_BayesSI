@@ -85,7 +85,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                scenario_name = paste0(c('scenario3.2', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
 end_time <- Sys.time()
-time_taken <- end_time - start_time
+time_taken <- as.numeric(difftime(end_time,start_time,units = "mins"))
 
 saveRDS(time_taken,paste0("./Code/Run_output/timing_3.2.rds"))
 parallel::stopCluster(my.cluster)

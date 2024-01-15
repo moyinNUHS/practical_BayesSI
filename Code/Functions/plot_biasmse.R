@@ -9,7 +9,7 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
   n = parse_number(names(d))
   wide_raw = list()
   for (i in n) {
-    subset_size = d[[grep(paste("=",as.character(i),sep=" "), names(d))]]
+    subset_size = d[[grep(paste0(paste("=",as.character(i),sep=" "),"$"), names(d))]]
     raw = as.data.frame(do.call(rbind, subset_size$analyse_out$method.property))
     raw$method = rep(names(subset_size$analyse_out$method.property), each = nrow(subset_size$analyse_out$method.property[[1]]))
     raw$n = i

@@ -7,7 +7,7 @@ plot_timing <- function(Scenario, Timing){
     labs(
       x = "Scenario",
       y = "Running time (min)",
-      subtitle = "The running time for 100 iterations"
+      subtitle = "The running time for 1000 iterations"
     ) +
     theme_minimal()+
     theme(
