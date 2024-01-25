@@ -57,25 +57,25 @@ timings <- list()
 # the model did fit but random effects are very small
 
 ###################################################### 
-# S2 series: Low or high average treatment effects
+# S1 series: Various effects across patterns
 ######################################################
 ###################################################### 
-## Run scenario 2.2
+## Run scenario 1.5
 ######################################################
 start_time <- Sys.time()
 
 run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # Prevalence of each pattern
-               T_vector = c(0.10, 0.15, 0.20, 0.25),  # Treatment effects - first one being reference 
-               res_rate_prior = c(0.10, 0.15, 0.20, 0.25), # Priors
-               res_rate_prior_ur1 = c(0.05,0.1,0.15,0.2), # Priors ur1
-               res_rate_prior_ur2 = c(0.175,0.175,0.175,0.175), # Priors ur2
-               samplesize_vec = sample_size, #Sample size for each simulation
+               T_vector = c(0.35, 0.45, 0.35,  0.35),  # Treatment effects - first one being reference 
+               res_rate_prior = c(0.35, 0.45, 0.35,  0.35), # Priors
+               res_rate_prior_ur1 = c(0.25, 0.25, 0.25, 0.25), # Priors ur1
+               res_rate_prior_ur2 = c(0.45,0.4,0.35,0.3), # Priors ur2
+               samplesize_vec = 500, #Sample size for each simulation
                samplesize_hist = N_hist,
                N_iter = No_iter,          # Number of iterations
-               scenario_name = paste0(c('scenario2.2', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
+               scenario_name = paste0(c('scenario1.6_test', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
 end_time <- Sys.time()
 time_taken <- as.numeric(difftime(end_time,start_time,units = "mins"))
 
-saveRDS(time_taken,paste0("./Code/Run_output/timing_2.2.rds"))
+saveRDS(time_taken,paste0("./Code/Run_output/timing_1.6_test.rds"))
 parallel::stopCluster(my.cluster)
