@@ -226,16 +226,16 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     
     message('simulation and models done...')
     
-    save(warning_data, file = paste0("./Code/Run_output/", scenario_name, "sample_size=", N, "_warnings.Rdata"))
+    #save(warning_data, file = paste0("./Code/Run_output/", scenario_name, "sample_size=", N, "_warnings.Rdata"))
     
-    message(paste0(scenario_name, " warning data", " for sample_size = ", N, " saved in /Run_output"))
+    #message(paste0(scenario_name, " warning data", " for sample_size = ", N, " saved in /Run_output"))
     
     list_of_error <- lapply(scenario_out, function(x) x$errors)
     error_reports <- as.data.frame(do.call(rbind, list_of_error))
     
     #error_reports <- as.data.frame(rbind(scenario_out[[1]]$errors, scenario_out[[2]]$errors))
     
-    message(paste0(scenario_name, " error reports (if any)", " for sample_size = ", N, " saved in /Run_output"))
+    #message(paste0(scenario_name, " error reports (if any)", " for sample_size = ", N, " saved in /Run_output"))
     
   
     # run code to summarise simulated outputs and produce estimands 
