@@ -131,6 +131,8 @@ plotting <- plotting[plotting$Method == "Method 1 Strong",]
   
 
   require(patchwork)
+
+  plots <- f1 + f2 + f3 + f4 + plot_annotation(title = "Method 1 Str") 
   
  return(plots)
  
