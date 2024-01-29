@@ -10,13 +10,13 @@ myTryCatch <- function(expr) {
                return(list(value = NULL, 
                            err = err,
                            warn = NULL))
-              }, 
-             warning = function(w) {
-               warn <- conditionMessage(w)
-               return(list(value = suppressWarnings(expr),
-                           err = NULL,
-                           warn = warn))
-               }
+              }
+              #, warning = function(w) {
+              # warn <- conditionMessage(w)
+              # return(list(value = suppressWarnings(expr),
+              #             err = NULL,
+              #             warn = warn))
+              # }
              )
   )
   
