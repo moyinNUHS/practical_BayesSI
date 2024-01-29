@@ -1,4 +1,4 @@
-plot_coef_distrib <- function(outputs, .font_size = font_size, .pt_size = pt_size, N_iter, ind) {
+plot_coef_distrib <- function(outputs, .font_size = font_size, .pt_size = pt_size, N_iter, ind, method) {
   
   coef_data <- as.data.frame(matrix(NA, nrow = 1, ncol = 6))
   alliter_data <- as.data.frame(matrix(NA, nrow = 1, ncol = 6))
@@ -57,7 +57,7 @@ plotting <- coef_data
 ####subsetting to one method (method 1 strong)
 
 #plotting <- plotting[plotting$SampleSize == max(coef_data$SampleSize),]
-plotting <- plotting[plotting$Method == "Method 1 Strong",]
+plotting <- plotting[plotting$Method == method,]
   
   
   
@@ -132,7 +132,7 @@ plotting <- plotting[plotting$Method == "Method 1 Strong",]
 
   require(patchwork)
 
-  plots <- f1 + f2 + f3 + f4 + plot_annotation(title = "Method 1 Str") 
+  plots <- f1 + f2 + f3 + f4 + plot_annotation(title = method) 
   
  return(plots)
  
