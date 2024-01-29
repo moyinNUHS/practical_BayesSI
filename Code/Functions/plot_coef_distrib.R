@@ -12,7 +12,7 @@ plot_coef_distrib <- function(outputs, .font_size = font_size, .pt_size = pt_siz
     sub_ind <- grep(paste("=",as.character(i), sep=" "), names(d))
     subset_n = d[[sub_ind[1]]]$scenario_out
     
-    for(a in N_iter){
+    for(a in 1:N_iter){
       
       subset_iter_m1 = subset_n[[a]]$est_method_1[,1]
       subset_iter_m1_Wk = subset_n[[a]]$est_method_1_wk[,1]
