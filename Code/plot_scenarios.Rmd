@@ -440,7 +440,7 @@ if (length(ind4.3) == 1) {
 
 
 #### Proportion of Treatment Assigned Best 
-Scenario 1.1
+#Scenario 1.1
 
 ind1.1 = grep('1.1', files,fixed = TRUE)
 if (length(ind1.1) == 1) {
@@ -450,7 +450,7 @@ plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind1.1)
 }
 
 
-Scenario 2.1 
+#Scenario 2.1 
 
 ind2.1 = grep('2.1', files,fixed = TRUE)
 if (length(ind2.1) == 1) {
@@ -459,7 +459,7 @@ plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind2.1)
   message('There are multiple output files in `output`. Please select one.')
 }
 
-Scenario 2.3
+#Scenario 2.3
 
 ind2.3 = grep('2.3', files,fixed = TRUE)
 if (length(ind2.3) == 1) {
@@ -468,7 +468,7 @@ plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind2.3)
   message('There are multiple output files in `output`. Please select one.')
 }
 
-Scenario 3.1 
+#Scenario 3.1 
 
 ind3.1 = grep('3.1', files,fixed = TRUE)
 if (length(ind3.1) == 1) {
@@ -477,7 +477,7 @@ plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind3.1)
   message('There are multiple output files in `output`. Please select one.')
 }
 
-Scenario 4.1 
+#Scenario 4.1 
 
 ind4.1 = grep('4.1', files,fixed = TRUE)
 if (length(ind4.1) == 1) {
