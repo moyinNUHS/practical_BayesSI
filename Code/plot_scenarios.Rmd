@@ -438,6 +438,55 @@ if (length(ind4.3) == 1) {
 
 #ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
+
+#### Proportion of Treatment Assigned Best 
+Scenario 1.1
+
+ind1.1 = grep('1.1', files,fixed = TRUE)
+if (length(ind1.1) == 1) {
+plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind1.1)
+}else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+
+Scenario 2.1 
+
+ind2.1 = grep('2.1', files,fixed = TRUE)
+if (length(ind2.1) == 1) {
+plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind2.1)
+}else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+Scenario 2.3
+
+ind2.3 = grep('2.3', files,fixed = TRUE)
+if (length(ind2.3) == 1) {
+plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind2.3)
+}else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+Scenario 3.1 
+
+ind3.1 = grep('3.1', files,fixed = TRUE)
+if (length(ind3.1) == 1) {
+plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind3.1)
+}else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+Scenario 4.1 
+
+ind4.1 = grep('4.1', files,fixed = TRUE)
+if (length(ind4.1) == 1) {
+plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind4.1)
+}else {
+  message('There are multiple output files in `output`. Please select one.')
+}
+
+
 ```
 
 
