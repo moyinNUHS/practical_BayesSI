@@ -34,10 +34,7 @@ plot_coef_distrib <- function(outputs, .font_size = font_size, .pt_size = pt_siz
      
       alliter_data <- alliter_data[!is.na(alliter_data$treatment1),]
       
-      alliter_data$treatment1 <- invlogit(alliter_data$treatment1)
-      alliter_data$treatment2 <- invlogit(alliter_data$treatment2)
-      alliter_data$treatment3 <- invlogit(alliter_data$treatment3)
-      alliter_data$treatment4 <- invlogit(alliter_data$treatment4)
+    
       
      
     }
@@ -50,6 +47,11 @@ plot_coef_distrib <- function(outputs, .font_size = font_size, .pt_size = pt_siz
     
   
 coef_data <- coef_data[!is.na(coef_data$treatment1),]
+  
+coef_data$treatment1 <- invlogit(coef_data$treatment1)
+coef_data$treatment2 <- invlogit(coef_data$treatment2)
+coef_data$treatment3 <- invlogit(coef_data$treatment3)
+coef_data$treatment4 <- invlogit(coef_data$treatment4)  
   
 plotting <- coef_data 
 
