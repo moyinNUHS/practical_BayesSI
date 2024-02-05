@@ -47,7 +47,7 @@ plot_nullbest <- function(outputs, .font_size = font_size, .pt_size = pt_size, N
       sample_meth <- subset(null_data, SampleSize == q & Method == m)
       ##subset for each method and sample size 
      plotting[1,1] <- sum(sample_meth[, c(2,4)] == 1) / (nrow(sample_meth) *4) #* 2) 
-     plotting[1,2] <- sum(sample_meth[, 1:4] == 2) / (nrow(sample_meth) * 4) ###sum number of occurrences of T2 over # of patterns that T2 is present in (=2)
+     plotting[1,2] <- sum(sample_meth[, 1:4] == 2) / (nrow(sample_meth) * 4) ###sum number of occurrences of T2 over # of patterns that T2 is present in (=4)
      plotting[1,3] <- sum(sample_meth[, 1:4] == 3) / (nrow(sample_meth) * 4)
      plotting[1,4] <- sum(sample_meth[, 3:4] == 4) / (nrow(sample_meth) *4) #* 2) ##Currently does not take into account # of avail treatments to keep probability sum = 1 
      plotting[1,5] <- m ##record method 
