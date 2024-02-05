@@ -47,7 +47,7 @@ plot_nullbest <- function(outputs, .font_size = font_size, .pt_size = pt_size, N
       sample_meth <- subset(null_data, SampleSize == q & Method == m)
       ##subset for each method and sample size 
      plotting[1,1] <- sum(sample_meth[, c(2,4)] == 1) / (nrow(sample_meth) *4) #* 2) 
-     plotting[1,2] <- sum(sample_meth[, 1:4] == 2) / (nrow(sample_meth) * 4) ###sum number of occurrences of T2 over # of patterns that T2 is present in (=4)
+     plotting[1,2] <- sum(sample_meth[, 1:4] == 2) / (nrow(sample_meth) * 4) ###sum number of occurrences of T2 over # of patterns that T2 is present in (=2)
      plotting[1,3] <- sum(sample_meth[, 1:4] == 3) / (nrow(sample_meth) * 4)
      plotting[1,4] <- sum(sample_meth[, 3:4] == 4) / (nrow(sample_meth) *4) #* 2) ##Currently does not take into account # of avail treatments to keep probability sum = 1 
      plotting[1,5] <- m ##record method 
@@ -67,7 +67,7 @@ plot_nullbest <- function(outputs, .font_size = font_size, .pt_size = pt_size, N
   plotm1 <- reshape2::melt(plotm1, id.var = c("Method", "Sample Size"))
   
   fm <- ggplot(plotm1, aes(x =`Sample Size`, y = value, fill = variable)) +
-    geom_col() + scale_x_continuous(breaks = n)+ facet_grid(. ~ Method)+ylab("Proportion of Bests") + xlab("Sample Size")+labs(fill = NULL)+theme_minimal()+ ylim(0, 1.1)+
+    geom_col() + scale_x_continuous(breaks = c(1000, 2000, 3000, 4000, 5000))+ facet_grid(. ~ Method)+ylab("Proportion of Bests") + xlab("Sample Size")+labs(fill = NULL)+theme_minimal()+ ylim(0, 1.1)+
     theme(
       plot.title.position = "plot",
       legend.position = "bottom",
@@ -81,7 +81,7 @@ plot_nullbest <- function(outputs, .font_size = font_size, .pt_size = pt_size, N
       panel.background = element_blank(),
       panel.grid.minor = element_blank(),
       panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5),
-      panel.grid.major.x = element_blank(), axis.text.x = element_blank(), strip.text = element_text(size = 8)
+      panel.grid.major.x = element_blank(), axis.text.x = element_text(size = 5), strip.text = element_text(size = 8)
     )+ 
     guides(color = guide_legend(ncol = 2), 
            shape = guide_legend(ncol = 2)) #+ ggtitle()
