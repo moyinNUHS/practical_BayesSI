@@ -62,7 +62,7 @@ plotting <- coef_data
 plotting[,1:4] <- plotting[,1:4] * 100 
 
 
-####subsetting to one method (method 1 strong)
+####subsetting to one method -- plot 1 method at a time (specified in input)
 
 
 plotting <- plotting[plotting$Method == method,]
