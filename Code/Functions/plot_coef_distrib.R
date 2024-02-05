@@ -59,7 +59,7 @@ coef_data$treatment3 <- invlogit(coef_data$treatment3)
 coef_data$treatment4 <- invlogit(coef_data$treatment4)  
   
 plotting <- coef_data 
-plotting[,1:4] <- plotting[,1:4] * 100 
+plotting[,1:4] <- plotting[,1:4] * 100 ##tranform to %
 
 
 ####subsetting to one method -- plot 1 method at a time (specified in input)
