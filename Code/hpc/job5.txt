@@ -1,0 +1,20 @@
+#!/bin/bash 
+  
+#PBS -P job4.1-4.3
+#PBS -j oe 
+#PBS -N job4.1-4.3
+#PBS -l select=1:ncpus=50:mem=200GB 
+#PBS -l walltime=180:00:00
+#PBS -l place=pack
+#PBS -q super
+
+
+cd /data/chakraborty/home/e0859927
+module load r/4.1.1
+Rscript /data/chakraborty/home/e0859927/practical/Code/hpc/run_scenarios_4.1.R
+Rscript /data/chakraborty/home/e0859927/practical/Code/hpc/run_scenarios_4.2.R
+Rscript /data/chakraborty/home/e0859927/practical/Code/hpc/run_scenarios_4.3.R
+
+
+##--- END HERE --- 
+

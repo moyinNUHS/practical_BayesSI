@@ -11,8 +11,8 @@
 
 cd /data/chakraborty/home/e0859927
 module load r/4.1.1
-Rscript /data/chakraborty/home/e0859927/practical/Code/hpc/run_test.R
-
+Rscript /data/chakraborty/home/e0859927/practical/Code/hpc/test1.R
+Rscript /data/chakraborty/home/e0859927/practical/Code/hpc/test2.R
 
 
 ##--- END HERE --- 

@@ -70,20 +70,46 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     out$power = 1 - out$type2error
     
   } 
-  else if (Scenario %in% c('1.3', '1.4', '1.5','2.2', '2.4', '3.2', '4.1', '4.2', '4.3')){
+  else if(Scenario == '1.6'){
+    worst_tx = '2'
+    
+    # here, type 2 error - 
+    # when treatment 2 was not the worst treatment 
+    # hence, type 2 error condition : treatment1-treatment2 = 2, or 
+    #                                 treatment2-treatment3 = 2, or  
+    #                                 treatment2-treatment4 = 2 
+    
+    sub_worst_dat = dat[, grep(paste0('treatment', worst_tx), colnames(dat))]
+    
+    error = apply(sub_worst_dat, 1, function(row){
+      sum(row != worst_tx) != n_tx 
+    })
+
+    out_raw = data.frame(n = dat$n, 
+                         method = dat$method, 
+                         t2error = error, 
+                         type = 'Pre-defined worst treatment identified as worst',
+                         scenario = Scenario)
+    
+    # calculate power per sample size (n), per method, per type using power = (1 - mean(error))
+    out = out_raw %>% 
+      group_by(n, method, type) %>% 
+      summarise(type2error = mean(t2error))
+    out$power = 1 - out$type2error
+  }
+  else if (Scenario %in% c('1.3', '1.4', '1.5', '1.6' ,'2.2', '2.4', '3.2', '4.1', '4.2', '4.3')){
     if(Scenario == '1.5'){
       best_tx = '2'
       secbest_tx = '1'
       worst_tx = '3'
       secworse_tx = '4'
-    }else{
+    }
+    else{
       best_tx = '1'
       secbest_tx = '2'
       worst_tx = '4'
       secworse_tx = '3'
     }
-    
-    
     # here, type 2 error - 
     # Failure to identify best treatments (terminating trial for efficacy)
     # (A) when best_tx was not the best treatment 
@@ -171,7 +197,8 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
       summarise(type2error = mean(t2error))
     out$power = 1 - out$type2error
     
-  } else {
+    } 
+    else {
     message('Check scenario label. It should be input as integer.integer')
   }
   
