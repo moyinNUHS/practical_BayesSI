@@ -265,6 +265,7 @@ if (length(ind3.2) == 1) {
 #ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
+
 #### Scenario 4.1
 Different effectiveness across patterns:
 Pattern 1: Tj = 30%, j = A, B, C, D
@@ -322,6 +323,7 @@ if (length(ind4.3) == 1) {
 #ggsave(paste0(wd,"Code/Plots/biasmse_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
+
 
 
 ### Mortality gain
@@ -427,6 +429,7 @@ if (length(ind2.2) == 1) {
 #ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
+
 #### Scenario 2.4
 TA = 75%, TB = 80%, TC = 85%, TD = 90%
 ```{r, echo = FALSE, fig.align="center",fig.height = 12, fig.width = 14}
@@ -475,6 +478,7 @@ if (length(ind4.1) == 1) {
 #ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
+
 #### Scenario 4.2
 Different effectiveness across patterns:
 Pattern 1: $T_A = 19.9%$, $T_B = 25.0%$, $T_C = 29.9%$, $T_D = 35.0%$
@@ -512,6 +516,7 @@ if (length(ind4.3) == 1) {
 #ggsave(paste0(wd,"Code/Plots/mort_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
+
 
 
 ### Power
@@ -764,6 +769,7 @@ if (length(ind4.1) == 1) {
 #ggsave(paste0(wd,"Code/Plots/type2_scenario1.3_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
+
 #### Scenario 4.2
 Different effectiveness across patterns:
 Pattern 1: $T_A = 19.9%$, $T_B = 25.0%$, $T_C = 29.9%$, $T_D = 35.0%$
@@ -901,6 +907,7 @@ if (length(ind2.3) == 1) {
 #ggsave(paste0(wd,"Code/Plots/type1_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
 ```
+
 #### Scenario 3.1
 Tj = 37.5%, j = A, B, C, D
 ```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
