@@ -66,7 +66,7 @@ plot_nullbest_alt <- function(outputs, .font_size = font_size, .pt_size = pt_siz
   plotm1 <- reshape2::melt(plotm1, id.var = c("Method", "Sample Size"))
   
   fm <- ggplot(plotm1, aes(x =`Sample Size`, y = value, fill = variable)) +
-    geom_bar(position = "dodge", stat = "identity") + scale_x_continuous(breaks = c(1000, 2000, 3000, 4000, 5000))+ facet_grid(. ~ Method)+ylab("Proportion of Bests") + xlab("Sample Size")+labs(fill = NULL)+theme_minimal()+ ylim(0, 1.1)+
+    geom_bar(position = "dodge", stat = "identity") + scale_x_continuous(breaks = c(1000, 2000, 3000, 4000, 5000))+ facet_grid(. ~ Method)+ylab("Proportion of Bests") + xlab("Sample Size")+labs(fill = NULL)+theme_minimal()+ scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1.0), limits = c(0, 1.0))+
     theme(
       plot.title.position = "plot",
       legend.position = "bottom",
