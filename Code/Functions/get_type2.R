@@ -81,15 +81,37 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     
     sub_worst_dat = dat[, grep(paste0('treatment', worst_tx), colnames(dat))]
     
-    error = apply(sub_worst_dat, 1, function(row){
-      sum(row != worst_tx) != n_tx 
+    errorA = apply(sub_worst_dat, 1, function(row){
+      #sum(row != worst_tx) != n_tx  ##this allows for overlap so I commented out 
+      
+      row['treatment1-treatment2'] != '1' |
+        row['treatment2-treatment3'] != '3' |
+        row['treatment2-treatment4'] != '4'   ##error is committed if worst_tx is not clearly worst (no overlap) than all others
+      
     })
 
-    out_raw = data.frame(n = dat$n, 
+    outA = data.frame(n = dat$n, 
                          method = dat$method, 
-                         t2error = error, 
+                         t2error = errorA, 
                          type = 'Pre-defined worst treatment identified as worst',
                          scenario = Scenario)
+    
+    
+    errorB = apply(sub_worst_dat, 1, function(row){
+    
+      row['treatment1-treatment2'] != '1' &
+        row['treatment2-treatment3'] != '3' &
+        row['treatment2-treatment4'] != '4'  
+        
+    })
+    
+    outB = data.frame(n = dat$n, 
+                      method = dat$method, 
+                      t2error = errorB, 
+                      type = '1 or more best treatments identified as better than worst',
+                      scenario = Scenario)
+      
+    out_raw = rbind(outA, outB)
     
     # calculate power per sample size (n), per method, per type using power = (1 - mean(error))
     out = out_raw %>% 
