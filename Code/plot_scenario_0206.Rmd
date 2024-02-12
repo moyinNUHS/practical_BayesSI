@@ -847,13 +847,19 @@ if (length(ind1.1) == 1) {
     plot.d = get_type1(Scenario = '1.1', d = outputs[[ind1.1]])
     saveRDS(plot.d, paste0(wd, "Code/Run_output/t1_", sub('.*/', '', files[[ind1.1]])))
   }
-  # plot 
-  plot_type1(plot.d)
+  #plot 
+ plot_type1(plot.d)
 } else {
   message('There are no or multiple output files in `output`. Please select one.')
 }
 
 #ggsave(paste0(wd,"Code/Plots/type1_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
+
+```
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ plot_nullbest_alt(outputs, .font_size, .pt_size, N_iter, ind = ind1.1)
 
 ```
 
@@ -883,6 +889,13 @@ if (length(ind2.1) == 1) {
 
 ```
 
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ plot_nullbest_alt(outputs, .font_size, .pt_size, N_iter, ind = ind2.1)
+```
+
+
 #### Scenario 2.3
 Tj = 82.5%, j = A, B, C, D
 ```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
@@ -906,6 +919,11 @@ if (length(ind2.3) == 1) {
 
 #ggsave(paste0(wd,"Code/Plots/type1_scenario1.1_", Sys.Date(), ".pdf"), f, width = 8, height = 7)
 
+```
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ plot_nullbest_alt(outputs, .font_size, .pt_size, N_iter, ind = ind2.3)
 ```
 
 #### Scenario 3.1
@@ -933,6 +951,10 @@ if (length(ind3.1) == 1) {
 
 ```
 
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ plot_nullbest_alt(outputs, .font_size, .pt_size, N_iter, ind = ind3.1)
+```
 
 ### Running time
 
