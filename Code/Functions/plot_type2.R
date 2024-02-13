@@ -1,6 +1,7 @@
 # plot type 2 error - for non-NULL scenarios only
 
 plot_type2 <- function (Scenario, plot.data, .font_size = font_size, .pt_size = pt_size) {
+  plot.data <- plot.data$out
   method_type <- rep(NA,length(plot.data$method))
   method_type[grep('Fixed-effect', plot.data$method)] <- "Fixed"
   method_type[grep('Mixed-effect', plot.data$method)] <- "Mixed"
@@ -44,7 +45,7 @@ plot_type2 <- function (Scenario, plot.data, .font_size = font_size, .pt_size = 
     ggplot(plot.data, aes(x = n, y = power, shape = method, linetype = method_type,group = method)) +
       geom_point(size = .pt_size) +
       scale_shape_manual(values = shapes, name = '') +
-      geom_line(linetype = 2,linewidth=0.5, color = "#4d4d4d") +
+      geom_line(linewidth=0.5, color = "#4d4d4d") +
       guides(shape=guide_legend(ncol=2, byrow=TRUE), name = '') +
       scale_x_continuous(breaks = unique(plot.data$n)) +labs(
         linetype = NULL,
