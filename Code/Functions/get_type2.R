@@ -1,4 +1,12 @@
-get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names = all_method_names) {
+ex_performance_modified <- function(q, k, output_replication, R) {
+  mat_all <- do.call(cbind, lapply(1:R, function(z) {
+    output_replication[[z]]$performance_m[[q]][, k]
+  }))
+  apply(mat_all, 1, function(x)
+    mean(x==0, na.rm = T))
+}
+
+get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names = all_method_names, no_pattern=4) {
   
   
   # number of treatment comparisons
@@ -224,5 +232,34 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     message('Check scenario label. It should be input as integer.integer')
   }
   
-  return(out)
+  bestT <- list()
+  
+  for (i in n) { # for each sample size 
+    
+    # subset data for the sample size 
+    output_replication = d[[grep(paste0(paste("=",as.character(i),sep=" "),"$"), names(d))]]$scenario_out
+    R = length(output_replication)
+    # for each iteration, apply find_contig_grp function
+    ex_performance_out <- sapply(1:no_pattern, function(i)
+      ex_performance_modified(q="diff_min", k=i, output_replication=output_replication, R=R))
+    if(Scenario != '3.2'){
+      lambda = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25)
+    }
+    if(Scenario == '3.2'){
+      lambda = c(P1 = 0.1, P2 = 0.3, P3 = 0.3, P4 = 0.3)
+    }
+    
+    bestT[[i]] <- apply(ex_performance_out, 1, function(y) {
+      sum(y * lambda) # multiplying performance measures for each method by pattern frequency 
+    })
+  }
+  dat_best = do.call(rbind, bestT)
+  dat_best = cbind(dat_best,n=n)
+  colnames(dat_best) =  c(.all_method_names,"n")
+  dat_best = as.data.frame(dat_best) %>% 
+    pivot_longer(cols = 1:(ncol(dat_best)-1), names_to = "method", values_to = "power")
+  dat_best$method = factor(dat_best$method, 
+                           levels = .all_method_names, 
+                           labels = .method_labs)
+  return(list(out=out,identifyBest=dat_best))
 }
