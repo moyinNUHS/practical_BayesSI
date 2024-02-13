@@ -1002,17 +1002,17 @@ lapply(outputs, function(x){
 ind1.1 = grep('1.1', files,fixed = TRUE)
 
 if(ind1.1 == 1){
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1")
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1", Scenario = "1.1")
 
 ####Scenario 1.1 -- Method 1 Strong 
 
 ind1.1 = grep('1.1', files,fixed = TRUE)
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1 Strong")
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1 Strong", "Scenario = "1.1")
 
 ####Scenario 1.1 -- Method 1 Strong UR2  
 
 ind1.1 = grep('1.1', files,fixed = TRUE)
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1 Strong UR2")
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1 Strong UR2", Scenario = "1.1")
 }else{
  message('There are multiple output files in `output`. Please select one.')
 }
@@ -1023,15 +1023,15 @@ plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = 
 ind1.6 = grep('1.6', files,fixed = TRUE)
 
 if(ind1.6 == 1){
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1")
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1", Scenario = "1.6")
 
 ####Scenario 1.6 -- Method 1 Strong 
 
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1 Strong")
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1 Strong", Scenario = "1.6")
 
 ####Scenario 1.6 -- Method 1 Strong UR2  
 
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1 Strong UR2")
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1 Strong UR2", Scenario = "1.6")
 }else{
 message('There are multiple output files in `output`. Please select one.')
 }
@@ -1041,15 +1041,15 @@ message('There are multiple output files in `output`. Please select one.')
 ind4.2 = grep('4.2', files,fixed = TRUE)
 
 if(ind4.2 == 1) {
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind4.2, method = "Method 1")
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind4.2, method = "Method 1", Scenario = "4.2")
 
 ####Scenario 4.2 -- Method 1 Strong 
 
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind4.2, method = "Method 1 Strong")
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind4.2, method = "Method 1 Strong", Scenario = "4.2")
 
 ####Scenario 4.2 -- Method 1 Strong UR2
 
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind4.2, method = "Method 1 Strong UR2")
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind4.2, method = "Method 1 Strong UR2", Scenario = "4.2")
 }else{
  message('There are multiple output files in `output`. Please select one.')
 }
