@@ -29,7 +29,7 @@ plot_coef_distrib <- function(outputs, .font_size = font_size, .pt_size = pt_siz
       
       ##only includes plotting for methods 1 at the moment --can modify if we want to visualise all 
       
-      if(Scenario == "1.6"){
+      if(Scenario == "1.6" | Scenario == "1.1"){
       meths <- as.data.frame(c("Method 1", "Method 1 Strong", "Method 1 Strong UR1", "Method 1 Strong UR2"))
       }else{
       meths <- as.data.frame(c("Method 1", "Method 1 Weak", "Method 1 Strong", "Method 1 Strong UR1", "Method 1 Strong UR2"))
