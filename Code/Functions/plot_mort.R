@@ -40,7 +40,7 @@ plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names
       y = "Mortality reduction (%)"
     ) +
     theme_minimal() +
-    facet_wrap(variable ~., scales = "free") + 
+    facet_wrap(variable ~., scales = "free", ncol = 2) + 
     theme(
       plot.title.position = "plot",
       legend.position = "bottom",
