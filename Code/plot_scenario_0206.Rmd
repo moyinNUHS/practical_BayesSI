@@ -1242,6 +1242,7 @@ if (length(ind4.3) == 1) {
 ```
 
 
+
 ### Running time
 
 ```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
