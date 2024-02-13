@@ -101,7 +101,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     
       row['treatment1-treatment2'] != '1' &
         row['treatment2-treatment3'] != '3' &
-        row['treatment2-treatment4'] != '4'  
+        row['treatment2-treatment4'] != '4'  ##error is committed only if NONE of three best is clearly better (no overlap) than predefined worst
         
     })
     
