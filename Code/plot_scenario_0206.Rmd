@@ -1007,7 +1007,7 @@ plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = 
 ####Scenario 1.1 -- Method 1 Strong 
 
 ind1.1 = grep('1.1', files,fixed = TRUE)
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1 Strong", "Scenario = "1.1")
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1 Strong", Scenario = "1.1")
 
 ####Scenario 1.1 -- Method 1 Strong UR2  
 
