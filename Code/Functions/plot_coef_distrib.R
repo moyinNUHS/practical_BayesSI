@@ -1,4 +1,4 @@
-plot_coef_distrib <- function(outputs, .font_size = font_size, .pt_size = pt_size, N_iter, ind, method) {
+plot_coef_distrib <- function(outputs, .font_size = font_size, .pt_size = pt_size, N_iter, ind, method, Scenario) {
   
   ##create dfs for storing data 
   coef_data <- as.data.frame(matrix(NA, nrow = 1, ncol = 6))
@@ -29,7 +29,11 @@ plot_coef_distrib <- function(outputs, .font_size = font_size, .pt_size = pt_siz
       
       ##only includes plotting for methods 1 at the moment --can modify if we want to visualise all 
       
+      if(Scenario == "1.6"){
+      meths <- as.data.frame(c("Method 1", "Method 1 Strong", "Method 1 Strong UR1", "Method 1 Strong UR2"))
+      }else{
       meths <- as.data.frame(c("Method 1", "Method 1 Weak", "Method 1 Strong", "Method 1 Strong UR1", "Method 1 Strong UR2"))
+      }
       
       colnames(meths) <- "Methods"
       iter_data$Method <- meths[,1]
