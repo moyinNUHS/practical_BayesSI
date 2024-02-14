@@ -1,4 +1,4 @@
-plot_timing <- function(Scenario, Timing){
+plot_timing <- function(Scenario, Timing, .font_size = font_size){
   plot.data <- data.frame(scenario=Scenario, timing = Timing)
   
   ggplot(plot.data, aes(x = Scenario, y = Timing, group=1)) +
@@ -11,5 +11,5 @@ plot_timing <- function(Scenario, Timing){
     ) +
     theme_minimal()+
     theme(
-      text = element_text(size = font_size, color = "#4d4d4d")) 
+      text = element_text(size = .font_size, color = "#4d4d4d")) 
 }

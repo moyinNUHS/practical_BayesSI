@@ -25,7 +25,7 @@ plot_best <- function (Scenario, plot.data, .font_size = font_size, .pt_size = p
         legend.position = "bottom",
         legend.spacing.y = unit(0.02, 'cm'),
         legend.margin=margin(0,0,0,0),
-        text = element_text(size = 14, color = "#4d4d4d"),
+        text = element_text(size = .font_size, color = "#4d4d4d"),
         legend.title = element_text(),
         legend.key.size = unit(0.5, 'cm'),
         panel.grid.major.x = element_blank(),

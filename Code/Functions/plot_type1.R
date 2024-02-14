@@ -9,7 +9,7 @@ plot_type1 <- function (plot.data, .font_size = font_size, .pt_size = pt_size) {
   ggplot(plot.data, aes(x = n, y = type1error, shape = method, linetype = method_type,group = method)) +
     geom_point(size = .pt_size) +
     scale_shape_manual(values = shapes, name = '') +
-    geom_line(linetype = 2,linewidth=0.5)+ 
+    geom_line(linewidth=0.5)+ 
     labs(shape = NULL)+
     scale_x_continuous(breaks = unique(plot.data$n)) +
     labs(linetype = NULL,
@@ -26,7 +26,7 @@ plot_type1 <- function (plot.data, .font_size = font_size, .pt_size = pt_size) {
       legend.position = "bottom",
       legend.spacing.y = unit(0.02, 'cm'),
       legend.margin=margin(0,0,0,0),
-      text = element_text(size = font_size, color = "#4d4d4d"),
+      text = element_text(size = .font_size, color = "#4d4d4d"),
       legend.title = element_text(),
       legend.key.size = unit(0.5, 'cm'),
       panel.grid.major.x = element_blank(),
