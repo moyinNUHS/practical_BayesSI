@@ -60,7 +60,7 @@ colors = c("#7FC97F", "#BEAED4", "#FDC086", "#386CB0")
 #sample(colors_list, length(tx_labs))
 names(colors) = tx_labs
 
-font_size = 20
+font_size = 22
 pt_size = 2
 N_iter = 1000
 ```
@@ -801,6 +801,7 @@ if (length(ind4.3) == 1) {
 
 ```
 
+
 ### Type 1 error
 
 #### Scenario 1.1
@@ -959,7 +960,8 @@ if (length(ind4.1) == 1) {
  plot_nullbest_alt(outputs, .font_size, .pt_size, N_iter, ind = ind4.1)
 ```
 
-## Identify the best
+
+### Identify the best
 
 #### Scenario 1.2
 Treatment B is better than treatments A, C and D: 
@@ -1242,7 +1244,6 @@ if (length(ind4.3) == 1) {
 ```
 
 
-
 ### Running time
 
 ```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
@@ -1263,6 +1264,7 @@ for (i in 1:length(files_timing)){
 plot_timing(Scenario = scenario., Timing=outputs_timing)
 ```
 
+
 ### Errors and Warning
 
 ```{r}
@@ -1279,63 +1281,119 @@ lapply(outputs, function(x){
 })
 ```
 
+
+
 ### Coefficient Estimates 
+
+#### Scenario 1.1 -- Method 1  
+
 ```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 
 ###plot coefficient estimates for scenario 1.1, 1.6, 4.2 
-
-####Scenario 1.1 -- Method 1  
 
 ind1.1 = grep('1.1', files,fixed = TRUE)
 
 if(ind1.1 == 1){
 plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1", Scenario = "1.1")
+}else{
+ message('There are multiple output files in `output`. Please select one.')
+}
 
-####Scenario 1.1 -- Method 1 Strong 
+```
 
+
+#### Scenario 1.1 -- Method 1 Strong 
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+if(ind1.1 == 1){
 ind1.1 = grep('1.1', files,fixed = TRUE)
 plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1 Strong", Scenario = "1.1")
+}else{
+ message('There are multiple output files in `output`. Please select one.')
+}
+```
 
-####Scenario 1.1 -- Method 1 Strong UR2  
+#### Scenario 1.1 -- Method 1 Strong UR2  
 
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+if(ind1.1 == 1){
 ind1.1 = grep('1.1', files,fixed = TRUE)
 plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.1, method = "Method 1 Strong UR2", Scenario = "1.1")
 }else{
  message('There are multiple output files in `output`. Please select one.')
 }
 
+```
 
-####Scenario 1.6 -- Method 1  
 
+#### Scenario 1.6 -- Method 1  
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 ind1.6 = grep('1.6', files,fixed = TRUE)
 
 if(ind1.6 == 1){
 plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1", Scenario = "1.6")
-
-####Scenario 1.6 -- Method 1 Strong 
-
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1 Strong", Scenario = "1.6")
-
-####Scenario 1.6 -- Method 1 Strong UR2  
-
-plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1 Strong UR2", Scenario = "1.6")
 }else{
 message('There are multiple output files in `output`. Please select one.')
 }
 
-####Scenario 4.2 -- Method 1  
+```
 
+
+#### Scenario 1.6 -- Method 1 Strong 
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+if(ind1.6 == 1){
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1 Strong", Scenario = "1.6")
+}else{
+message('There are multiple output files in `output`. Please select one.')
+}
+
+```
+
+
+#### Scenario 1.6 -- Method 1 Strong UR2  
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+if(ind1.6 == 1){
+plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind1.6, method = "Method 1 Strong UR2", Scenario = "1.6")
+}else{
+message('There are multiple output files in `output`. Please select one.')
+}
+```
+
+#### Scenario 4.2 -- Method 1  
+
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 ind4.2 = grep('4.2', files,fixed = TRUE)
 
 if(ind4.2 == 1) {
 plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind4.2, method = "Method 1", Scenario = "4.2")
+}else{
+ message('There are multiple output files in `output`. Please select one.')
+}
+
+```
 
 ####Scenario 4.2 -- Method 1 Strong 
 
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+if(ind4.2 == 1) {
 plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind4.2, method = "Method 1 Strong", Scenario = "4.2")
+}else{
+ message('There are multiple output files in `output`. Please select one.')
+}
+```
+
 
 ####Scenario 4.2 -- Method 1 Strong UR2
 
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+if(ind4.2 == 1) {
 plot_coef_distrib(outputs, .font_size, .pt_size, N_iter, ind = ind4.2, method = "Method 1 Strong UR2", Scenario = "4.2")
 }else{
  message('There are multiple output files in `output`. Please select one.')
