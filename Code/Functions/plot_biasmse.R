@@ -29,7 +29,7 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
   long$metric = factor(long$metric, levels = c("bias",
                                                #"empirical_var",
                                                "coverage_prob","mse"),
-                       labels = c("Relative bias of treatment contrasts (%)",
+                       labels = c("Bias of treatment contrasts (%)",
                                   # "Empirical variance", 
                                   "Coverage probability (%)", 
                                   "Mean squared error (%)"))
