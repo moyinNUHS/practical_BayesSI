@@ -66,10 +66,11 @@ plotting[,1:4] <- plotting[,1:4] * 100 ##tranform to %
 
 
 plotting <- plotting[plotting$Method == method,]
-  
+minrisk <- min(plotting[,1:4]) - 5 
+maxrisk <- max(plotting[,1:4]) + 5
   
   f1 <- ggplot(plotting, aes(x = SampleSize, y = treatment1, 
-                             group = SampleSize)) + geom_boxplot(aes()) + theme_minimal() +
+                             group = SampleSize)) + geom_boxplot(aes()) + scale_y_continuous(limits = c(minrisk, maxrisk)) + theme_minimal() +
     theme(
       plot.title.position = "panel",
       legend.position = "right",
@@ -82,7 +83,7 @@ plotting <- plotting[plotting$Method == method,]
       ) + ggtitle("Treatment 1")
   
   f2 <- ggplot(plotting, aes(x = SampleSize, y = treatment2, 
-                             group = SampleSize)) + geom_boxplot(aes()) + theme_minimal() +
+                             group = SampleSize)) + geom_boxplot(aes()) + scale_y_continuous(limits = c(minrisk, maxrisk)) + theme_minimal() +
     theme(
       plot.title.position = "panel",
       legend.position = "right",
@@ -95,7 +96,7 @@ plotting <- plotting[plotting$Method == method,]
       ) + ggtitle("Treatment 2")
   
   f3 <- ggplot(plotting, aes(x = SampleSize, y = treatment3, 
-                             group = SampleSize)) + geom_boxplot(aes()) + theme_minimal() +
+                             group = SampleSize)) + geom_boxplot(aes()) + scale_y_continuous(limits = c(minrisk, maxrisk)) + theme_minimal() +
     theme(
       plot.title.position = "panel",
       legend.position = "right",
@@ -108,7 +109,7 @@ plotting <- plotting[plotting$Method == method,]
       ) + ggtitle("Treatment 3")
   
   f4 <- ggplot(plotting, aes(x = SampleSize, y = treatment4, 
-                             group = SampleSize)) + geom_boxplot(aes()) + theme_minimal() +
+                             group = SampleSize)) + geom_boxplot(aes()) + scale_y_continuous(limits = c(minrisk, maxrisk)) + theme_minimal() +
     theme(
       plot.title.position = "panel",
       legend.position = "right",
