@@ -829,9 +829,16 @@ if (length(ind1.1) == 1) {
 
 ```
 
+Bests by pattern 
 ```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 
  plot_nullbest_alt(outputs, .font_size, .pt_size, N_iter, ind = ind1.1)
+
+```
+Overall best
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind1.1)
 
 ```
 
@@ -861,10 +868,16 @@ if (length(ind2.1) == 1) {
 
 ```
 
-
+Bests by pattern 
 ```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 
  plot_nullbest_alt(outputs, .font_size, .pt_size, N_iter, ind = ind2.1)
+```
+
+Overall best
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind2.1)
 ```
 
 
@@ -893,9 +906,16 @@ if (length(ind2.3) == 1) {
 
 ```
 
+Bests by pattern
 ```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 
  plot_nullbest_alt(outputs, .font_size, .pt_size, N_iter, ind = ind2.3)
+```
+
+Overall best
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind2.3)
 ```
 
 #### Scenario 3.1
@@ -923,9 +943,16 @@ if (length(ind3.1) == 1) {
 
 ```
 
+Bests by pattern 
 ```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 
  plot_nullbest_alt(outputs, .font_size, .pt_size, N_iter, ind = ind3.1)
+```
+
+Overall best
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind3.1)
 ```
 
 
@@ -955,9 +982,16 @@ if (length(ind4.1) == 1) {
 }
 ```
 
+Bests by pattern 
 ```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
 
  plot_nullbest_alt(outputs, .font_size, .pt_size, N_iter, ind = ind4.1)
+```
+
+Overall best
+```{r, echo = FALSE, fig.align="center",fig.height = 14, fig.width = 18}
+
+ plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind4.1)
 ```
 
 
