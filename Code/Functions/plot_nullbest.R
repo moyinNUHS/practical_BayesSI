@@ -17,15 +17,17 @@ plot_nullbest <- function(outputs, .font_size = font_size, .pt_size = pt_size, N
     
     for(a in 1:N_iter){
       
-      subset_iter = as.data.frame(subset_n[[a]]$identified_best_t) ##subset by iter
+     subset_iter = as.data.frame(subset_n[[a]]$identified_best_t) ##subset by iter
       
-      subset_iter <- as.data.frame(subset_iter$'pattern 4') ##subset to only pattern which compares all treatments (pattern 4)
+      subset_iter$Method <- rownames(subset_iter)
+      ##record methods in column 
       
-      colnames(subset_iter) <- "pattern 4"
+      subset_iter <- subset_iter[,-c(1:3)] ##subset to only pattern which compares all treatments 
       
-      subset_iter$Method <- rownames(subset_iter) ##record methods in column 
+      colnames(subset_iter) <- c("pattern 4", "Method")
       
       subset_iter$SampleSize <- i ##record sample size in column 
+      
       
       
       alliter_data <- rbind(alliter_data, subset_iter) ##combine iterations into one df 
