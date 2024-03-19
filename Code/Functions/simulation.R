@@ -385,7 +385,7 @@ simulation <- function(N,
        # method_1_wk = est_method_1_wk$warn,
         method_1_str = est_method_1_str$warn,
         method_1_str_ur1 = est_method_1_str_ur1$warn,
-        method_1_str_ur2 = est_method_1_str_ur2$warn
+        method_1_str_ur2 = est_method_1_str_ur2$warn,
         
         method_2 = est_method_2$warn,
         #method_2_wk = est_method_2_wk$warn,
@@ -414,7 +414,7 @@ simulation <- function(N,
           #method_1_wk = est_method_1_wk$error,
           method_1_str = est_method_1_str$error,
           method_1_str_ur1 = est_method_1_str_ur1$error,
-          method_1_str_ur2 = est_method_1_str_ur2$error
+          method_1_str_ur2 = est_method_1_str_ur2$error,
           
           method_2 = est_method_2$error,
           #method_2_wk = est_method_2_wk$error,
