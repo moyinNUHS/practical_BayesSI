@@ -53,7 +53,7 @@ shapes = 1:n_methods # methods differentiated by shapes
 names(shapes) = method_labs
 
 # get names of treatments
-tx_labs = rownames(outputs[[1]][[1]]$scenario_out[[1]]$est_method_1_wk)
+tx_labs = rownames(outputs[[1]][[1]]$scenario_out[[1]]$est_method_1_str)
 qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
 colors_list = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals))) 
 colors = c("#7FC97F", "#BEAED4", "#FDC086", "#386CB0") 
