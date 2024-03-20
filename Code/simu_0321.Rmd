@@ -33,7 +33,7 @@ For Pattern 1 and the est_method_2_non:
 output$`for size size = 500`$analyse_out$method.property$est_method_2_non
 ```
 
-We can see that for Pattern 1, phi2 has a higher coverage rate.
+We can see that for Pattern 1, phi2 has a higher coverage rate. In addition, these two methods yield similar results.
 
 For Pattern 2 and the est_method_2_str:
 
@@ -48,7 +48,7 @@ For Pattern 2 and the est_method_2_non:
 output$`for size size = 500`$analyse_out$method.property$est_method_2_non
 ```
  
-We can see that for Pattern 2, phi1 has a higher coverage rate.
+We can see that for Pattern 2, phi1 has a higher coverage rate. In addition, these two methods yield similar results.
 
 ####  The mixed effect models have smaller bias than the fixed effect models. Why? 
 
