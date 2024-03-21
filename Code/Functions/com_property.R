@@ -25,7 +25,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
     if ( scenario_name %in% c("scenario4.1")) {
       if (grepl(value, m)) {
         #For mixed effects model the true coefficents are calculated differently when there is a pattern effect, hence must prespecify the true coefficient values 
-        T_v<-rep(-0.5181, 4)
+        T_v<-invlogit(rep(-0.5181, 4))
         #For probabilities: 
         #S1: [0.3, 0.3, 0.3, 0.3]
         #S2: [0.35, 0.35, 0.35, 0.35]
