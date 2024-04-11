@@ -7,49 +7,168 @@ editor_options:
 chunk_output_type: console
 ---
 
-## Simulation under two scenarios {.tabset .tabset-fade .tabset-pills}
-
- + The frequentist mixed effect models have similar coverage as the fixed effect models. However, the bayesian mixed effect models have much higher coverage rate compared with the fixed effect models. The reason may be that there are something wrong in the specified prior distribution.
  
-#### Compare bayesian mixed effect models with strong prior (est_method_2_str) and default prior in stan (est_method_2_non)
+## Compare bayesian mixed effect models
 
-We compare est_method_2_str and est_method_2_non with sample size 500 under two settings:
+We compare est_method_2, est_method_2_str, est_method_1, and est_method_1_str with sample size 500 simulation time 500 under two settings:
 
 Pattern 1 pattern list: pattern_list = list(pattern1 = c(2, 3), pattern2 = c(1, 2, 3), pattern3 = c(2, 3, 4), pattern4 = c(1, 2, 3, 4));
 
 Pattern 2 pattern list: pattern_list = list(pattern1 = c(1, 2, 3, 4), pattern2 = c(1, 2, 3, 4), pattern3 = c(1, 2, 3, 4), pattern4 = c(1, 2, 3, 4));
 
-For Pattern 1  and the est_method_2_str:
+### scenario 1.1
 
+For Pattern 1  and the est_method_2:
 
 ```{r, echo = FALSE}
-output <- readRDS("/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/Code/Run_output/scenarioscenario1.1_iter100_2024-03-20.rds")
+output <- readRDS("/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/Code/Run_output/scenarioscenario1.1_iter500.rds")
 output$`for size size = 500`$analyse_out$method.property$est_method_2
 ```
 
-For Pattern 1 and the est_method_2_non:
+For Pattern 1 and the est_method_2_str:
 
 ```{r, echo = FALSE}
-output$`for size size = 500`$analyse_out$method.property$est_method_2_non
+output$`for size size = 500`$analyse_out$method.property$est_method_2_str
 ```
 
-We can see that for Pattern 1, phi2 has a higher coverage rate. In addition, these two methods yield similar results.
+For Pattern 1 and fixed effect frequentist methods:
 
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1
+```
+
+For Pattern 1 and fixed effect bayesian methods:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1_str
+```
+
+For Pattern 2 and the est_method_2:
+
+```{r, echo = FALSE}
+output <- readRDS("/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/Code/Run_output/scenarioscenario1.1_iter500_pattern_same.rds")
+output$`for size size = 500`$analyse_out$method.property$est_method_2
+```
+ 
 For Pattern 2 and the est_method_2_str:
 
 ```{r, echo = FALSE}
-output <- readRDS("/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/Code/Run_output/scenarioscenario1.1_iter100_2024-03-20_pattern_same.rds")
+output$`for size size = 500`$analyse_out$method.property$est_method_2_str
+```
+ 
+For Pattern 2 and est_method_1:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1
+```
+
+For Pattern 2 and est_method_1_str:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1_str
+```
+
+
+### scenario 1.3
+
+For Pattern 1  and the est_method_2:
+
+```{r, echo = FALSE}
+output <- readRDS("/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/Code/Run_output/scenarioscenario1.3_iter500.rds")
+output$`for size size = 500`$analyse_out$method.property$est_method_2
+```
+
+For Pattern 1 and the est_method_2_str:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_2_str
+```
+
+For Pattern 1 and est_method_1:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1
+```
+
+For Pattern 1 and est_method_1_str:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1_str
+```
+
+For Pattern 2 and the est_method_2:
+
+```{r, echo = FALSE}
+output <- readRDS("/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/Code/Run_output/scenarioscenario1.3_iter500_pattern_same.rds")
 output$`for size size = 500`$analyse_out$method.property$est_method_2
 ```
  
-For Pattern 2 and the est_method_2_non:
+For Pattern 2 and the est_method_2_str:
 
 ```{r, echo = FALSE}
-output$`for size size = 500`$analyse_out$method.property$est_method_2_non
+output$`for size size = 500`$analyse_out$method.property$est_method_2_str
+```
+
+For Pattern 2 and est_method_1:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1
+```
+
+For Pattern 2 and est_method_1_str:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1_str
+```
+
+### scenario 1.6
+
+For Pattern 1  and the est_method_2:
+
+```{r, echo = FALSE}
+output <- readRDS("/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/Code/Run_output/scenarioscenario1.6_iter500.rds")
+output$`for size size = 500`$analyse_out$method.property$est_method_2
+```
+
+For Pattern 1 and the est_method_2_str:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_2_str
+```
+
+For Pattern 1 and est_method_1:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1
+```
+
+For Pattern 1 and est_method_1_str:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1_str
+```
+
+For Pattern 2 and the est_method_2:
+
+```{r, echo = FALSE}
+output <- readRDS("/Users/cheryl/Documents/duke-nus/bibhas/practical/practical/Code/Run_output/scenarioscenario1.6_iter500_pattern_same.rds")
+output$`for size size = 500`$analyse_out$method.property$est_method_2
 ```
  
-We can see that for Pattern 2, phi1 has a higher coverage rate. In addition, these two methods yield similar results.
+For Pattern 2 and the est_method_2_str:
 
-####  The mixed effect models have smaller bias than the fixed effect models. Why? 
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_2_str
+```
 
-#### The bias of mixed effect models under scenario 4.2 are much higher than fixef effect models. Why?
+For Pattern 2 and est_method_1:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1
+```
+
+For Pattern 2 and est_method_1_str:
+
+```{r, echo = FALSE}
+output$`for size size = 500`$analyse_out$method.property$est_method_1_str
+```

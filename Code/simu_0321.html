@@ -358,83 +358,289 @@ patterns</h1>
 </div>
 
 
-<div id="simulation-under-two-scenarios" class="section level2 tabset tabset-fade tabset-pills">
-<h2 class="tabset tabset-fade tabset-pills">Simulation under two
-scenarios</h2>
-<ul>
-<li>The frequentist mixed effect models have similar coverage as the
-fixed effect models. However, the bayesian mixed effect models have much
-higher coverage rate compared with the fixed effect models. The reason
-may be that there are something wrong in the specified prior
-distribution.</li>
-</ul>
-<div id="compare-bayesian-mixed-effect-models-with-strong-prior-est_method_2_str-and-default-prior-in-stan-est_method_2_non" class="section level4">
-<h4>Compare bayesian mixed effect models with strong prior
-(est_method_2_str) and default prior in stan (est_method_2_non)</h4>
-<p>We compare est_method_2_str and est_method_2_non with sample size 500
-under two settings:</p>
+<div id="compare-bayesian-mixed-effect-models" class="section level2">
+<h2>Compare bayesian mixed effect models</h2>
+<p>We compare est_method_2, est_method_2_str, est_method_1, and
+est_method_1_str with sample size 500 simulation time 500 under two
+settings:</p>
 <p>Pattern 1 pattern list: pattern_list = list(pattern1 = c(2, 3),
 pattern2 = c(1, 2, 3), pattern3 = c(2, 3, 4), pattern4 = c(1, 2, 3,
 4));</p>
 <p>Pattern 2 pattern list: pattern_list = list(pattern1 = c(1, 2, 3, 4),
 pattern2 = c(1, 2, 3, 4), pattern3 = c(1, 2, 3, 4), pattern4 = c(1, 2,
 3, 4));</p>
+<div id="scenario-1.1" class="section level3">
+<h3>scenario 1.1</h3>
+<p>For Pattern 1 and the est_method_2:</p>
+<pre><code>##              bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.002454254    0.05645405         0.832 0.003007729 0.010625822
+## phi2  0.001282834    0.02635476         0.794 0.001428468 0.007260133
+## phi3 -0.001487397    0.02527813         0.810 0.001373109 0.007110292
+## phi4  0.002862827    0.05909757         0.826 0.003130641 0.010871759
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01671981 0.004040816   0.05993201       0
+## phi2 0.01808668 0.001692933   0.02586591       0
+## phi3 0.01754423 0.001589859   0.02589533       0
+## phi4 0.01695429 0.004041825   0.06284372       0</code></pre>
 <p>For Pattern 1 and the est_method_2_str:</p>
-<pre><code>##              bias empirical_var coverage_prob         mse  MCSE_bias MCSE_cov_p
-## phi1  0.005649438    0.06271759          0.86 0.003265888 0.02504348 0.03469870
-## phi2  0.001771969    0.02381890          0.90 0.001305414 0.01543337 0.03000000
-## phi3 -0.003068026    0.02905874          0.85 0.001576707 0.01704663 0.03570714
-## phi4  0.002868532    0.07307261          0.85 0.003827096 0.02703195 0.03570714
-##         MCSE_MSE ex_model_var fail.no
-## phi1 0.010050742   0.07661922       0
-## phi2 0.003730780   0.03826890       0
-## phi3 0.004853364   0.03874499       0
-## phi4 0.010249700   0.08073662       0</code></pre>
-<p>For Pattern 1 and the est_method_2_non:</p>
-<pre><code>##              bias empirical_var coverage_prob         mse  MCSE_bias MCSE_cov_p
-## phi1  0.005862630    0.06424972          0.85 0.003342486 0.02534753 0.03570714
-## phi2  0.002107875    0.02403422          0.90 0.001319122 0.01550297 0.03000000
-## phi3 -0.002793457    0.02934386          0.86 0.001590621 0.01713005 0.03469870
-## phi4  0.003321510    0.07389220          0.84 0.003871768 0.02718312 0.03666061
-##         MCSE_MSE ex_model_var fail.no
-## phi1 0.010410179   0.07824166       0
-## phi2 0.003737841   0.03911215       0
-## phi3 0.004878272   0.03914579       0
-## phi4 0.010416247   0.08184327       0</code></pre>
-<p>We can see that for Pattern 1, phi2 has a higher coverage rate. In
-addition, these two methods yield similar results.</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.0009578443    0.05937602         0.868 0.003144281 0.010897341
+## phi2  0.0004463897    0.02637420         0.890 0.001425074 0.007262810
+## phi3 -0.0023118062    0.02544481         0.870 0.001383132 0.007133697
+## phi4  0.0012187262    0.06083820         0.872 0.003201308 0.011030702
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01513777 0.004193724   0.07636623       0
+## phi2 0.01399286 0.001706275   0.03722287       0
+## phi3 0.01503995 0.001609047   0.03712021       0
+## phi4 0.01494095 0.004118621   0.07968144       0</code></pre>
+<p>For Pattern 1 and fixed effect frequentist methods:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.0012615934    0.12342161         0.792 0.006434673 0.015711245
+## phi2 -0.0007690551    0.05228051         0.782 0.002777329 0.010225508
+## phi3 -0.0034506051    0.04974847         0.794 0.002667528 0.009974816
+## phi4  0.0010391126    0.12946358         0.806 0.006699396 0.016091214
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01815136 0.007352843   0.12070799       0
+## phi2 0.01846489 0.002933271   0.04964646       0
+## phi3 0.01808668 0.002996919   0.04975342       0
+## phi4 0.01768412 0.008305515   0.12454027       0</code></pre>
+<p>For Pattern 1 and fixed effect bayesian methods:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1 -0.0012030648    0.08829987         0.846 0.004633646 0.013289083
+## phi2 -0.0018675851    0.04049297         0.810 0.002170453 0.008999219
+## phi3 -0.0044145800    0.03767471         0.818 0.002040195 0.008680405
+## phi4 -0.0009307628    0.09414920         0.816 0.004917775 0.013722187
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01614212 0.005657770   0.09908159       0
+## phi2 0.01754423 0.002313814   0.04233056       0
+## phi3 0.01725549 0.002286387   0.04242385       0
+## phi4 0.01732882 0.006075970   0.10209093       0</code></pre>
+<p>For Pattern 2 and the est_method_2:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.0012426234    0.03409355         0.804 0.001839104 0.008257549
+## phi2  0.0025358707    0.03779519         0.796 0.002028502 0.008694272
+## phi3 -0.0004152055    0.03530457         0.810 0.001889583 0.008402924
+## phi4  0.0015667385    0.03769883         0.774 0.002048959 0.008683182
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01775297 0.002155976   0.03630974       0
+## phi2 0.01802132 0.002505379   0.03611620       0
+## phi3 0.01754423 0.002284858   0.03636993       0
+## phi4 0.01870422 0.002260602   0.03619797       0</code></pre>
 <p>For Pattern 2 and the est_method_2_str:</p>
-<pre><code>##               bias empirical_var coverage_prob         mse  MCSE_bias
-## phi1  1.525014e-03    0.02926864          0.91 0.001577419 0.01710808
-## phi2  5.556694e-05    0.03763157          0.83 0.002001787 0.01939886
-## phi3  1.453195e-03    0.03899929          0.85 0.002027440 0.01974824
-## phi4 -1.851908e-03    0.03375025          0.89 0.001788704 0.01837124
+<pre><code>##              bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.000194350    0.03404665         0.870 0.001830580 0.008251867
+## phi2  0.001486645    0.03766643         0.854 0.002012793 0.008679451
+## phi3 -0.001484978    0.03514763         0.858 0.001880593 0.008384227
+## phi4  0.000521200    0.03782726         0.842 0.002049599 0.008697961
 ##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
-## phi1 0.02861818 0.003608452   0.04944562       0
-## phi2 0.03756328 0.004679199   0.04872089       0
-## phi3 0.03570714 0.006267380   0.04949469       0
-## phi4 0.03128898 0.005048428   0.04884504       0</code></pre>
-<p>For Pattern 2 and the est_method_2_non:</p>
+## phi1 0.01503995 0.002168215   0.04783372       0
+## phi2 0.01579139 0.002511312   0.04751378       0
+## phi3 0.01561000 0.002282925   0.04783835       0
+## phi4 0.01631171 0.002254184   0.04762056       0</code></pre>
+<p>For Pattern 2 and est_method_1:</p>
 <pre><code>##               bias empirical_var coverage_prob         mse  MCSE_bias
-## phi1  0.0020285186    0.02956934          0.91 0.001595693 0.01719574
-## phi2  0.0005034704    0.03810669          0.82 0.002027999 0.01952093
-## phi3  0.0019724396    0.03983550          0.85 0.002075119 0.01995883
-## phi4 -0.0013043392    0.03442031          0.88 0.001825564 0.01855271
+## phi1  0.0010917060    0.06256576         0.804 0.003300635 0.01118622
+## phi2  0.0024679935    0.06916847         0.792 0.003685712 0.01176167
+## phi3 -0.0006027817    0.06413872         0.814 0.003379006 0.01132596
+## phi4  0.0016659103    0.07490459         0.766 0.003961701 0.01223966
 ##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
-## phi1 0.02861818 0.003698411   0.05001506       0
-## phi2 0.03841875 0.004754745   0.04914021       0
-## phi3 0.03570714 0.006313898   0.05025887       0
-## phi4 0.03249615 0.005069877   0.04956645       0</code></pre>
-<p>We can see that for Pattern 2, phi1 has a higher coverage rate. In
-addition, these two methods yield similar results.</p>
+## phi1 0.01775297 0.003920644   0.06366340       0
+## phi2 0.01815136 0.004427932   0.06362216       0
+## phi3 0.01740138 0.004349324   0.06368404       0
+## phi4 0.01893378 0.004809283   0.06362548       0</code></pre>
+<p>For Pattern 2 and est_method_1_str:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.0002689823    0.04991430         0.834 0.002654887 0.009991427
+## phi2  0.0015212298    0.05558718         0.802 0.002978221 0.010543925
+## phi3 -0.0015727059    0.04999811         0.828 0.002657967 0.009999811
+## phi4  0.0007727183    0.05992690         0.774 0.003194064 0.010947776
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01663995 0.003115058   0.05547718       0
+## phi2 0.01782111 0.003563740   0.05545565       0
+## phi3 0.01687697 0.003345045   0.05559410       0
+## phi4 0.01870422 0.003685241   0.05538114       0</code></pre>
 </div>
-<div id="the-mixed-effect-models-have-smaller-bias-than-the-fixed-effect-models.-why" class="section level4">
-<h4>The mixed effect models have smaller bias than the fixed effect
-models. Why?</h4>
+<div id="scenario-1.3" class="section level3">
+<h3>scenario 1.3</h3>
+<p>For Pattern 1 and the est_method_2:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.0008175081    0.06435306         0.816 0.002709286 0.011344872
+## phi2  0.0017838131    0.02710454         0.788 0.001387075 0.007362682
+## phi3 -0.0004366793    0.02532542         0.790 0.001440017 0.007116940
+## phi4  0.0060841137    0.05307544         0.834 0.003209309 0.010302955
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01732882 0.004488290   0.06691482       0
+## phi2 0.01827873 0.001762263   0.02664666       0
+## phi3 0.01821538 0.001544594   0.02532030       0
+## phi4 0.01663995 0.003450967   0.05918384       0</code></pre>
+<p>For Pattern 1 and the est_method_2_str:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1 -0.0014763643    0.06791887         0.846 0.002819566 0.011654945
+## phi2  0.0007256324    0.02698049         0.872 0.001374243 0.007345814
+## phi3 -0.0010928720    0.02527363         0.880 0.001436295 0.007109660
+## phi4  0.0053960512    0.05369401         0.864 0.003234799 0.010362819
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01614212 0.004802088   0.08415099       0
+## phi2 0.01494095 0.001760159   0.03807864       0
+## phi3 0.01453272 0.001553031   0.03678160       0
+## phi4 0.01532997 0.003472721   0.07578801       0</code></pre>
+<p>For Pattern 1 and est_method_1:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse  MCSE_bias
+## phi1  0.0007647874    0.13321217         0.798 0.005422424 0.01632251
+## phi2 -0.0001247669    0.05470579         0.784 0.002725075 0.01046000
+## phi3 -0.0023515579    0.05006589         0.796 0.002810001 0.01000659
+## phi4  0.0034910718    0.11790011         0.812 0.006842279 0.01535579
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01795528 0.008648077   0.12786742       0
+## phi2 0.01840348 0.003200290   0.05046322       0
+## phi3 0.01802132 0.002855817   0.04916363       0
+## phi4 0.01747318 0.007408617   0.12147920       0</code></pre>
+<p>For Pattern 1 and est_method_1_str:</p>
+<pre><code>##              bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1 -0.003050776    0.09677270         0.834 0.003939129 0.013912059
+## phi2 -0.001573636    0.04230962         0.800 0.002134973 0.009198872
+## phi3 -0.003160080    0.03785786         0.808 0.002144797 0.008701478
+## phi4  0.002848220    0.08527622         0.842 0.005024641 0.013059573
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01663995 0.006698781   0.10482474       0
+## phi2 0.01788854 0.002523811   0.04294915       0
+## phi3 0.01761454 0.002127249   0.04175921       0
+## phi4 0.01631171 0.005320585   0.09942665       0</code></pre>
+<p>For Pattern 2 and the est_method_2:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.0011141110    0.03892784         0.806 0.001665680 0.008823586
+## phi2  0.0016316824    0.03995566         0.796 0.002016930 0.008939314
+## phi3 -0.0005995725    0.03419819         0.810 0.001924224 0.008270210
+## phi4  0.0016068006    0.03778765         0.776 0.002273140 0.008693406
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01768412 0.002426578   0.04037372       0
+## phi2 0.01802132 0.002568075   0.03713915       0
+## phi3 0.01754423 0.002167386   0.03543981       0
+## phi4 0.01864532 0.002431415   0.03425238       0</code></pre>
+<p>For Pattern 2 and the est_method_2_str:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1 -0.0005893734    0.03892478         0.864 0.001653209 0.008823240
+## phi2  0.0004272243    0.04005946         0.842 0.002012759 0.008950918
+## phi3 -0.0015591599    0.03421579         0.862 0.001924767 0.008272338
+## phi4  0.0012107630    0.03783298         0.852 0.002274205 0.008698618
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01532997 0.002462695   0.05196736       0
+## phi2 0.01631171 0.002585829   0.04842016       0
+## phi3 0.01542440 0.002169371   0.04671537       0
+## phi4 0.01588055 0.002433880   0.04553957       0</code></pre>
+<p>For Pattern 2 and est_method_1:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse  MCSE_bias
+## phi1  0.0008477781    0.06884452         0.792 0.002888449 0.01173410
+## phi2  0.0014219887    0.07040044         0.796 0.003508744 0.01186595
+## phi3 -0.0012343464    0.06044798         0.812 0.003360334 0.01099527
+## phi4  0.0011206662    0.07404597         0.758 0.004376149 0.01216930
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01815136 0.004489690   0.06825300       0
+## phi2 0.01802132 0.004592655   0.06514471       0
+## phi3 0.01747318 0.003923265   0.06322707       0
+## phi4 0.01915390 0.004683300   0.06216950       0</code></pre>
+<p>For Pattern 2 and est_method_1_str:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1 -1.064732e-03    0.05537370         0.816 0.002327912 0.010523659
+## phi2 -7.082568e-05    0.05726390         0.802 0.002867084 0.010701767
+## phi3 -2.062555e-03    0.04753258         0.836 0.002656310 0.009750137
+## phi4  1.007857e-03    0.05963364         0.782 0.003548737 0.010920956
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01732882 0.003651784   0.05956856       0
+## phi2 0.01782111 0.003742738   0.05668832       0
+## phi3 0.01655923 0.003122651   0.05493823       0
+## phi4 0.01846489 0.003733243   0.05397913       0</code></pre>
 </div>
-<div id="the-bias-of-mixed-effect-models-under-scenario-4.2-are-much-higher-than-fixef-effect-models.-why" class="section level4">
-<h4>The bias of mixed effect models under scenario 4.2 are much higher
-than fixef effect models. Why?</h4>
+<div id="scenario-1.6" class="section level3">
+<h3>scenario 1.6</h3>
+<p>For Pattern 1 and the est_method_2:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.0016507817    0.06005190         0.808 0.002986396 0.010959188
+## phi2  0.0015432973    0.02506948         0.800 0.001521399 0.007080888
+## phi3 -0.0008817219    0.02577521         0.816 0.001320012 0.007179862
+## phi4  0.0023275934    0.05899103         0.834 0.002938682 0.010861954
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01761454 0.004308501   0.06163268       0
+## phi2 0.01788854 0.001609446   0.02438364       0
+## phi3 0.01732882 0.001731182   0.02648995       0
+## phi4 0.01663995 0.003873056   0.06438359       0</code></pre>
+<p>For Pattern 1 and the est_method_2_str:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  9.480143e-05    0.06291164         0.862 0.003105176 0.011217098
+## phi2  1.209897e-03    0.02505893         0.872 0.001519565 0.007079398
+## phi3 -1.903254e-03    0.02563802         0.900 0.001311851 0.007160730
+## phi4  4.995979e-04    0.06067186         0.860 0.002999830 0.011015613
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01542440 0.004468605   0.07787004       0
+## phi2 0.01494095 0.001605671   0.03556460       0
+## phi3 0.01341641 0.001738044   0.03782554       0
+## phi4 0.01551773 0.003949467   0.08085803       0</code></pre>
+<p>For Pattern 1 and est_method_1:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.0014795835    0.12406315         0.786 0.006018030 0.015752026
+## phi2 -0.0003665113    0.04991589         0.790 0.002978707 0.009991585
+## phi3 -0.0025014721    0.05104071         0.788 0.002563637 0.010103535
+## phi4  0.0012046651    0.12239718         0.802 0.005984930 0.015645905
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01834143 0.007587335   0.12174913       0
+## phi2 0.01821538 0.002828532   0.04791256       0
+## phi3 0.01827873 0.003127634   0.05017024       0
+## phi4 0.01782111 0.007732201   0.12562128       0</code></pre>
+<p>For Pattern 1 and est_method_1_str:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1 -0.0010074750    0.09072237         0.836 0.004445794 0.013470143
+## phi2 -0.0004276307    0.03916336         0.806 0.002352497 0.008850238
+## phi3 -0.0035971837    0.03923295         0.816 0.001990041 0.008858098
+## phi4 -0.0007536736    0.09063799         0.828 0.004462023 0.013463877
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01655923 0.005726088   0.09994298       0
+## phi2 0.01768412 0.002244839   0.04076733       0
+## phi3 0.01732882 0.002470265   0.04285120       0
+## phi4 0.01687697 0.005543367   0.10305103       0</code></pre>
+<p>For Pattern 2 and the est_method_2:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1  0.0011731633    0.03534180         0.808 0.001792521 0.008407354
+## phi2  0.0008463189    0.03243566         0.820 0.001952840 0.008054274
+## phi3 -0.0001121721    0.03583500         0.822 0.001801260 0.008465814
+## phi4  0.0009633917    0.03924047         0.780 0.001998377 0.008858947
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01761454 0.002219378   0.03739533       0
+## phi2 0.01718139 0.002159493   0.03427954       0
+## phi3 0.01710649 0.002351115   0.03745085       0
+## phi4 0.01852566 0.002406536   0.03731350       0</code></pre>
+<p>For Pattern 2 and the est_method_2_str:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1 -0.0001455395    0.03521942         0.846 0.001779123 0.008392784
+## phi2  0.0004377190    0.03260994         0.882 0.001961741 0.008075882
+## phi3 -0.0014847448    0.03565867         0.882 0.001789122 0.008444960
+## phi4 -0.0003111072    0.03932490         0.848 0.001995162 0.008868472
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01614212 0.002232909   0.04890271       0
+## phi2 0.01442747 0.002167647   0.04559738       0
+## phi3 0.01442747 0.002352940   0.04906295       0
+## phi4 0.01605590 0.002407937   0.04889905       0</code></pre>
+<p>For Pattern 2 and est_method_1:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse  MCSE_bias
+## phi1  0.0011786224    0.06524046         0.804 0.003246553 0.01142282
+## phi2  0.0007879344    0.06431170         0.792 0.003818535 0.01134123
+## phi3 -0.0002138479    0.06331293         0.830 0.003125204 0.01125282
+## phi4  0.0012007802    0.07184433         0.794 0.003567515 0.01198702
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01775297 0.004182041   0.06498616       0
+## phi2 0.01815136 0.004257743   0.06200244       0
+## phi3 0.01679881 0.004224684   0.06498051       0
+## phi4 0.01808668 0.004694464   0.06495081       0</code></pre>
+<p>For Pattern 2 and est_method_1_str:</p>
+<pre><code>##               bias empirical_var coverage_prob         mse   MCSE_bias
+## phi1 -9.717299e-05    0.05195004         0.812 0.002599683 0.010193139
+## phi2  6.616743e-04    0.05121745         0.816 0.003059600 0.010121013
+## phi3 -1.680048e-03    0.04914389         0.852 0.002446339 0.009914019
+## phi4 -9.790151e-05    0.05773269         0.802 0.002883930 0.010745482
+##      MCSE_cov_p    MCSE_MSE ex_model_var fail.no
+## phi1 0.01747318 0.003375017   0.05671549       0
+## phi2 0.01732882 0.003403933   0.05400579       0
+## phi3 0.01588055 0.003255500   0.05668349       0
+## phi4 0.01782111 0.003601038   0.05653549       0</code></pre>
 </div>
 </div>
 
