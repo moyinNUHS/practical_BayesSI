@@ -1,0 +1,18 @@
+#!/bin/bash 
+  
+#PBS -P simu
+#PBS -j oe 
+#PBS -N simu
+#PBS -l select=1:ncpus=50:mem=200GB 
+#PBS -l walltime=160:00:00
+#PBS -l place=pack
+#PBS -q super
+
+
+cd /data/chakraborty/home/e0859927
+module load r/4.1.1
+Rscript /data/chakraborty/home/e0859927/practical/Code/hpc/simu.R
+
+
+##--- END HERE --- 
+
