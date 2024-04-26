@@ -56,7 +56,7 @@ names(shapes) = method_labs
 tx_labs = rownames(outputs[[1]][[1]]$scenario_out[[1]]$est_method_1_str)
 qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
 colors_list = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals))) 
-colors = c("black", "#238A8DFF", "#55C667FF", "#D55E00")
+colors = c("black", "#56B4E9", "#009E73", "#E69F00")
 #sample(colors_list, length(tx_labs))
 names(colors) = tx_labs
 
