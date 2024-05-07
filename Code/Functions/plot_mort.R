@@ -31,7 +31,7 @@ plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     geom_point(size = .pt_size) +
     scale_shape_manual(values = shapes, name = '') +
     geom_line(linewidth=0.5, color = "#4d4d4d") +
-    guides(shape=guide_legend(ncol=2, byrow=TRUE), name = '') +
+    guides(shape=guide_legend(ncol=1, byrow=TRUE), name = '') +
     scale_x_continuous(breaks = unique(long$n))+
     labs(
       linetype = NULL,
@@ -40,7 +40,7 @@ plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names
       y = "Mortality reduction (%)"
     ) +
     theme_minimal() +
-    facet_wrap(variable ~., scales = "free", ncol = 2) + 
+    facet_wrap(variable ~., scales = "free", ncol = 1) + 
     theme(
       plot.title.position = "plot",
       legend.position = "bottom",
@@ -50,7 +50,8 @@ plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names
       legend.title = element_text(),
       legend.key.size = unit(0.5, 'cm'),
       panel.grid.major.x = element_blank(),
-      panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5))
+      panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5),
+      legend.text = element_text(size = 18))
   
   return(f)
   
