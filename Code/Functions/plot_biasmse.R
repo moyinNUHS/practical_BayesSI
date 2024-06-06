@@ -3,7 +3,7 @@
 
 plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_names = all_method_names, 
                          .tx_labs = tx_labs,
-                         .font_size = font_size, .pt_size = pt_size) {
+                         .font_size = font_size, .pt_size = pt_size,.metric, name.y, range.y) {
   
   # make a long form data
   n = parse_number(names(d))
@@ -38,11 +38,11 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
   ##gaps = diff(unique(long$n))[1]
   #br_x = seq(min(long$n) + gaps/2, max(long$n) - gaps/2, length.out = length(unique(long$n)) - 1)
   br_x <- (head(unique(long$n), -1) + tail(unique(long$n), -1)) / 2
-  
-  f = ggplot(long, aes(x = n, y = value, color = treatment, 
+  long_temp <- subset(long, metric==.metric)
+  f = ggplot(long_temp, aes(x = n, y = value, color = treatment, 
                        group = interaction(treatment, method), 
                        shape = method)) +
-    facet_wrap(metric ~., scales = "free_y",strip.position = "top", ncol = 1) +
+    #facet_wrap(metric ~., scales = "free_y",strip.position = "top", ncol = 1) +
     geom_point(size = .pt_size, position = position_dodge(width = 500))+ 
     scale_shape_manual(values = shapes) +
     scale_color_manual(values = colors) +
@@ -50,7 +50,7 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
       shape = NULL, 
       color=NULL,
       x = "Sample Size",
-      y = NULL,  # No y-axis label to avoid redundancy
+      y =  name.y,  # No y-axis label to avoid redundancy
     ) +
     scale_x_continuous(breaks = unique(long$n)) +
     geom_vline(xintercept = br_x, color = "red", linetype = "dashed") +
@@ -72,7 +72,8 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
       panel.grid.major.x = element_blank()
     )+ 
     guides(color = guide_legend(ncol = 2), 
-           shape = guide_legend(ncol = 2))
+           shape = guide_legend(ncol = 2))+
+    coord_cartesian(ylim =  range.y) 
 
   
   return(f)

@@ -1,12 +1,13 @@
 # plot type 2 error - for non-NULL scenarios only
 
-plot_type2 <- function (Scenario, plot.data, .font_size = font_size, .pt_size = pt_size) {
+plot_type2 <- function (Scenario, plot.data, .font_size = font_size, 
+                        .pt_size = pt_size) {
   plot.data <- plot.data$out
   method_type <- rep(NA,length(plot.data$method))
-  method_type[grep('Fixed-effect', plot.data$method)] <- "Fixed"
-  method_type[grep('Mixed-effect', plot.data$method)] <- "Mixed"
+  method_type[grep('FE', plot.data$method)] <- "Fixed"
+  method_type[grep('ME', plot.data$method)] <- "Mixed"
   plot.data <- data.frame(plot.data, method_type=as.factor(method_type))
-  
+  #plot.data <- subset(plot.data, type==.metric)
   if (Scenario == '1.2') {
     
     ggplot(plot.data, aes(x = n, y = power, linetype = method_type,shape = method, group = method)) +
@@ -19,7 +20,7 @@ plot_type2 <- function (Scenario, plot.data, .font_size = font_size, .pt_size = 
         linetype = NULL,
         color = NULL,
         x = "Sample Size",
-        y = "Power"
+        y =  name.y
       ) +
       scale_y_continuous(limits = c(0, 1), 
                          breaks = seq(0, 1, length.out = 11), 
@@ -51,12 +52,12 @@ plot_type2 <- function (Scenario, plot.data, .font_size = font_size, .pt_size = 
         linetype = NULL,
         color = NULL,
         x = "Sample Size",
-        y = "Power"
+        y =  "Power"
       ) +
       scale_y_continuous(limits = c(0, 1), 
                          breaks = seq(0, 1, length.out = 11), 
                          labels = scaleFUN) +
-      facet_wrap(vars(type)) +
+      facet_wrap(vars(type),ncol = 4) +
       theme_minimal()+
       theme(
         legend.position = "bottom",

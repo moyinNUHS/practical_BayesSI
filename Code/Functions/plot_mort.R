@@ -2,7 +2,7 @@
 
 plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names = all_method_names, 
                       .tx_labs = tx_labs,
-                      .font_size = font_size, .pt_size = pt_size) {
+                      .font_size = font_size, .pt_size = pt_size,.metric, name.y,range.y ) {
   
   # make a long form data
   n = parse_number(names(d))
@@ -22,12 +22,12 @@ plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names
                        labels = .method_labs)
   long = reshape2::melt(wide, id.var = c('method', 'n'))
    method_type <- rep(NA,length(long$method))
-  method_type[grep('Fixed-effect', long$method)] <- "Fixed"
-  method_type[grep('Mixed-effect', long$method)] <- "Mixed"
+  method_type[grep('FE', long$method)] <- "Fixed"
+  method_type[grep('ME', long$method)] <- "Mixed"
   long <- data.frame(long, method_type=as.factor(method_type))
-  
+  long_temp <- subset(long, variable==.metric)
   # plot 
-  f = ggplot(long, aes(x = n, y = value, shape = method, linetype = method_type,group = method)) +
+  f = ggplot(long_temp, aes(x = n, y = value, shape = method, linetype = method_type,group = method)) +
     geom_point(size = .pt_size) +
     scale_shape_manual(values = shapes, name = '') +
     geom_line(linewidth=0.5, color = "#4d4d4d") +
@@ -37,10 +37,10 @@ plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names
       linetype = NULL,
       shapes = NULL,
       x = "Sample Size",
-      y = "Mortality reduction (%)"
+      y = name.y
     ) +
     theme_minimal() +
-    facet_wrap(variable ~., scales = "free", ncol = 1) + 
+    #facet_wrap(variable ~., scales = "free", ncol = 1) + 
     theme(
       plot.title.position = "plot",
       legend.position = "bottom",
@@ -50,8 +50,10 @@ plot_mort <- function(Scenario, d, .method_labs = method_labs, .all_method_names
       legend.title = element_text(),
       legend.key.size = unit(0.5, 'cm'),
       panel.grid.major.x = element_blank(),
-      panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5),
-      legend.text = element_text(size = 18))
+      panel.border = element_rect(colour = "#4d4d4d", fill=NA, linewidth =0.5))+
+    coord_cartesian(ylim = range.y) + 
+    guides(color = guide_legend(ncol = 2), 
+           shape = guide_legend(ncol = 2))
   
   return(f)
   

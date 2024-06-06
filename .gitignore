@@ -4,3 +4,4 @@
 *.docx
 *.drawio
 .DS_Store
+.Rproj.user
