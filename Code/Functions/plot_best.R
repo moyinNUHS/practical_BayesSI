@@ -1,8 +1,8 @@
-plot_best <- function (Scenario, plot.data, .font_size = font_size, .pt_size = pt_size) {
+plot_best <- function (Scenario, plot.data, .font_size = font_size, .pt_size = pt_size,name.y) {
   plot.data <- plot.data$identifyBest
   method_type <- rep(NA,length(plot.data$method))
-  method_type[grep('Fixed-effect', plot.data$method)] <- "Fixed"
-  method_type[grep('Mixed-effect', plot.data$method)] <- "Mixed"
+  method_type[grep('FE', plot.data$method)] <- "Fixed"
+  method_type[grep('ME', plot.data$method)] <- "Mixed"
   plot.data <- data.frame(plot.data, method_type=as.factor(method_type))
   
   ggplot(plot.data, aes(x = n, y = power, linetype = method_type,shape = method, group = method)) +
@@ -15,7 +15,7 @@ plot_best <- function (Scenario, plot.data, .font_size = font_size, .pt_size = p
         linetype = NULL,
         color = NULL,
         x = "Sample Size",
-        y = "Power"
+        y = name.y
       ) +
       scale_y_continuous(limits = c(0.5, 1), 
                          breaks = seq(0.5, 1, length.out = 11), 

@@ -31,8 +31,9 @@ if(run_hpc){
   #n.cores <- parallel::detectCores() - 1
   n.cores <- 50
   my.cluster <- parallel::makeCluster(
-    n.cores,
-    type = "SOCK"
+    n.cores
+    #,
+    #type = "SOCK"
   )
   doParallel::registerDoParallel(cl = my.cluster)
   

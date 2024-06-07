@@ -1,20 +1,23 @@
 # plot type 2 error - for non-NULL scenarios only
 
 plot_type2 <- function (Scenario, plot.data, .font_size = font_size, 
-                        .pt_size = pt_size) {
+                        .pt_size = pt_size,.metric=NULL,name.y=NULL) {
   plot.data <- plot.data$out
   method_type <- rep(NA,length(plot.data$method))
   method_type[grep('FE', plot.data$method)] <- "Fixed"
   method_type[grep('ME', plot.data$method)] <- "Mixed"
   plot.data <- data.frame(plot.data, method_type=as.factor(method_type))
-  #plot.data <- subset(plot.data, type==.metric)
+  if(Scenario != '1.2'){
+    plot.data <- subset(plot.data, type==.metric)
+  }
+  
   if (Scenario == '1.2') {
     
     ggplot(plot.data, aes(x = n, y = power, linetype = method_type,shape = method, group = method)) +
       geom_point(size = .pt_size) +
       scale_shape_manual(values = shapes, name = '') +
       geom_line(linewidth=0.5, color = "#4d4d4d") + 
-      guides(shape=guide_legend(ncol=2, byrow=TRUE), name = '') +
+      #guides(shape=guide_legend(ncol=2, byrow=TRUE), name = '') +
       labs(shape = NULL)+
       scale_x_continuous(breaks = unique(plot.data$n)) +labs(
         linetype = NULL,
@@ -30,7 +33,7 @@ plot_type2 <- function (Scenario, plot.data, .font_size = font_size,
         legend.position = "bottom",
         legend.spacing.y = unit(0.02, 'cm'),
         legend.margin=margin(0,0,0,0),
-        text = element_text(size = 14, color = "#4d4d4d"),
+        text = element_text(size = font_size, color = "#4d4d4d"),
         legend.title = element_text(),
         legend.key.size = unit(0.5, 'cm'),
         panel.grid.major.x = element_blank(),
@@ -52,12 +55,12 @@ plot_type2 <- function (Scenario, plot.data, .font_size = font_size,
         linetype = NULL,
         color = NULL,
         x = "Sample Size",
-        y =  "Power"
+        y =  name.y
       ) +
       scale_y_continuous(limits = c(0, 1), 
                          breaks = seq(0, 1, length.out = 11), 
                          labels = scaleFUN) +
-      facet_wrap(vars(type),ncol = 4) +
+      #facet_wrap(vars(type),ncol = 4) +
       theme_minimal()+
       theme(
         legend.position = "bottom",
