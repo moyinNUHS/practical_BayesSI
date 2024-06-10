@@ -177,19 +177,32 @@ for (ind in inds) {
   ind_name = grep(ind, files,fixed = TRUE)
   if (length(ind_name) == 1) {
     p <- plot_mort(Scenario = ind, d = outputs[[ind_name]],.metric = "mortality_gain_ratio", name.y="RAO",range.y = c(0.5,1))
-    RAO_list[[ind]] <- p 
+    RAO_list[[ind]] <- p
+    p2 <- plot_nullbest(outputs, .font_size, .pt_size, N_iter, ind = ind)
+    NB_list[[ind]] <- p2
   } else {
     message('There are no or multiple output files in `output`. Please select one.')
   }
 }
-combined_plot <- wrap_plots(RAO_list, ncol = 1) + 
+ 
+combined_plot1 <- wrap_plots(NB_list, ncol = 1) + 
   plot_annotation(tag_levels = 'A')+
   plot_layout(guides = "collect",
               axes = "collect",
               axis_titles = "collect")&
   theme(
     legend.position = "bottom") 
-ggsave("./Plots/RAO.pdf", plot = combined_plot, width = 210 / 25.4, height = 297 / 25.4)
+ggsave("./Plots/NB.pdf", plot = combined_plot1, width = 210 / 25.4, height = 297 / 25.4)
+
+
+combined_plot2 <- wrap_plots(RAO_list, ncol = 1) + 
+  plot_annotation(tag_levels = 'A')+
+  plot_layout(guides = "collect",
+              axes = "collect",
+              axis_titles = "collect")&
+  theme(
+    legend.position = "bottom") 
+ggsave("./Plots/RAO.pdf", plot = combined_plot2, width = 210 / 25.4, height = 297 / 25.4)
 
 
 ### SM 7 BTP for Scens 1.3-1.5, 2.2, 2.4, 3.2, 4.3 #####
