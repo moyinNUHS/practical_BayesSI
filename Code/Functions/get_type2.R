@@ -105,21 +105,21 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
                          scenario = Scenario)
     
     
-    errorB = apply(sub_worst_dat, 1, function(row){
+  # errorB = apply(sub_worst_dat, 1, function(row){
     
-      row['treatment1-treatment2'] != '1' &
-        row['treatment2-treatment3'] != '3' &
-        row['treatment2-treatment4'] != '4'  ##error is committed only if NONE of three best is clearly better (no overlap) than predefined worst
+   #   row['treatment1-treatment2'] != '1' &
+   #     row['treatment2-treatment3'] != '3' &
+    #    row['treatment2-treatment4'] != '4'  ##error is committed only if NONE of three best is clearly better (no overlap) than predefined worst
         
-    })
+   # })
     
-    outB = data.frame(n = dat$n, 
-                      method = dat$method, 
-                      t2error = errorB, 
-                      type = '1 or more best treatments identified as better than worst',
-                      scenario = Scenario)
+   # outB = data.frame(n = dat$n, 
+    #                  method = dat$method, 
+     #                 t2error = errorB, 
+      #                type = '1 or more best treatments identified as better than worst',
+      #                scenario = Scenario)
       
-    out_raw = rbind(outA, outB)
+    out_raw = outA
     
     # calculate power per sample size (n), per method, per type using power = (1 - mean(error))
     out = out_raw %>% 
