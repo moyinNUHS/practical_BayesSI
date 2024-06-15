@@ -50,10 +50,10 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
       shape = NULL, 
       color=NULL,
       x = "Sample Size",
-      y =  name.y,  # No y-axis label to avoid redundancy
+      y =  name.y  # No y-axis label to avoid redundancy
     ) +
     scale_x_continuous(breaks = unique(long$n)) +
-    geom_vline(xintercept = br_x, color = "red", linetype = "dashed") +
+    geom_vline(xintercept = br_x, color = "black", linetype = "dashed") +
     xlab("Sample size") +
     theme_minimal()+
     theme(
