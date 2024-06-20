@@ -71,6 +71,8 @@ plot_nullbest <- function(outputs, .font_size = font_size, .pt_size = pt_size, N
   }
   plotm1 <- plotm1[!is.na(plotm1$`treatment1`),] ##remove NAs
   plotm1 <- reshape2::melt(plotm1, id.var = c("Method", "Sample Size"))
+  plotm1$variable <- factor(plotm1$variable, levels = c("treatment1","treatment2","treatment3","treatment4"), 
+                            labels = c("treatment A", "treatment B", "treatment C", "treatment D"))
   fm <- ggplot(plotm1, aes(x =`Sample Size`, y = value, fill = variable)) +
     geom_col() + scale_x_continuous(breaks = c(1000, 2000, 3000, 4000, 5000))+ facet_grid(. ~ Method)+ylab("Proportion of Bests") + xlab("Sample Size")+labs(fill = NULL)+theme_minimal()+ scale_y_continuous(breaks = c(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0), limits = c(0, 1.0)) +
     theme(

@@ -17,10 +17,7 @@ plot_type1 <- function (plot.data, .font_size = font_size, .pt_size = pt_size,.m
          shape = NULL,
          x = "Sample Size",
          y = "Type 1 error"
-    ) +
-    scale_y_continuous(limits = c(0, 1), 
-                       breaks = seq(0, 1, length.out = 11), 
-                       labels = scaleFUN) +
+    )  +
     facet_wrap(vars(type), nrow = 1) +
     theme_minimal()+
     theme(

@@ -39,6 +39,8 @@ plot_biasmse <- function(Scenario, .method_labs = method_labs, d, .all_method_na
   #br_x = seq(min(long$n) + gaps/2, max(long$n) - gaps/2, length.out = length(unique(long$n)) - 1)
   br_x <- (head(unique(long$n), -1) + tail(unique(long$n), -1)) / 2
   long_temp <- subset(long, metric==.metric)
+  long_temp$treatment <- factor(long_temp$treatment, levels = c("treatment1","treatment2","treatment3","treatment4"), 
+                                labels = c("treatment A", "treatment B", "treatment C", "treatment D"))
   f = ggplot(long_temp, aes(x = n, y = value, color = treatment, 
                        group = interaction(treatment, method), 
                        shape = method)) +

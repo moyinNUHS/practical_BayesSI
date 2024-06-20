@@ -1,4 +1,4 @@
-plot_best <- function (Scenario, plot.data, .font_size = font_size, .pt_size = pt_size,name.y) {
+plot_best <- function (Scenario, plot.data, .font_size = font_size, .pt_size = pt_size,name.y="") {
   plot.data <- plot.data$identifyBest
   method_type <- rep(NA,length(plot.data$method))
   method_type[grep('FE', plot.data$method)] <- "Fixed"
