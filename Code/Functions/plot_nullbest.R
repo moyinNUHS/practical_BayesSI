@@ -11,17 +11,17 @@ plot_nullbest <- function(outputs, .font_size = font_size, .pt_size = pt_size, N
     for(a in 1:N_iter){
       ###extract coefficient estimates from each method
       subset_iter_m1 = subset_n[[a]]$est_method_1[,1]
-      subset_iter_m1_Wk = subset_n[[a]]$est_method_1_wk[,1]
+     ##subset_iter_m1_Wk = subset_n[[a]]$est_method_1_wk[,1]
       subset_iter_m1_Str = subset_n[[a]]$est_method_1_str[,1]
       subset_iter_m1_Str_UR1 = subset_n[[a]]$est_method_1_str_ur1[,1]
       subset_iter_m1_Str_UR2 = subset_n[[a]]$est_method_1_str_ur2[,1]
       subset_iter_m2 = subset_n[[a]]$est_method_2[,1]
-      subset_iter_m2_Wk = subset_n[[a]]$est_method_2_wk[,1]
+      ##subset_iter_m2_Wk = subset_n[[a]]$est_method_2_wk[,1]
       subset_iter_m2_Str = subset_n[[a]]$est_method_2_str[,1]
       subset_iter_m2_Str_UR1 = subset_n[[a]]$est_method_2_str_ur1[,1]
       subset_iter_m2_Str_UR2 = subset_n[[a]]$est_method_2_str_ur2[,1]
-      iter_data <- as.data.frame(rbind(subset_iter_m1, subset_iter_m1_Wk, subset_iter_m1_Str, subset_iter_m1_Str_UR1, subset_iter_m1_Str_UR2, subset_iter_m2, subset_iter_m2_Wk, subset_iter_m2_Str, subset_iter_m2_Str_UR1, subset_iter_m2_Str_UR2))
-      ##only includes plotting for methods 1 at the moment --can modify if we want to visualise all
+      iter_data <- as.data.frame(rbind(subset_iter_m1, subset_iter_m1_Str, subset_iter_m1_Str_UR1, subset_iter_m1_Str_UR2, subset_iter_m2, subset_iter_m2_Str, subset_iter_m2_Str_UR1, subset_iter_m2_Str_UR2))
+    
       meths <- as.data.frame(c("Method 1", "Method 1 Strong", "Method 1 Strong UR1", "Method 1 Strong UR2", "Method 2", "Method 2 Strong", "Method 2 Strong UR1", "Method 2 Strong UR2"))
       colnames(meths) <- "Methods"
       iter_data$Method <- meths[,1]
