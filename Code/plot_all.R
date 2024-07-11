@@ -195,18 +195,28 @@ combined_plot <- wrap_plots(type1_list, ncol = 1) +
 ggsave("./Code/Plots/type1.pdf", plot = combined_plot, width = 210 / 25.4, height = 297 / 25.4)
 
 #### SM 5 Type I error (probability of choosing each treatment as best) for Scens 1.1, 2.1, 2.3, 3.1, 4.1 ####
+NB_list <- list()
+inds <- c('1.1', '2.1', '2.3','3.1', '4.1')
+for (ind in inds) {
+  ind_name = grep(ind, files,fixed = TRUE)
+  if (length(ind_name) == 1) {
+    p <- plot_nullbest(outputs, font_size, pt_size, N_iter, ind = ind_name)
+    NB_list[[ind]] <- p
+  } else {
+    message('There are no or multiple output files in `output`. Please select one.')
+  }
+}
+
 #### SM 6 RAO (mortality gain ratio) for Scens 1.3-1.5, 2.2, 2.4, 3.2, 4.3 ####
 ## "mortality_gain"       "mortality_gain_ratio" "better_treatment_I"   "nearbest_treatment_5" "diff_min"   
 RAO_list <- list()
-NB_list <- list()
+
 inds <- c('1.3', '1.4', '1.5','2.2', '2.4', '3.2', '4.3')
 for (ind in inds) {
   ind_name = grep(ind, files,fixed = TRUE)
   if (length(ind_name) == 1) {
     p <- plot_mort(Scenario = ind, d = outputs[[ind_name]],.metric = "mortality_gain_ratio", name.y="RAO",range.y = c(0.5,1))
     RAO_list[[ind]] <- p
-    p2 <- plot_nullbest(outputs, font_size, pt_size, N_iter, ind = ind_name)
-    NB_list[[ind]] <- p2
   } else {
     message('There are no or multiple output files in `output`. Please select one.')
   }
