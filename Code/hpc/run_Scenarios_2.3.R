@@ -57,7 +57,7 @@ timings <- list()
 # the model did fit but random effects are very small
 
 ###################################################### 
-# S4 series: Different effects across patterns or sites
+# S2 series: Different effects across patterns or sites
 ######################################################
 ###################################################### 
 ## Run scenario 2.3
