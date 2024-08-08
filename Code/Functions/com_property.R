@@ -22,7 +22,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       val <- as.numeric(val[complete.cases(val)])
       val.prob<-invlogit(val)       #transform the coefficents to probabilities
 
-    if ( scenario_name %in% c("scenario4.1")) {
+    if ( scenario_name %in% c("scenario2.1")) {
       if (grepl(value, m)) {
         #For mixed effects model the true coefficents are calculated differently when there is a pattern effect, hence must prespecify the true coefficient values 
         T_v<-invlogit(rep(-0.5181, 4))
@@ -32,7 +32,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
         #S3: [0.4, 0.4, 0.4, 0.4]
         #S4: [0.45, 0.45, 0.45, 0.45]
       }
-    } else if ( scenario_name %in% c("scenario4.2")) {
+    } else if ( scenario_name %in% c("scenario2.2")) {
       if (grepl(value, m)) {
         T_v<-invlogit(c(-0.01626211, 0.2749764, 0.5248481, 0.7546862))  
         #For probabilities: 
@@ -41,7 +41,7 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
         #S3: [0.648, 0.711, 0.760, 0.799]
         #S4: [0.833, 0.870, 0.896, 0.915]
       }
-    } else if ( scenario_name %in% c("scenario4.3")) {
+    } else if ( scenario_name %in% c("scenario2.3")) {
       T_v<-(0.2*(T_v-0.1))+(0.8*T_v)
       #When there is a site effect
    }
