@@ -60,7 +60,7 @@ timings <- list()
 # S4 series: Different effects across patterns or sites
 ######################################################
 ###################################################### 
-## Run scenario 4.2
+## Run scenario 2.2
 ######################################################
 start_time <- Sys.time()
 
@@ -74,10 +74,10 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                N_iter = No_iter,          # Number of iterations
                pattsame = FALSE,    # If effects are the same across patterns
                differsite = 0,      # How many sites have different effects
-               scenario_name = paste0(c('scenario4.2', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
+               scenario_name = paste0(c('scenario2.2', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
 end_time <- Sys.time()
 time_taken <- as.numeric(difftime(end_time,start_time,units = "mins"))
-saveRDS(time_taken,paste0("./Code/Run_output/timing_4.2.rds"))
+saveRDS(time_taken,paste0("./Code/Run_output/timing_2.2.rds"))
 
 parallel::stopCluster(my.cluster)
