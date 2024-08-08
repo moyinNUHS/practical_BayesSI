@@ -57,7 +57,7 @@ timings <- list()
 # the model did fit but random effects are very small
 
 ###################################################### 
-# S2 series: Low or high average treatment effects
+# S3 series: Low or high average treatment effects
 ######################################################
 ###################################################### 
 ## Run scenario 3.3
