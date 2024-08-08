@@ -60,7 +60,7 @@ timings <- list()
 # S1 series: Various effects across patterns
 ######################################################
 ###################################################### 
-## Run scenario 1.5
+## Run scenario 1.6
 ######################################################
 start_time <- Sys.time()
 
@@ -72,7 +72,7 @@ run_simulation(prob_pattern = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25), # P
                samplesize_vec = sample_size, #Sample size for each simulation
                samplesize_hist = N_hist,
                N_iter = No_iter,          # Number of iterations
-               scenario_name = paste0(c('scenario1.5', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
+               scenario_name = paste0(c('scenario1.6', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
 end_time <- Sys.time()
 time_taken <- as.numeric(difftime(end_time,start_time,units = "mins"))
