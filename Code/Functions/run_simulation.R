@@ -67,7 +67,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     } 
     else {
      scenario_name. <- str_extract(scenario_name, "scenario\\d+\\.\\d+") 
-     if ( scenario_name. %in% c("scenario4.1")) {
+     if ( scenario_name. %in% c("scenario2.1")) {
       # for scenario where treatments have equal effects but differ across patterns for current trial
       res_rate_mat = rbind(
         c(0.3, 0.3, 0.3, 0.3),
@@ -112,7 +112,7 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
         ncol = length(res_rate_prior_ur1)
       )
      } 
-     else if ( scenario_name. %in% c("scenario4.2")) {
+     else if ( scenario_name. %in% c("scenario2.2")) {
       # for scenario where treatment effects differ across patterns for current trial
       res_rate_mat = rbind(
         c(0.199, 0.250, 0.299, 0.350),
