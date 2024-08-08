@@ -60,7 +60,7 @@ timings <- list()
 # S3 series: Different pattern prevalence
 ######################################################
 ###################################################### 
-## Run scenario 3.1
+## Run scenario 4.1
 ######################################################
 start_time <- Sys.time()
 
@@ -72,10 +72,10 @@ run_simulation(prob_pattern = c(P1 = 0.10, P2 = 0.30, P3 = 0.30, P4 = 0.30), # P
                samplesize_vec = sample_size, #Sample size for each simulation
                samplesize_hist = N_hist,
                N_iter = No_iter,          # Number of iterations
-               scenario_name = paste0(c('scenario3.1', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
+               scenario_name = paste0(c('scenario4.1', paste0('iter', No_iter), as.character(Sys.Date())), collapse = '_')
 )
 end_time <- Sys.time()
 time_taken <- as.numeric(difftime(end_time,start_time,units = "mins"))
 
-saveRDS(time_taken,paste0("./Code/Run_output/timing_3.1.rds"))
+saveRDS(time_taken,paste0("./Code/Run_output/timing_4.1.rds"))
 parallel::stopCluster(my.cluster)
