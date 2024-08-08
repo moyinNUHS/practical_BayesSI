@@ -1,6 +1,10 @@
 # practical
 
-All codes for simulation, analysis and plots are found in the `Code` folder. This folder includes the following.
+All codes for simulation, analysis and plots are found in the `Code` folder. 
+
+# `Code` folder 
+
+This folder includes the following.
 
 ## `run_scenarios.R`
 
@@ -31,3 +35,9 @@ This folder contains R scripts which have been used to run the simulation on the
 # `Plots` folder 
 
 This folder contains all plots.
+
+# `Published materials` folder 
+
+This folder contains code and other materials related to the two previously published manuscripts on PRACTical:
+- The Personalised Randomized Controlled Trial: Evaluation of a new trial design, by Lee et al. 2023, 
+- Determining sample size in a personalized randomized controlled (PRACTical) trial, by Turner et al. 2024.
