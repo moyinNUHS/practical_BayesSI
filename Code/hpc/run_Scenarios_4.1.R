@@ -57,7 +57,7 @@ timings <- list()
 # the model did fit but random effects are very small
 
 ###################################################### 
-# S3 series: Different pattern prevalence
+# S4 series: Different pattern prevalence
 ######################################################
 ###################################################### 
 ## Run scenario 4.1
