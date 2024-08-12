@@ -78,7 +78,7 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     out$power = 1 - out$type2error
     
   } 
-  else if(Scenario == '1.6'){
+  else if(Scenario == '1.4'){
     worst_tx = '2'
     
     # here, type 2 error - 
@@ -127,8 +127,8 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
       summarise(type2error = mean(t2error))
     out$power = 1 - out$type2error
   }
-  else if (Scenario %in% c('1.3', '1.4', '1.5', '1.6' ,'2.2', '2.4', '3.2', '4.1', '4.2', '4.3')){
-    if(Scenario == '1.5'){
+  else if (Scenario %in% c('1.3', '1.5', '1.6' ,'2.2', '2.3', '3.2', '3.4', '4.2')){
+    if(Scenario == '1.6'){
       best_tx = '2'
       secbest_tx = '1'
       worst_tx = '3'
@@ -242,10 +242,10 @@ get_type2 <- function(Scenario, d, .method_labs = method_labs, .all_method_names
     # for each iteration, apply find_contig_grp function
     ex_performance_out <- sapply(1:no_pattern, function(i)
       ex_performance_modified(q="diff_min", k=i, output_replication=output_replication, R=R))
-    if(Scenario != '3.2'){
+    if(Scenario != '4.2'){
       lambda = c(P1 = 0.25, P2 = 0.25, P3 = 0.25, P4 = 0.25)
     }
-    if(Scenario == '3.2'){
+    if(Scenario == '4.2'){
       lambda = c(P1 = 0.1, P2 = 0.3, P3 = 0.3, P4 = 0.3)
     }
     
