@@ -10,7 +10,6 @@ glm_output_stan_nocorrection <- function (model, no_treatment, p=0.2) {
   
   out <- cbind(
     Estimate = model$coefficients[1:no_treatment],
-    #get_estimates(my.glmm, centrality = "mean")[2:no_treatment, 2], #for mean instead of median
     model_var = std.err.naive ^ 2,
     z = abs(model$coefficients[1:no_treatment] / std.err.naive),
     LL = mof.naive[1:no_treatment, 1],
