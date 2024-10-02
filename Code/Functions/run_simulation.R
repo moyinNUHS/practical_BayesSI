@@ -91,8 +91,16 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
         c(0.45, 0.45, 0.45, 0.45)    
         # pattern 4
       )
-      
-      # for scenario where treatments have equal effects but differ across patterns for unrepresentative historical trial 1
+ 
+      # for scenario where treatments have equal effects but differ across patterns for unrepresentative historical trial 1 
+      res_rate_mat_prior_ur1 = matrix(
+        c(0.30, 0.35, 0.40, 0.45),
+        byrow = TRUE,
+        nrow = length(pattern_list),
+        ncol = length(res_rate_prior_ur1)
+      )
+             
+      # for scenario where treatments have equal effects but differ across patterns for unrepresentative historical trial 2
       res_rate_mat_prior_ur2 = rbind(
         c(0.2, 0.2, 0.2, 0.2),
         # pattern 1
@@ -102,14 +110,6 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
         # pattern 3
         c(0.35, 0.35, 0.35, 0.35)     
         # pattern 4
-      )
-        
-      # for scenario where treatments have equal effects but differ across patterns for unrepresentative historical trial 2 
-      res_rate_mat_prior_ur1 = matrix(
-        c(0.30, 0.35, 0.40, 0.45),
-        byrow = TRUE,
-        nrow = length(pattern_list),
-        ncol = length(res_rate_prior_ur1)
       )
      } 
      else if ( scenario_name. %in% c("scenario2.2")) {
