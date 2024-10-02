@@ -19,16 +19,18 @@ plot_coef_distrib <- function(outputs, .font_size = font_size, .pt_size = pt_siz
       
       ###extract coefficient estimates from each method 
       subset_iter_m1 = subset_n[[a]]$est_method_1[,1] 
-      subset_iter_m1_Wk = subset_n[[a]]$est_method_1_wk[,1]
+      #subset_iter_m1_Wk = subset_n[[a]]$est_method_1_wk[,1]
       subset_iter_m1_Str = subset_n[[a]]$est_method_1_str[,1]
       subset_iter_m1_Str_UR1 = subset_n[[a]]$est_method_1_str_ur1[,1]
       subset_iter_m1_Str_UR2 = subset_n[[a]]$est_method_1_str_ur2[,1]
     
       
-      iter_data <- as.data.frame(rbind(subset_iter_m1, subset_iter_m1_Wk, subset_iter_m1_Str, subset_iter_m1_Str_UR1, subset_iter_m1_Str_UR2))
+      #iter_data <- as.data.frame(rbind(subset_iter_m1, subset_iter_m1_Wk, subset_iter_m1_Str, subset_iter_m1_Str_UR1, subset_iter_m1_Str_UR2))
+      iter_data <- as.data.frame(rbind(subset_iter_m1, subset_iter_m1_Str, subset_iter_m1_Str_UR1, subset_iter_m1_Str_UR2))
       
       ##only includes plotting for methods 1 at the moment --can modify if we want to visualise all 
       
+      #meths <- as.data.frame(c("Method 1", "Method 1 Weak", "Method 1 Strong", "Method 1 Strong UR1", "Method 1 Strong UR2"))    
       meths <- as.data.frame(c("Method 1", "Method 1 Strong", "Method 1 Strong UR1", "Method 1 Strong UR2"))
       
       colnames(meths) <- "Methods"
