@@ -222,11 +222,11 @@ run_simulation <- function(pattern_list = list( # Treatment patterns
     list_of_warnings <- lapply(scenario_out, function(x) x$warn)
     warning_data <- as.data.frame(do.call(rbind, list_of_warnings))
     
-    warning_data <- as.data.frame(rbind(scenario_out[[1]]$warn, scenario_out[[2]]$warn))
+    #warning_data <- as.data.frame(rbind(scenario_out[[1]]$warn, scenario_out[[2]]$warn))
     
     message('simulation and models done...')
     
-    save(warning_data, file = paste0("./Code/Run_output/", scenario_name, "sample_size=", N, "_warnings.Rdata"))
+    #save(warning_data, file = paste0("./Code/Run_output/", scenario_name, "sample_size=", N, "_warnings.Rdata"))
     
     #message(paste0(scenario_name, " warning data", " for sample_size = ", N, " saved in /Run_output"))
     
