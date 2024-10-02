@@ -43,7 +43,7 @@ plot_type2 <- function (Scenario, plot.data, .font_size = font_size,
     
     
   } 
-  else if (Scenario %in% c('1.3', '1.4', '1.5','1.6','2.2', '2.4', '3.2', '4.1', '4.2', '4.3')){
+  else if (Scenario %in% c('1.3', '1.4', '1.5','1.6','2.2', '2.3', '3.2', '3.4', '4.2')){
     
     
     ggplot(plot.data, aes(x = n, y = power, shape = method, linetype = method_type,group = method)) +
