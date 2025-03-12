@@ -34,12 +34,13 @@ com_property <- function(out_one, # matrix of simulation outputs (estimator, mod
       }
     } else if ( scenario_name %in% c("scenario2.2")) {
       if (grepl(value, m)) {
-        T_v<-invlogit(c(-0.01626211, 0.2749764, 0.5248481, 0.7546862))  
+        #T_v<-invlogit(c(-0.01626211, 0.2749764, 0.5248481, 0.7546862)) updated to correct scenario probabilities 
+        T_v <-invlogit(c(-0.09777, 0.19267, 0.44255, 0.67358)) 
         #For probabilities: 
         #S1: [0.199, 0.250, 0.299, 0.350]
         #S2: [0.291, 0.354, 0.413, 0.470]
         #S3: [0.648, 0.711, 0.760, 0.799]
-        #S4: [0.833, 0.870, 0.896, 0.915]
+        #S4: [0.782, 0.828, 0.861, 0.886]
       }
     } else if ( scenario_name %in% c("scenario2.3")) {
       T_v<-(0.2*(T_v-0.1))+(0.8*T_v)
